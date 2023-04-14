@@ -7,7 +7,7 @@ if (Test-Path -Path $Root) {
     Set-Location -Path $Root -Verbose
 }
 
-if (($PSVersionTable.PSEdition -eq "Desktop") -and (Get-Module -Name "ISESteroids" -ListAvailable)) {
+if (($host.Name -eq "Windows PowerShell ISE Host") -and (Get-Module -Name "ISESteroids" -ListAvailable)) {
     Write-Verbose "Importing ISESteroids" -Verbose
     Import-Module -Name "ISESteroids" | Out-Null
 }
