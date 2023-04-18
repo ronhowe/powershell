@@ -11,7 +11,7 @@ else {
     Write-Verbose "Skipping `$Root" -Verbose
 }
 
-if (($host.Name -eq "Windows PowerShell ISE Host") -and (Get-Module -Name "ISESteroids" -ListAvailable)) {
+if ((Get-Module -Name "ISESteroids" -ListAvailable) -and ($host.Name -eq "Windows PowerShell ISE Host")) {
     Write-Verbose "Importing ISESteroids" -Verbose
     Import-Module -Name "ISESteroids"
 }
@@ -19,10 +19,40 @@ else {
     Write-Verbose "Skipping ISESteroids" -Verbose
 }
 
-if (($host.Name -ne "Visual Studio Code Host") -and (Get-Module -Name "posh-git" -ListAvailable)) {
+if ((Get-Module -Name "posh-git" -ListAvailable) -and ($host.Name -ne "Visual Studio Code Host")) {
     Write-Verbose "Importing posh-git" -Verbose
     Import-Module -Name "posh-git"
 }
 else {
     Write-Verbose "Skipping posh-git" -Verbose
 }
+
+if (Get-Module -Name "Microsoft.PowerShell.SecretManagement" -ListAvailable) {
+    Write-Verbose "Importing Microsoft.PowerShell.SecretManagement" -Verbose
+    Import-Module -Name "Microsoft.PowerShell.SecretManagement"
+}
+else {
+    Write-Verbose "Skipping Microsoft.PowerShell.SecretManagement" -Verbose
+}
+
+if (Get-Module -Name "Microsoft.PowerShell.SecretStore" -ListAvailable) {
+    Write-Verbose "Importing Microsoft.PowerShell.SecretStore" -Verbose
+    Import-Module -Name "Microsoft.PowerShell.SecretStore"
+}
+else {
+    Write-Verbose "Skipping Microsoft.PowerShell.SecretStore" -Verbose
+}
+
+function Get-PSReadLineHistory {
+    Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
+}
+
+function Reset-PSReadLineHistory {
+    Remove-Item -Path $(Get-PSReadLineOption).HistorySavePath -Verbose
+}
+
+function Set-LocationHome {
+    Set-Location -Path $HOME
+}
+
+New-Alias -Name "home" -Value Set-LocationHome
