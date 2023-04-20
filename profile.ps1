@@ -75,3 +75,5 @@ function Clear-All {
     Clear-PSReadLineHistory
     Clear-Host
 }
+
+New-Alias -Name "new" -Value Clear-All -Force
