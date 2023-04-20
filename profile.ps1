@@ -43,6 +43,8 @@ else {
     Write-Verbose "Skipping Microsoft.PowerShell.SecretStore" -Verbose
 }
 
+Set-PSReadLineOption -PredictionViewStyle ListView
+
 function Get-PSReadLineHistory {
     Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
 }
