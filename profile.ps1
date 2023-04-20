@@ -47,7 +47,7 @@ function Get-PSReadLineHistory {
     Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
 }
 
-function Reset-PSReadLineHistory {
+function Clear-PSReadLineHistory {
     Remove-Item -Path $(Get-PSReadLineOption).HistorySavePath -Verbose
 }
 
@@ -55,4 +55,15 @@ function Set-LocationHome {
     Set-Location -Path $HOME
 }
 
-New-Alias -Name "home" -Value Set-LocationHome
+New-Alias -Name "home" -Value Set-LocationHome -Force
+
+function Set-LocationRepos {
+    if (Test-Path -Path "C:\VSTS") {
+        Set-Location -Path "C:\VSTS"
+    }
+    elseif (Test-Path -Path "$HOME/repos") {
+        Set-Location -Path "$HOME/repos"
+    }
+}
+
+New-Alias -Name "repos" -Value Set-LocationRepos -Force
