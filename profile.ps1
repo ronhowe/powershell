@@ -69,11 +69,3 @@ function Set-LocationRepos {
 }
 
 New-Alias -Name "repos" -Value Set-LocationRepos -Force
-
-function Clear-All {
-    Clear-History
-    Clear-PSReadLineHistory
-    Clear-Host
-}
-
-New-Alias -Name "new" -Value Clear-All -Force
