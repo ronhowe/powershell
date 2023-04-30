@@ -1,7 +1,6 @@
-#requires -RunAsAdministrator
-
 az --version
 bicep --version
+dotnet --version
 gh --version
 git --version
-wsl --update
+wsl --version
