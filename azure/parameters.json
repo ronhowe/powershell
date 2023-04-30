@@ -6,10 +6,10 @@
             "value": "eastus"
         },
         "appName": {
-            "value": "app-prod-idso-000"
+            "value": "app-ronhowe-000"
         },
         "planName": {
-            "value": "plan-prod-idso-000"
+            "value": "plan-ronhowe-000"
         }
     }
 }

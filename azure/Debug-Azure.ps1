@@ -2,25 +2,29 @@
 throw
 
 # dependencies
+Get-Module -Name "Az" -ListAvailable
+Find-Module -Name "Az" -Repository "PSGallery"
+Install-Module -Name "Az" -Repository "PSGallery" -Force
+
+# imports
 Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.Websites"
 
 # context
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-$configuration = Import-PowerShellDataFile -Path ".\Configuration.psd1"
-$configuration
-$tenantId = $configuration.tenantId
-$subscriptionName = $configuration.subscriptionName
-$resourceGroupName = $configuration.resourceGroupName
-$appName = $configuration.appName
-$planName = $configuration.planName
-$location = $configuration.location
+$configuration = Import-PowerShellDataFile -Path ".\Configuration.psd1" ; $configuration
+$tenantId = Read-Host -Prompt "tenantId" ; $tenantId
+$subscriptionName = Read-Host -Prompt "subscriptionName" ; $subscriptionName
+$resourceGroupName = $configuration.resourceGroupName ; $resourceGroupName
+$appName = $configuration.appName ; $appName
+$planName = $configuration.planName ; $planName
+$location = $configuration.location ; $location
 
 # authenticate
 Connect-AzAccount -SubscriptionName $subscriptionName -TenantId $tenantId -UseDeviceAuthentication
 
 # resources
-New-AzResourceGroup -Name $resourceGroupName -Location $location
+New-AzResourceGroup -Name $resourceGroupName -Location $location -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name (New-Guid) -TemplateFile ".\template.json" -TemplateParameterFile ".\parameters.json" -Mode Incremental -Force -Verbose
 
 Get-AzResourceGroup -Name $resourceGroupName
@@ -29,15 +33,18 @@ Get-AzAppServicePlan -ResourceGroupName $resourceGroupName -Name $planName
 
 Remove-AzResourceGroup -Name $resourceGroupName -Force -Verbose
 
-# publish
+# unit test
 Set-Location -Path "$HOME\repos\ronhowe\dotnet"
 dotnet build
 dotnet test
-dotnet publish
+
+# publish
 Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish"
+dotnet build
+dotnet publish
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -ArchivePath ".\deploy.zip" -Force -Verbose
 
-# test
-Set-Location -Path "$HOME\repos\ronhowe\dotnet"
-dotnet test
+# integration test
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed
