@@ -3,7 +3,7 @@ BeforeAll {
 }
 
 Describe "Integration Tests" {
-    Context "Kestrel" {
+    Context "Kestrel" -Tag "kestrel" {
         It "NullStatusCode" {
             $response = Invoke-WebRequest -Uri "https://localhost:444/"
             $response.StatusCode | Should -Be 200
@@ -29,7 +29,7 @@ Describe "Integration Tests" {
             $response.Content | Should -Be "false"
         }
     }
-    Context "AppService" {
+    Context "AppService" -tag "appservice" {
         It "NullStatusCode" {
             $response = Invoke-WebRequest -Uri "https://app-ronhowe-000.azurewebsites.net/"
             $response.StatusCode | Should -Be 200

@@ -45,6 +45,10 @@ dotnet publish
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -ArchivePath ".\deploy.zip" -Force -Verbose
 
-# integration test
+# integration test @ kestrel
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed
+Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "kestrel"
+
+# integration test @ app service
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "appservice"
