@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "appName": {
+            "value": "app-prod-idso-000"
+        },
+        "planName": {
+            "value": "plan-prod-idso-000"
+        }
+    }
+}
