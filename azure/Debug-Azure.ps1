@@ -44,9 +44,9 @@ dotnet test
 #endregion unit test
 
 #region publish
-Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish"
 dotnet build
 dotnet publish
+Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -ArchivePath ".\deploy.zip" -Force -Verbose
 #endregion publish
@@ -56,7 +56,17 @@ Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "kestrel"
 #endregion integration test @ kestrel
 
+#region integration test @ docker
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "docker"
+#endregion integration test @ docker
+
 #region integration test @ app service
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "appservice"
 #endregion integration test @ app service
+
+#region integration test @ api gateway
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "apigateway"
+#endregion integration test @ api gateway
