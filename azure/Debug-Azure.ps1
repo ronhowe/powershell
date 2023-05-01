@@ -27,6 +27,7 @@ Connect-AzAccount -SubscriptionName $subscriptionName -TenantId $tenantId -UseDe
 #endregion authenticate
 
 #region resources
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name (New-Guid) -TemplateFile ".\template.json" -TemplateParameterFile ".\parameters.json" -Mode Incremental -Force -Verbose
 
@@ -65,6 +66,11 @@ Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "docker"
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "appservice"
 #endregion integration test @ app service
+
+#region integration test @ function app
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "functionapp"
+#endregion integration test @ function app
 
 #region integration test @ api gateway
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"

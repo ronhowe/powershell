@@ -32,6 +32,35 @@ Describe "Integration Tests" {
             $response.Content | Should -Be "false"
         }
     }
+    Context "FunctionApp" -Tag "functionapp" {
+        BeforeAll{
+            New-Variable -Name "endpoint" -Value "localhost:83/api/Function1"
+        }
+        It "NullStatusCode" {
+            $response = Invoke-WebRequest -Uri "http://$endpoint/"
+            $response.StatusCode | Should -Be 200
+        }
+        It "NullContent" {
+            $response = Invoke-WebRequest -Uri "http://$endpoint/"
+            $response.Content | Should -Be "false"
+        }
+        It "TrueStatusCode" {
+            $response = Invoke-WebRequest -Uri "http://$endpoint/?input=true"
+            $response.StatusCode | Should -Be 200
+        }
+        It "TrueContent" {
+            $response = Invoke-WebRequest -Uri "http://$endpoint/?input=true"
+            $response.Content | Should -Be "true"
+        }
+        It "FalseStatusCode" {
+            $response = Invoke-WebRequest -Uri "http://$endpoint/?input=false"
+            $response.StatusCode | Should -Be 200
+        }
+        It "FalseContent" {
+            $response = Invoke-WebRequest -Uri "http://$endpoint/?input=false"
+            $response.Content | Should -Be "false"
+        }
+    }
     Context "Docker" -Tag "docker" {
         BeforeAll{
             New-Variable -Name "endpoint" -Value "localhost:32768"
