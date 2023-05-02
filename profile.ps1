@@ -80,6 +80,7 @@ New-Alias -Name "log" -Value Start-Log -Force -Verbose
 function Show-New {
     Clear-Host
     Show-RonHowe
+    Set-LocationHome
 }
 
 New-Alias -Name "new" -Value Show-New -Force -Verbose
