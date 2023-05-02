@@ -1,13 +1,6 @@
-#region post
 Write-Host "https://github.com/ronhowe/powershell/blob/main/profile.ps1" -ForegroundColor Green
 
 Write-Verbose "PowerShell $($PSVersionTable.PSVersion.ToString())" -Verbose
-#endregion post
-
-#region preferences
-$ProgressPreference = "SilentlyContinue"
-Set-PSReadLineOption -PredictionViewStyle ListView
-#endregion preferences
 
 #region imports
 if ((Get-Module -Name "ISESteroids" -ListAvailable) -and ($host.Name -eq "Windows PowerShell ISE Host")) {
@@ -136,3 +129,5 @@ function Set-LocationShell {
 
 New-Alias -Name "shell" -Value Set-LocationShell -Force -Verbose
 #endregion shell
+
+Set-PSReadLineOption -PredictionViewStyle ListView
