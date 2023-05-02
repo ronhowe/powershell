@@ -7,35 +7,35 @@ Describe "Integration Tests" {
         Write-Host "Testing $Uri" -ForegroundColor Yellow
     }
     Context "WebApplication1" {
-        It "HeaderExists" {
+        It "ApplicationHeaderExists" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
             $response.Headers["x-custom-header"] | Should -Not -BeNullOrEmpty
         }
-        It "HeaderIsCorrect" {
+        It "ApplicationHeaderIsCorrect" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
             $response.Headers["x-custom-header"] | Should -Be "webApplication1"
         }
-        It "NullStatusCode" {
+        It "ApplicationRespondsOKFromNullInput" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
-        It "NullContent" {
+        It "ApplicationReturnsFalseFromNullInput" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
-        It "TrueStatusCode" {
+        It "ApplicationRespondsOKFromTrueInput" {
             $response = Invoke-WebRequest -Uri "$Uri/?input=true" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
-        It "TrueContent" {
+        It "ApplicationReturnsTrueFromTrueInput" {
             $response = Invoke-WebRequest -Uri "$Uri/?input=true" -SkipCertificateCheck
             $response.Content | Should -Be "true"
         }
-        It "FalseStatusCode" {
+        It "ApplicationRespondsOKFromFalseInput" {
             $response = Invoke-WebRequest -Uri "$Uri/?input=false" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
-        It "FalseContent" {
+        It "ApplicationReturnsFalseFromFalseInput" {
             $response = Invoke-WebRequest -Uri "$Uri/?input=false" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
