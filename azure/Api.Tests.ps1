@@ -2,11 +2,11 @@ param(
     [Parameter(Mandatory)]
     [Uri]$Uri
 )
-Describe "Integration Tests" {
+Describe "ApiTests" {
     BeforeAll {
         Write-Host "Testing $Uri" -ForegroundColor Yellow
     }
-    Context "WebApplication1" {
+    Context "IntegrationTests" {
         It "ApplicationHeaderExists" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
             $response.Headers["x-custom-header"] | Should -Not -BeNullOrEmpty
