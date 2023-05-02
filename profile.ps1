@@ -90,8 +90,8 @@ function Set-LocationRepos {
     if (Test-Path -Path "C:\VSTS") {
         Set-Location -Path "C:\VSTS"
     }
-    elseif (Test-Path -Path "$HOME/repos") {
-        Set-Location -Path "$HOME/repos"
+    elseif (Test-Path -Path "$HOME\repos") {
+        Set-Location -Path "$HOME\repos"
     }
 }
 
@@ -122,3 +122,16 @@ else {
     Write-Verbose "Skipping `$Root" -Verbose
 }
 #endregion root
+
+#region shell
+function Set-LocationShell {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell"
+    }
+}
+
+New-Alias -Name "shell" -Value Set-LocationShell -Force -Verbose
+#endregion shell
