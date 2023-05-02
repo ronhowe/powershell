@@ -1,2 +1,7 @@
-$container = New-PesterContainer -Path "$HOME\repos\ronhowe\powershell\azure\Api.Tests.ps1" -Data @{ Uri = "https://localhost:444" }
-Invoke-Pester -Path "$HOME\repos\ronhowe\powershell\azure\Api.Tests.ps1" -Output Detailed -Container $container
+param(
+    [switch]$Loop,
+
+    [int]$Seconds = 1
+)
+
+& "$PSScriptRoot/Test-Api.ps1" -Uri "https://localhost:444" -Loop:$Loop -Seconds $Seconds
