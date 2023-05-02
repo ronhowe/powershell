@@ -52,27 +52,11 @@ Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -ArchivePath ".\deploy.zip" -Force -Verbose
 #endregion publish
 
-#region integration test @ kestrel
-Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "kestrel"
-#endregion integration test @ kestrel
-
-#region integration test @ docker
-Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "docker"
-#endregion integration test @ docker
-
-#region integration test @ app service
-Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "appservice"
-#endregion integration test @ app service
-
-#region integration test @ function app
-Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "functionapp"
-#endregion integration test @ function app
-
-#region integration test @ api gateway
-Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-Invoke-Pester -Path ".\Azure.Tests.ps1" -Output Detailed -TagFilter "apigateway"
-#endregion integration test @ api gateway
+# WebApplication1 - Kestrel - https://localhost:444
+# WebApplication1 - Docker - http://localhost:82
+# WebApplication1 - App Service - https://app-ronhowe-000.azurewebsites.net
+# FuncionApp1 - Kestrel - TODO
+# FuncionApp1 - Docker - TODO
+# FuncionApp1 - Function App - TODO
+# Application - Application Gateway - https://apim-ronhowe-000.azure-api.net/httpbin/v1
+# Application - Front Door - TODO
