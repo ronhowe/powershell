@@ -101,7 +101,7 @@ function Show-RonHowe {
     Write-Host "o" -BackgroundColor DarkBlue -ForegroundColor Black -NoNewline
     Write-Host "w" -BackgroundColor Blue -ForegroundColor Black -NoNewline
     Write-Host "e" -BackgroundColor Cyan -ForegroundColor Black -NoNewline
-    Write-Host ""
+    Write-Host ".net"
 }
 
 New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
