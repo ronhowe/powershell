@@ -38,7 +38,7 @@ else {
 
 #region api
 function Invoke-Api {
-    & "$HOME\repos\ronhowe\powershell\azure\Test-Api.ps1" -Loop
+    & "$HOME\repos\ronhowe\powershell\azure\Test-ApiKestrel.ps1" -Loop
 }
 
 New-Alias -Name "api" -Value Invoke-Api -Force -Verbose

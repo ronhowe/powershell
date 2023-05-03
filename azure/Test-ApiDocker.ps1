@@ -1,4 +1,6 @@
 while ($true) {
-    Invoke-Pester -Path "$PSScriptRoot\Api.Tests.ps1" -Output Detailed -Container (New-PesterContainer -Path "$PSScriptRoot\Api.Tests.ps1" -Data @{ "Uri" = "http://localhost:82" ; "CustomHeader" = "default" })
+    $path = "$PSScriptRoot\Api.Tests.ps1"
+    $data = @{ "Uri" = "http://localhost:82" ; "CustomHeader" = "default" }
+    Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
     Start-Sleep -Seconds 1
 }
