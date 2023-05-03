@@ -14,7 +14,8 @@ param(
 $path = "$HOME\repos\ronhowe\powershell\azure\Api.Tests.ps1"
 
 [hashtable]$data = @{
-    "Uri" = "https://localhost:444"
+    "Uri"          = "https://localhost:444"
+    "CustomHeader" = "default"
 }
 $container = New-PesterContainer -Path $path -Data $data
 
