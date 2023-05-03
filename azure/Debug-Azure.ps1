@@ -59,11 +59,10 @@ Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 .\Test-ApiAppService.ps1
 #endregion integration test
 
-# WebApplication1 - Kestrel - https://localhost:444
-# WebApplication1 - Docker - http://localhost:82
-# WebApplication1 - App Service - https://app-ronhowe-000.azurewebsites.net
-# FuncionApp1 - Kestrel - TODO
-# FuncionApp1 - Docker - TODO
-# FuncionApp1 - Function App - TODO
-# Application - Application Gateway - https://apim-ronhowe-000.azure-api.net/httpbin/v1
-# Application - Front Door - TODO
+#region break and fix
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "true" }
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "false" }
+
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "CustomHeader" = "default" }
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "CustomHeader" = $appName }
+#endregion break and fix
