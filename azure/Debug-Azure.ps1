@@ -45,12 +45,19 @@ dotnet test
 #endregion unit test
 
 #region publish
+Set-Location -Path "$HOME\repos\ronhowe\dotnet"
 dotnet build
+Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -Recurse -Force -Verbose -ErrorAction SilentlyContinue
 dotnet publish
 Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -ArchivePath ".\deploy.zip" -Force -Verbose
 #endregion publish
+
+#region integration test
+Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+.\Test-ApiAppService.ps1
+#endregion integration test
 
 # WebApplication1 - Kestrel - https://localhost:444
 # WebApplication1 - Docker - http://localhost:82

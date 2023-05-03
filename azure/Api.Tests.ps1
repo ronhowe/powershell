@@ -1,19 +1,22 @@
 param(
     [Parameter(Mandatory)]
-    [Uri]$Uri
+    [Uri]$Uri,
+    [Parameter(Mandatory)]
+    [string]$CustomHeader
 )
 Describe "ApiTests" {
     BeforeAll {
-        Write-Host "Testing $Uri" -ForegroundColor Yellow
+        Write-Host "Testing Uri = $Uri" -ForegroundColor Yellow
+        Write-Host "Testing CustomHeader = $CustomHeader" -ForegroundColor Yellow
     }
     Context "IntegrationTests" {
         It "ApplicationHeaderExists" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
-            $response.Headers["x-custom-header"] | Should -Not -BeNullOrEmpty
+            $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
         }
         It "ApplicationHeaderIsCorrect" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
-            $response.Headers["x-custom-header"] | Should -Be "webApplication1"
+            $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
         It "ApplicationRespondsOKFromNullInput" {
             $response = Invoke-WebRequest -Uri "$Uri/" -SkipCertificateCheck
