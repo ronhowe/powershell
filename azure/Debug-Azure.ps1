@@ -31,9 +31,9 @@ Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name (New-Guid) -TemplateFile ".\template.json" -TemplateParameterFile ".\parameters.json" -Mode Incremental -Force -Verbose
 
-Get-AzResourceGroup -Name $resourceGroupName
-Get-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName
-Get-AzAppServicePlan -ResourceGroupName $resourceGroupName -Name $planName
+Get-AzResourceGroup -Name $resourceGroupName -OutVariable "resourceGroup"
+Get-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -OutVariable "webapp"
+Get-AzAppServicePlan -ResourceGroupName $resourceGroupName -Name $planName -OutVariable "plan"
 
 Remove-AzResourceGroup -Name $resourceGroupName -Force -Verbose
 #endregion resources
@@ -60,9 +60,26 @@ Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 #endregion integration test
 
 #region break and fix
-Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "true" }
-Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "false" }
 
-Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "CustomHeader" = "default" }
-Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "CustomHeader" = $appName }
+# https://mohitgoyal.co/2018/02/26/apply-update-application-settings-for-azure-app-service-using-powershell/
+
+# does not preserver existing settings
+# Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "true" }
+
+$webapp.SiteConfig.AppSettings | Sort-Object -Property "Name" -OutVariable "appSettings"
+
+$newAppSettings = @{}
+foreach ($item in $appSettings) {
+    $newAppSettings[$item.Name] = $item.Value
+}
+
+# choose
+$newAppSettings.MockServiceExceptionToggle = $true
+$newAppSettings.MockServiceExceptionToggle = $false
+# or choose
+$newAppSettings.CustomHeader = "default"
+$newAppSettings.CustomHeader = $appName
+
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings $newAppSettings -Verbose
+
 #endregion break and fix
