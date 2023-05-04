@@ -32,7 +32,7 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name (New-Guid) -TemplateFile ".\template.json" -TemplateParameterFile ".\parameters.json" -Mode Incremental -Force -Verbose
 
 Get-AzResourceGroup -Name $resourceGroupName -OutVariable "resourceGroup"
-Get-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -OutVariable "webapp"
+Get-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -OutVariable "webApp"
 Get-AzAppServicePlan -ResourceGroupName $resourceGroupName -Name $planName -OutVariable "plan"
 
 Remove-AzResourceGroup -Name $resourceGroupName -Force -Verbose
@@ -66,7 +66,7 @@ Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 # does not preserver existing settings
 # Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "true" }
 
-$webapp.SiteConfig.AppSettings | Sort-Object -Property "Name" -OutVariable "appSettings"
+$webApp.SiteConfig.AppSettings | Sort-Object -Property "Name" -OutVariable "appSettings"
 
 $newAppSettings = @{}
 foreach ($item in $appSettings) {
@@ -76,10 +76,11 @@ foreach ($item in $appSettings) {
 # choose
 $newAppSettings.MockServiceExceptionToggle = $true
 $newAppSettings.MockServiceExceptionToggle = $false
-# or choose
+
+# choose
 $newAppSettings.CustomHeader = "default"
 $newAppSettings.CustomHeader = $appName
 
-Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings $newAppSettings -Verbose
+Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings $newAppSettings
 
 #endregion break and fix
