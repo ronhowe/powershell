@@ -11,7 +11,7 @@ Describe "Testing Show-Logo" {
         . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
 
         Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
-        Mock -ModuleName $Name Write-Host { }
+        # Mock -ModuleName $Name Write-Host { }
     }
     It "Invoke Does Not Throw" {
         { Show-Logo } |

@@ -1,3 +1,5 @@
+# sync with Aliases.ps1
+# sync with Aliases.Tests.ps1
 # sync with Show-Help.ps1
 New-Alias -Name "catfact" -Value "Get-CatFact" -Force -Scope Global
 New-Alias -Name "date" -Value "Show-Date" -Force -Scope Global

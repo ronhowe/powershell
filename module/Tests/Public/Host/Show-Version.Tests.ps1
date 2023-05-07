@@ -12,7 +12,7 @@ Describe "Testing Show-Version" {
     
         Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
         Mock -ModuleName $Name Get-Version { return "x.x.x" }
-        Mock -ModuleName $Name Write-Host { }
+        # Mock -ModuleName $Name Write-Host { }
     }
     It "Invoke Does Not Throw" {
         { Show-Version } |

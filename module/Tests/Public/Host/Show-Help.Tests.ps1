@@ -5,7 +5,7 @@ param(
     [ValidateScript({ Test-Path -Path $_ })]
     [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
-Describe "Testing Show-Ready" {
+Describe "Testing Show-Heal" {
     BeforeAll {
         Write-Verbose "Invoking Import-Configuration"
         . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
@@ -14,7 +14,7 @@ Describe "Testing Show-Ready" {
         # Mock -ModuleName $Name Write-Host { }
     }
     It "Invoke Does Not Throw" {
-        { Show-Ready } |
+        { Show-Help } |
         Should -Not -Throw
     }
     It "Invoke Returns Nothing" {
