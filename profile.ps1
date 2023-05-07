@@ -44,6 +44,14 @@ function Invoke-Api {
 New-Alias -Name "api" -Value Invoke-Api -Force -Verbose
 #endregion api
 
+#region debug
+function Start-DebugModule {
+    & "$HOME\repos\ronhowe\powershell\module\Debug-Module.ps1"
+}
+
+New-Alias -Name "debug" -Value Start-DebugModule -Force -Verbose
+#endregion debug
+
 #region history
 function Get-PSReadLineHistory {
     Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
