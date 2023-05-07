@@ -5,14 +5,14 @@ param(
     [ValidateScript({ Test-Path -Path $_ })]
     [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
-Describe "TestingGetWeather" {
+Describe "Testing Get-Weather" {
     BeforeAll {
         Write-Verbose "Invoking Import-Configuration"
         . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
 
         Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
     }
-    It "ReturnsWeather" {
+    It "Returns Weather" {
         InModuleScope $Name {
             Mock Invoke-Request { return "mock" }
             Get-Weather |
