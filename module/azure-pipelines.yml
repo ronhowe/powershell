@@ -1,0 +1,47 @@
+trigger:
+- dev
+pool:
+  vmImage: "ubuntu-latest"
+variables:
+  module_name: "Shell"
+  module_version: 0.0.0
+steps:
+- script: echo POST
+  name: post
+  displayName: "POST"
+- task: PowerShell@2
+  name: installRequirements
+  displayName: "Install Requirements"
+  inputs:
+    pwsh: true
+    targetType: filePath
+    filePath: $(Build.SourcesDirectory)/Install-Requirements.ps1
+- task: PowerShell@2
+  name: startBuild
+  displayName: "Start Build"
+  inputs:
+    pwsh: true
+    targetType: filePath
+    filePath: $(Build.SourcesDirectory)/Start-Build.ps1
+    arguments: "-Name $(module_name) -Version $(module_version)"
+- task: PowerShell@2
+  name: startPackage
+  displayName: "Start Package"
+  inputs:
+    pwsh: true
+    targetType: filePath
+    filePath: $(Build.SourcesDirectory)/Start-Package.ps1
+    arguments: "-Name $(module_name) -Version $(module_version)"
+- task: PublishBuildArtifacts@1
+  name: publishArtifacts
+  displayName: "Publish Artifacts"
+  inputs:
+    ArtifactName: module
+    PathtoPublish: $(Build.SourcesDirectory)/Output
+- task: NuGetCommand@2
+  name: publishPackage
+  displayName: "Publish Package"
+  inputs:
+    command: push
+    packagesToPush: $(Build.SourcesDirectory)/Output/Packages/*.nupkg
+    publishVstsFeed: "$(module_name)/$(module_name)"
