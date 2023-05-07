@@ -12,26 +12,26 @@ function Start-Shell {
         Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Importing Power Configuration"
+            # Write-Verbose "Importing Power Configuration"
 
             # https://github.com/JustinGrote/PowerConfig/issues/7
             # Import-PowerConfiguration -Name "Shell" -Path "$PSScriptRoot\Shell.json" |
             # Out-Null
 
-            Write-Verbose "Showing Configuration"
+            # Write-Verbose "Showing Configuration"
 
-            $ShellConfiguration |
-            Format-Table -AutoSize
+            # $ShellConfiguration |
+            # Format-Table -AutoSize
 
             Write-Verbose "Showing Interface"
-
+            Write-Ascii -InputObject $SHELL_CODENAME -ForegroundColor Green
             Show-Logo
             Show-Version
             Show-Date
             Show-Ready
         }
         catch {
-            Write-Error "Start Kernel Failed"
+            Write-Error "Starting Shell Failed"
         }
     }
     end {
