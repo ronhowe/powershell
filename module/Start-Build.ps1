@@ -23,16 +23,8 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing Configuration"
-    $configuration = Import-PowerShellDataFile -Path $Path
-    $name = $configuration.Name
-    $version = $configuration.Version
-    $certificatePath = $configuration.Certificate.Path
-    $certificateThumbprint = $configuration.Certificate.Thumbprint
-    Write-Debug "`$name=$name"
-    Write-Debug "`$version=$version"
-    Write-Debug "`$certificatePath=$certificatePath"
-    Write-Debug "`$certificateThumbprint=$certificateThumbprint"
+    Write-Verbose "Invoking Import-Configuration"
+    . "$PSScriptRoot\Import-Configuration.ps1" -Path $Path
 
     Write-Verbose "Getting Module Directory"
     $moduleDirectory = "$OutputDirectory/Module"

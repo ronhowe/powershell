@@ -1,25 +1,31 @@
 [CmdletBinding()]
 param(
-    [Parameter()]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string]$Name = "Shell"
+    [ValidateScript({ Test-Path -Path $_ })]
+    [string]$Path = "$PSScriptRoot\..\..\Source\Module.psd1"
 )
-Describe "TestingInvokeRequest" {
+Describe "Testing Invoke-Request" {
     BeforeAll {
+        Write-Debug $(Resolve-Path -Path $Path)
+
+        Write-Verbose "Invoking Import-Configuration"
+        . "$PSScriptRoot\..\..\Import-Configuration.ps1" -Path $Path
+
         Write-Debug $(Resolve-Path -Path "$PSScriptRoot\..\..\Output\Module\$Name")
         Import-Module -Name "$PSScriptRoot\..\..\Output\Module\$Name" -Force
 
         . "$PSScriptRoot\..\..\Source\Private\Invoke-Request.ps1"
     }
-    It "UriInvalidThrows" {
+    It "Uri Invalid Throws" {
         { Invoke-Request -Uri "https://b276ec7d-1d97-46a1-af03-4a0fbb646b63" } |
         Should -Throw
     }
-    It "SwitchPresentReturns" {
+    It "Switch Present Returns" {
         Invoke-Request -Uri "https://catfact.ninja/fact" -ContentOnly |
         Should -Not -BeNullOrEmpty
     }
-    It "SwitchAbsentReturns" {
+    It "Switch Absent Returns" {
         Invoke-Request -Uri "https://catfact.ninja/fact" |
         Should -Not -BeNullOrEmpty
     }

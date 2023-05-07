@@ -16,7 +16,7 @@ Describe "Testing Requirements" {
         $ProgressPreference = "SilentlyContinue"
         $WarningPreference = "SilentlyContinue"
     }
-    It "Requirement Is Current @{ModuleName='<ModuleName>';ModuleVersion='<ModuleVersion>'}" -ForEach `
+    It "Requirement Is Current [@{ModuleName='<ModuleName>';ModuleVersion='<ModuleVersion>'}]" -ForEach `
     $(
         Import-PowerShellDataFile -Path $Path |
         Select-Object -ExpandProperty "Modules"

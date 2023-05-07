@@ -26,8 +26,8 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing Requirements"
-    $requirements = Import-PowerShellDataFile -Path $Path
+    Write-Verbose "Invoking Import-Configuration"
+    . "$PSScriptRoot\Import-Configuration.ps1" -Path $Path
 
     Write-Verbose "Installing Modules"
     $requirements.Modules |

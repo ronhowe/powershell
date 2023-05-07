@@ -9,6 +9,8 @@ function Get-Quote {
         ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
     }
     process {
+        $ProgressPreference = "SilentlyContinue"
+
         Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
         $quotes = Invoke-Request -Uri "https://type.fit/api/quotes" -ContentOnly |

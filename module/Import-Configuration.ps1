@@ -1,7 +1,6 @@
 #requires -PSEdition "Core"
-#requires -Module "Pester"
 [CmdletBinding()]
-param(
+param (
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [ValidateScript({ Test-Path -Path $_ })]
@@ -19,17 +18,16 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Invoking Import-Configuration"
-    . "$PSScriptRoot\Import-Configuration.ps1" -Path $Path -Debug -Verbose
-
-    Get-Module -Name $name |
-    Remove-Module -Force -Verbose
-
-    & "$PSScriptRoot\Start-Build.ps1" -Debug -Verbose
-
-    Import-Module -Name "$PSScriptRoot\Output\Module\Shell" -Force -Verbose
-
-    Write-Host "OK" -ForegroundColor Green
+    Write-Verbose "Importing Configuration"
+    $configuration = Import-PowerShellDataFile -Path $Path
+    $name = $configuration.Name
+    $version = $configuration.Version
+    $certificatePath = $configuration.Certificate.Path
+    $certificateThumbprint = $configuration.Certificate.Thumbprint
+    Write-Debug "`$name=$name"
+    Write-Debug "`$version=$version"
+    Write-Debug "`$certificatePath=$certificatePath"
+    Write-Debug "`$certificateThumbprint=$certificateThumbprint"
 }
 end {
     Write-Debug "End $($MyInvocation.MyCommand.Name)"

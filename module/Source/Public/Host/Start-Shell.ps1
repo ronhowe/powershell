@@ -1,4 +1,4 @@
-function Start-Kernel {
+function Start-Shell {
     [CmdletBinding()]
     param ()
     begin {

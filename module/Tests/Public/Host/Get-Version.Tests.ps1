@@ -5,20 +5,16 @@ param(
     [ValidateScript({ Test-Path -Path $_ })]
     [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
-Describe "Testing Show-Date" {
+Describe "Testing Get-Version" {
     BeforeAll {
         Write-Verbose "Invoking Import-Configuration"
         . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
 
         Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
-        Mock -ModuleName $Name Write-Host { }
+        Mock -ModuleName $Name Get-Module { return @{ Version = "x.x.x" } }
     }
-    It "Invoke Does Not Throw" {
-        { Show-Date } |
-        Should -Not -Throw
-    }
-    It "Invoke Returns Nothing" {
-        Show-Date |
-        Should -BeNullOrEmpty
+    It "Returns Expected" {
+        Get-Version
+        | Should -Be "x.x.x"
     }
 }

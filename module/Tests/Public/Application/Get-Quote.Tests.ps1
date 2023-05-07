@@ -1,11 +1,15 @@
 [CmdletBinding()]
 param(
-    [Parameter()]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string]$Name = "Shell"
+    [ValidateScript({ Test-Path -Path $_ })]
+    [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
 Describe "TestingGetQuote" {
     BeforeEach {
+        Write-Verbose "Invoking Import-Configuration"
+        . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
+
         Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
         Mock -ModuleName $Name Invoke-Request { return "[{'text':'mocktext','author':'mockauthor'}]" }
     }

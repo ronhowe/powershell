@@ -15,10 +15,10 @@ function Show-Help {
         Write-Host "catfact" -ForegroundColor Green
         Write-Host "date" -ForegroundColor Green
         Write-Host "help" -ForegroundColor Green
-        Write-Host "kernel" -ForegroundColor Green
         Write-Host "logo" -ForegroundColor Green
         Write-Host "quote" -ForegroundColor Green
         Write-Host "ready" -ForegroundColor Green
+        Write-Host "shell" -ForegroundColor Green
         Write-Host "version" -ForegroundColor Green
         Write-Host "weather" -ForegroundColor Green
      }

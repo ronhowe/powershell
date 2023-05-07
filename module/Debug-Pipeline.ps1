@@ -27,31 +27,31 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing Configuration"
-    $configuration = Import-PowerShellDataFile -Path $Path
-    $name = $configuration.Name
-    $version = $configuration.Version
-    Write-Debug "`$name=$name"
-    Write-Debug "`$version=$version"
+    Write-Verbose "Invoking Import-Configuration"
+    . "$PSScriptRoot\Import-Configuration.ps1" -Path $Path -Debug -Verbose
 
-    Write-Verbose "Installing Build Requirements"
+    Write-Verbose "Invoking Install-Requirements"
     & "$PSScriptRoot\Install-Requirements.ps1" -Path "$PSScriptRoot\Requirements.psd1" -Repository $Repository -Scope "CurrentUser" -Debug -Verbose
 
-    Write-Verbose "Installing Module Requirements"
-    & "$PSScriptRoot\Install-Requirements.ps1" -Path "$PSScriptRoot\Source\Requirements.psd1" -Repository $Repository -Scope "CurrentUser" -Debug -Verbose
-
-    Write-Verbose "Removing Output Directory"
-    Remove-Item -Path $OutputDirectory -Recurse -Force -ErrorAction SilentlyContinue
-
-    Write-Verbose "Testing Requirements"
+    Write-Verbose "Invoking Testing-Requirements"
     Invoke-Pester -Path "$PSScriptRoot\Test-Requirements.ps1" -Output Detailed -PassThru |
     New-Variable -Name "result" -Force
     if ($result.FailedCount -gt 0) {
         Write-Error "Test Requirements Failed"
     }
 
+    Write-Verbose "Removing Output Directory"
+    Remove-Item -Path $OutputDirectory -Recurse -Force -ErrorAction SilentlyContinue
+
     Write-Verbose "Starting Build"
     & "$PSScriptRoot\Start-Build.ps1" -Debug -Verbose
+
+    Write-Verbose "Invoking Testing-Module"
+    Invoke-Pester -Path "$PSScriptRoot\Test-Module.ps1" -Output Detailed -PassThru |
+    New-Variable -Name "result" -Force
+    if ($result.FailedCount -gt 0) {
+        Write-Error "Test Module Failed"
+    }
 
     Write-Verbose "Starting Package"
     & "$PSScriptRoot\Start-Package.ps1" -Debug -Verbose

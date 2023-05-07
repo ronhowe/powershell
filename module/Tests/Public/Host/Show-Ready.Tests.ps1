@@ -1,19 +1,23 @@
 [CmdletBinding()]
 param(
-    [Parameter()]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string]$Name = "Shell"
+    [ValidateScript({ Test-Path -Path $_ })]
+    [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
-Describe "TestingShowReady" {
+Describe "Testing Show-Ready" {
     BeforeAll {
+        Write-Verbose "Invoking Import-Configuration"
+        . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
+
         Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
         Mock -ModuleName $Name Write-Host { }
     }
-    It "InvokeDoesNotThrow" {
+    It "Invoke Does Not Throw" {
         { Show-Ready } |
         Should -Not -Throw
     }
-    It "InvokeReturnsNothing" {
+    It "Invoke Returns Nothing" {
         Show-Ready |
         Should -BeNullOrEmpty
     }

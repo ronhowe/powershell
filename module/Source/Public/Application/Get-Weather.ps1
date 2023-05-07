@@ -9,6 +9,8 @@ function Get-Weather {
         ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
     }
     process {
+        $ProgressPreference = "SilentlyContinue"
+
         Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
         Invoke-Request -Uri "https://wttr.in/" -ContentOnly
