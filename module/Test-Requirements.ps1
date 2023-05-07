@@ -1,42 +1,48 @@
 #requires -PSEdition "Core"
 #requires -Module "Pester"
 [CmdletBinding()]
-param(
+param (
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "$PSScriptRoot\Requirements.psd1",
-
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [string]$Repository = "PSGallery"
+    [string]$Path = "$PSScriptRoot\Source\Module.psd1"
 )
-Describe "Testing Requirements" {
-    BeforeAll {
-        $ErrorActionPreference = "Stop"
-        $ProgressPreference = "SilentlyContinue"
-        $WarningPreference = "SilentlyContinue"
-    }
-    It "Build Requirement {ModuleName='<ModuleName>';ModuleVersion='<ModuleVersion>'} Is Latest" -ForEach `
-    $(
-        Import-PowerShellDataFile -Path $Path |
-        Select-Object -ExpandProperty "Modules"
-    ) {
-        Find-Module -Name $ModuleName -Repository $Repository -Verbose:$false -WarningAction SilentlyContinue |
-        Select-Object -ExpandProperty "Version" |
-        Should -Be $ModuleVersion
-    }
-    It "Module Requirement {ModuleName='<ModuleName>';ModuleVersion='<ModuleVersion>'} Is Latest" -ForEach `
-    $(
-        Import-PowerShellDataFile -Path "$PSScriptRoot\Source\Requirements.psd1" |
-        Select-Object -ExpandProperty "Modules"
-    ) {
-        Find-Module -Name $ModuleName -Repository $Repository -Verbose:$false -WarningAction SilentlyContinue |
-        Select-Object -ExpandProperty "Version" |
-        Should -Be $ModuleVersion
-    }
-    It "Nuget Exists" {
-        Get-Command -Name "nuget" -CommandType Application |
-        Should -Not -BeNullOrEmpty
-    }
+begin {
+    Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
+
+    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+    Select-Object -Property @("Name", "Value") |
+    ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
+}
+process {
+    $ErrorActionPreference = "Stop"
+
+    Write-Debug "Process $($MyInvocation.MyCommand.Name)"
+
+    Write-Verbose "Importing Configuration"
+    $configuration = Import-PowerShellDataFile -Path $Path
+    $name = $configuration.Name
+    $version = $configuration.Version
+    $certificatePath = $configuration.Certificate.Path
+    $certificateThumbprint = $configuration.Certificate.Thumbprint
+    Write-Debug "`$name=$name"
+    Write-Debug "`$version=$version"
+    Write-Debug "`$certificatePath=$certificatePath"
+    Write-Debug "`$certificateThumbprint=$certificateThumbprint"
+
+    Get-Module -Name $name |
+    Remove-Module -Force -Verbose
+
+    & "$PSScriptRoot\Debug-Module.ps1" -Debug -Verbose
+
+    $path = "$PSScriptRoot\Requirements.Tests.ps1"
+    $data = @(
+        @{ Path = "$PSScriptRoot\Requirements.psd1" }
+    )
+    Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
+
+    Write-Host "OK" -ForegroundColor Green
+}
+end {
+    Write-Debug "End $($MyInvocation.MyCommand.Name)"
 }

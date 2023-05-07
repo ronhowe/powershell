@@ -22,6 +22,8 @@ begin {
     ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
 }
 process {
+    $ErrorActionPreference = "Stop"
+
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
     Write-Verbose "Importing Requirements"
@@ -53,6 +55,8 @@ process {
             Install-Module @parameters
         }
     }
+
+    Write-Host "OK" -ForegroundColor Green
 }
 end {
     Write-Debug "End $($MyInvocation.MyCommand.Name)"

@@ -1,5 +1,3 @@
-#requires -PSEdition Core
-#requires -Modules @{ ModuleName = "Pester"; ModuleVersion = "5.3.3" }
 [CmdletBinding()]
 param(
     [Parameter()]
@@ -8,12 +6,12 @@ param(
 )
 Describe "TestingAliases" {
     BeforeAll {
-        Import-Module -Name "$PSScriptRoot/../../../Output/Modules/$Name" -Force
+        Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
     }
     It "Alias'<Name>'`"'Exists" -ForEach @(
         @{ Name = "shell" }
     ) {
-        Get-Alias -Name $Name
-        | Should -Not -BeNullOrEmpty
+        Get-Alias -Name $Name |
+        Should -Not -BeNullOrEmpty
     }
 }

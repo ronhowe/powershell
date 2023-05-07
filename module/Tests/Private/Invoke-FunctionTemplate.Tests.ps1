@@ -1,23 +1,30 @@
 [CmdletBinding()]
-param()
+param(
+    [Parameter()]
+    [ValidateNotNullOrEmpty()]
+    [string]$Name = "Shell"
+)
 Describe "TestingInvokeFunctionTemplate" {
     BeforeAll {
-        . "$PSScriptRoot/../../Source/Private/Invoke-FunctionTemplate.ps1"
+        Write-Debug $(Resolve-Path -Path "$PSScriptRoot\..\..\Output\Module\$Name")
+        Import-Module -Name "$PSScriptRoot\..\..\Output\Module\$Name" -Force
+
+        . "$PSScriptRoot\..\..\Source\Private\Invoke-FunctionTemplate.ps1"
     }
     It "SwitchParameterPresentThrows" {
-        { Invoke-FunctionTemplate -SwitchParameter }
-        | Should -Throw -ExpectedMessage "SwitchParameterThrows"
+        { Invoke-FunctionTemplate -ComputerName "testComputerName" -SwitchParameter } |
+        Should -Throw -ExpectedMessage "SwitchParameterThrows"
     }
     It "SwitchParameterAbsentDoesNotThrow" { 
-        { Invoke-FunctionTemplate }
-        | Should -Not -Throw
+        { Invoke-FunctionTemplate -ComputerName "testComputerName" } |
+        Should -Not -Throw
     }
     It "BooleanParameterTrueReturnsFalse" {
-        Invoke-FunctionTemplate -BooleanParameter $true
-        | Should -Be $false
+        Invoke-FunctionTemplate -ComputerName "testComputerName" -BooleanParameter $true |
+        Should -Be $false
     }
     It "BooleanParameterFalseReturnsTrue" {
-        Invoke-FunctionTemplate -BooleanParameter $false
-        | Should -Be $true
+        Invoke-FunctionTemplate -ComputerName "testComputerName" -BooleanParameter $false |
+        Should -Be $true
     }
 }

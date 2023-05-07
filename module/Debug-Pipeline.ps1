@@ -1,4 +1,5 @@
 #requires -PSEdition "Core"
+#requires -Module "Pester"
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
@@ -46,7 +47,7 @@ process {
     Invoke-Pester -Path "$PSScriptRoot\Test-Requirements.ps1" -Output Detailed -PassThru |
     New-Variable -Name "result" -Force
     if ($result.FailedCount -gt 0) {
-        Write-Warning "Test Requirements Failed"
+        Write-Error "Test Requirements Failed"
     }
 
     Write-Verbose "Starting Build"

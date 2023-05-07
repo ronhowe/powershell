@@ -15,11 +15,13 @@ function Start-Kernel {
             Write-Verbose "Importing Power Configuration"
 
             # https://github.com/JustinGrote/PowerConfig/issues/7
-            # Import-PowerConfiguration -Name "Shell" -Path "$PSScriptRoot\Shell.json" | Out-Null
+            # Import-PowerConfiguration -Name "Shell" -Path "$PSScriptRoot\Shell.json" |
+            # Out-Null
 
             Write-Verbose "Showing Configuration"
 
-            $ShellConfiguration | Format-Table -AutoSize
+            $ShellConfiguration |
+            Format-Table -AutoSize
 
             Write-Verbose "Showing Interface"
 

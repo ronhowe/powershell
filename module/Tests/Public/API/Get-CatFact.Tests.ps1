@@ -4,13 +4,13 @@ param(
     [ValidateNotNullOrEmpty()]
     [string]$Name = "Shell"
 )
-Describe "TestingGetCatFact" {
+Describe "Testing Get-CatFact" {
     BeforeAll {
-        Import-Module -Name "$PSScriptRoot/../../../Output/Modules/$Name" -Force
+        Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
         Mock -ModuleName $Name Invoke-Request { return "[{'fact':'mock','length':4}]" }
     }
-    It "ReturnsCatFact" {
-        Get-CatFact
-        | Should -Be "mock"
+    It "Returns CatFact" {
+        Get-CatFact |
+        Should -Be "mock"
     }
 }

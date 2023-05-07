@@ -1,7 +1,7 @@
 #requires -PSEdition "Core"
 #requires -Module "Pester"
 [CmdletBinding()]
-param(
+param (
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [ValidateScript({ Test-Path -Path $_ })]
@@ -33,9 +33,9 @@ process {
     Get-Module -Name $name |
     Remove-Module -Force -Verbose
 
-    & "$PSScriptRoot\Start-Build.ps1" -Debug -Verbose
+    & "$PSScriptRoot\Debug-Module.ps1" -Debug -Verbose
 
-    Import-Module -Name "$PSScriptRoot\Output\Module\Shell" -Force -Verbose
+    Invoke-Pester -Path "$PSScriptRoot\Tests" -Output Detailed
 
     Write-Host "OK" -ForegroundColor Green
 }

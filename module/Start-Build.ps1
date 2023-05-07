@@ -19,6 +19,8 @@ begin {
     ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
 }
 process {
+    $ErrorActionPreference = "Stop"
+
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
     Write-Verbose "Importing Configuration"
@@ -45,9 +47,9 @@ process {
             "$PSScriptRoot\Install-Requirements.ps1",
             "$PSScriptRoot\LICENSE*",
             "$PSScriptRoot\README.md",
+            "$PSScriptRoot\Requirements.psd1",
             "$PSScriptRoot\Source\$name.json",
-            "$PSScriptRoot\Source\$name.nuspec",
-            "$PSScriptRoot\Source\Requirements.psd1"
+            "$PSScriptRoot\Source\$name.nuspec"
         )
         OutputDirectory            = "$OutputDirectory\Module"
         SourcePath                 = "$PSScriptRoot\Source\$name.psd1"
@@ -85,6 +87,7 @@ process {
         Write-Warning "Skipping Signing Module" -WarningAction Continue
     }
 
+    Write-Host "OK" -ForegroundColor Green
 }
 end {
     Write-Debug "End $($MyInvocation.MyCommand.Name)"

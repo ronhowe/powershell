@@ -1,5 +1,3 @@
-#requires -PSEdition Core
-#requires -Modules @{ ModuleName = "Pester"; ModuleVersion = "5.3.3" }
 [CmdletBinding()]
 param(
     [Parameter()]
@@ -8,7 +6,7 @@ param(
 )
 Describe "TestingGetVersion" {
     BeforeAll {
-        Import-Module -Name "$PSScriptRoot/../../../Output/Modules/$Name" -Force
+        Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
         Mock -ModuleName $Name Get-Module { return @{ Version = "x.x.x" } }
     }
     It "ReturnsExpected" {
