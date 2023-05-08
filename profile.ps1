@@ -3,6 +3,7 @@ Write-Host "https://github.com/ronhowe/powershell/blob/main/profile.ps1" -Foregr
 Write-Verbose "PowerShell $($PSVersionTable.PSVersion.ToString())" -Verbose
 
 #region imports
+
 if ((Get-Module -Name "ISESteroids" -ListAvailable) -and ($host.Name -eq "Windows PowerShell ISE Host")) {
     Write-Verbose "Importing ISESteroids" -Verbose
     Import-Module -Name "ISESteroids"
@@ -34,6 +35,7 @@ if (Get-Module -Name "Microsoft.PowerShell.SecretStore" -ListAvailable) {
 else {
     Write-Verbose "Skipping Microsoft.PowerShell.SecretStore" -Verbose
 }
+
 #endregion imports
 
 #region api
@@ -42,6 +44,7 @@ function Invoke-Api {
 }
 
 New-Alias -Name "api" -Value Invoke-Api -Force -Verbose
+
 #endregion api
 
 #region debug
@@ -50,6 +53,7 @@ function Start-DebugModule {
 }
 
 New-Alias -Name "debug" -Value Start-DebugModule -Force -Verbose
+
 #endregion debug
 
 #region history
@@ -60,6 +64,7 @@ function Get-PSReadLineHistory {
 function Clear-PSReadLineHistory {
     Remove-Item -Path $(Get-PSReadLineOption).HistorySavePath -Verbose
 }
+
 #endregion history
 
 #region home
@@ -68,6 +73,7 @@ function Set-LocationHome {
 }
 
 New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
+
 #endregion home
 
 #region log
@@ -75,6 +81,7 @@ function Start-Log {
     Start-Transcript -Force -ErrorAction SilentlyContinue
 }
 New-Alias -Name "log" -Value Start-Log -Force -Verbose
+
 #endregion log
 
 #region new
@@ -85,6 +92,7 @@ function Show-New {
 }
 
 New-Alias -Name "new" -Value Show-New -Force -Verbose
+
 #endregion new
 
 #region posh
@@ -98,6 +106,7 @@ function Set-LocationPowerShell {
 }
 
 New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
+
 #endregion posh
 
 #region repos
@@ -111,6 +120,7 @@ function Set-LocationRepos {
 }
 
 New-Alias -Name "repos" -Value Set-LocationRepos -Force -Verbose
+
 #endregion repos
 
 #region ronhowe
@@ -126,9 +136,11 @@ function Show-RonHowe {
 }
 
 New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
+
 #endregion ronhowe
 
 #region root
+
 if (Test-Path -Path "C:\VSTS") {
     New-Variable -Name "Root" -Value "C:\VSTS" -Scope "Global" -Force -Verbose
     Set-Location -Path "C:\VSTS"
@@ -136,6 +148,7 @@ if (Test-Path -Path "C:\VSTS") {
 else {
     Write-Verbose "Skipping `$Root" -Verbose
 }
+
 #endregion root
 
 Set-PSReadLineOption -PredictionViewStyle ListView
