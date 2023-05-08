@@ -27,7 +27,8 @@ process {
 
     & "$PSScriptRoot\Start-Build.ps1" -Debug -Verbose
 
-    Import-Module -Name "$PSScriptRoot\Output\Module\Shell" -Force -Verbose
+    # TODO - Getting an assembly already loaded error on some machines. -ErrorAction SilentlyContinue as workaround.
+    Import-Module -Name "$PSScriptRoot\Output\Module\$name" -Force -Verbose -ErrorAction SilentlyContinue
 
     Write-Host "OK" -ForegroundColor Green
 }
