@@ -29,6 +29,7 @@ function Start-Shell {
             Show-Version
             Show-Date
             Show-Ready
+            [System.Console]::Beep(500,100)
         }
         catch {
             Write-Error "Starting Shell Failed"
