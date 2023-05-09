@@ -24,6 +24,7 @@ function Start-Shell {
             # Format-Table -AutoSize
 
             Write-Verbose "Showing Interface"
+            Clear-Host
             Write-Ascii -InputObject $SHELL_CODENAME -ForegroundColor Green
             Show-Logo
             Show-Version
