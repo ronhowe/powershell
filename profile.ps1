@@ -39,8 +39,9 @@ else {
 #endregion imports
 
 #region api
+
 function Invoke-Api {
-    & "$HOME\repos\ronhowe\powershell\azure\Test-Api.ps1" -Loop
+    & "$HOME\repos\ronhowe\powershell\api\Test-Api.ps1" -Loop
 }
 
 New-Alias -Name "api" -Value Invoke-Api -Force -Verbose
@@ -48,6 +49,7 @@ New-Alias -Name "api" -Value Invoke-Api -Force -Verbose
 #endregion api
 
 #region debug
+
 function Start-DebugModule {
     & "$HOME\repos\ronhowe\powershell\module\Debug-Module.ps1"
 }
@@ -56,7 +58,23 @@ New-Alias -Name "debug" -Value Start-DebugModule -Force -Verbose
 
 #endregion debug
 
+#region dev
+
+function Set-LocationModule {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\module") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell\module"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\module") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell\module"
+    }
+}
+
+New-Alias -Name "dev" -Value Set-LocationModule -Force -Verbose
+
+#endregion dev
+
 #region history
+
 function Get-PSReadLineHistory {
     Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
 }
@@ -68,6 +86,7 @@ function Clear-PSReadLineHistory {
 #endregion history
 
 #region home
+
 function Set-LocationHome {
     Set-Location -Path $HOME
 }
@@ -77,6 +96,7 @@ New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
 #endregion home
 
 #region log
+
 function Start-Log {
     Start-Transcript -Force -ErrorAction SilentlyContinue
 }
@@ -85,6 +105,7 @@ New-Alias -Name "log" -Value Start-Log -Force -Verbose
 #endregion log
 
 #region new
+
 function Show-New {
     Clear-Host
     Show-RonHowe
@@ -96,6 +117,7 @@ New-Alias -Name "new" -Value Show-New -Force -Verbose
 #endregion new
 
 #region posh
+
 function Set-LocationPowerShell {
     if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
         Set-Location -Path "C:\VSTS\ronhowe\powershell"
@@ -110,6 +132,7 @@ New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 #endregion posh
 
 #region repos
+
 function Set-LocationRepos {
     if (Test-Path -Path "C:\VSTS") {
         Set-Location -Path "C:\VSTS"
@@ -124,6 +147,7 @@ New-Alias -Name "repos" -Value Set-LocationRepos -Force -Verbose
 #endregion repos
 
 #region ronhowe
+
 function Show-RonHowe {
     Write-Host "r" -BackgroundColor Red -ForegroundColor Black -NoNewline
     Write-Host "o" -BackgroundColor DarkYellow -ForegroundColor Black -NoNewline
