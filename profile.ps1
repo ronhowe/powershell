@@ -85,6 +85,21 @@ function Clear-PSReadLineHistory {
 
 #endregion history
 
+#region holotable
+
+function Set-LocationHolotable {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\holotable") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell\holotable"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\holotable") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell\holotable"
+    }
+}
+
+New-Alias -Name "holotable" -Value Set-LocationHolotable -Force -Verbose
+
+#endregion holotable
+
 #region home
 
 function Set-LocationHome {
