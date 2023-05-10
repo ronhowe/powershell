@@ -1,4 +1,4 @@
-# #requires -module "WriteAscii"
+#requires -module "WriteAscii"
 while ($true) {
     Clear-Host
     $path = "$PSScriptRoot\Api.Tests.ps1"
