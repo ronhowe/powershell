@@ -15,11 +15,14 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    $path = "$PSScriptRoot\Requirements.Tests.ps1"
-    $data = @(
-        @{ Path = "$PSScriptRoot\Requirements.psd1" }
-    )
-    Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
+    . "$PSScriptRoot\Import-Configuration.ps1" -Path "$PSScriptRoot\Configuration.psd1" -Debug -Verbose
+
+    Get-Module -Name $name |
+    Remove-Module -Force -Verbose
+
+    & "$PSScriptRoot\Debug-Module.ps1" -Debug -Verbose
+
+    Invoke-Pester -Path "$PSScriptRoot\Tests" -Output Detailed
 
     Write-Host "OK" -ForegroundColor Green
 }

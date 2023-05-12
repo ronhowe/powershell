@@ -23,7 +23,7 @@ function Start-Shell {
             # $ShellConfiguration |
             # Format-Table -AutoSize
 
-            Write-Verbose "Showing Interface"
+            Write-Verbose "Starting Shell"
             Clear-Host
             Write-Ascii -InputObject $SHELL_CODENAME -ForegroundColor Green
             Show-Logo

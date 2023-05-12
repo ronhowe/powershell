@@ -2,10 +2,6 @@
 #requires -Module "Pester"
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "$PSScriptRoot\Source\Module.psd1"
 )
 begin {
     Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
@@ -19,15 +15,7 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Invoking Import-Configuration"
-    . "$PSScriptRoot\Import-Configuration.ps1" -Path $Path
-
-    Get-Module -Name $name |
-    Remove-Module -Verbose
-
-    & "$PSScriptRoot\Debug-Module.ps1" -Debug -Verbose
-
-    Invoke-Pester -Path "$PSScriptRoot\Tests" -Output Detailed
+    Invoke-Pester -Path "$PSScriptRoot\Dependencies.Tests.ps1" -Output Detailed
 
     Write-Host "OK" -ForegroundColor Green
 }

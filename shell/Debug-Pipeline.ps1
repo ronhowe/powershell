@@ -4,12 +4,7 @@
 param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "$PSScriptRoot\Source\Module.psd1",
-
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [string]$OutputDirectory = "$PSScriptRoot\Output",
+    [string]$OutputPath = "$PSScriptRoot\Output",
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
@@ -27,54 +22,54 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Invoking Import-Configuration"
-    . "$PSScriptRoot\Import-Configuration.ps1" -Path $Path -Debug -Verbose
+    Write-Verbose "Importing Configuration"
+    . "$PSScriptRoot\Import-Configuration.ps1" -Path "$PSScriptRoot\Configuration.psd1" -Debug -Verbose
 
-    Write-Verbose "Invoking Install-Requirements"
-    & "$PSScriptRoot\Install-Requirements.ps1" -Path "$PSScriptRoot\Requirements.psd1" -Repository $Repository -Scope "CurrentUser" -Debug -Verbose
-
-    Write-Verbose "Invoking Testing-Requirements"
+    Write-Verbose "Testing Requirements"
     Invoke-Pester -Path "$PSScriptRoot\Test-Requirements.ps1" -Output Detailed -PassThru |
     New-Variable -Name "result" -Force
     if ($result.FailedCount -gt 0) {
-        Write-Error "Test Requirements Failed"
+        Write-Error "Requirements Test Failed"
     }
 
-    Write-Verbose "Removing Output Directory"
-    Remove-Item -Path $OutputDirectory -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Verbose "Installing Requirements"
+    & "$PSScriptRoot\Install-Requirements.ps1" -Path "$PSScriptRoot\Requirements.psd1" -Repository $Repository -Scope "CurrentUser" -Debug -Verbose
+
+    Write-Verbose "Removing Output"
+    Remove-Item -Path $OutputPath -Recurse -Force -ErrorAction SilentlyContinue
 
     Write-Verbose "Starting Build"
     & "$PSScriptRoot\Start-Build.ps1" -Debug -Verbose
 
-    Write-Verbose "Invoking Testing-Module"
+    Write-Verbose "Testing Module"
     Invoke-Pester -Path "$PSScriptRoot\Test-Module.ps1" -Output Detailed -PassThru |
     New-Variable -Name "result" -Force
     if ($result.FailedCount -gt 0) {
-        Write-Error "Test Module Failed"
+        Write-Error "Module Tests Failed"
     }
 
     Write-Verbose "Starting Package"
     & "$PSScriptRoot\Start-Package.ps1" -Debug -Verbose
 
     Write-Verbose "Unregistering Repository"
-    Unregister-PSRepository -Name $name -ErrorAction SilentlyContinue
+    Unregister-PSRepository -Name $script:ModuleName -ErrorAction SilentlyContinue
 
     Write-Verbose "Registering Repository"
-    Register-PSRepository -Name $name -SourceLocation "$OutputDirectory\Package" -InstallationPolicy Trusted |
+    Register-PSRepository -Name $script:ModuleName -SourceLocation "$OutputPath\Package" -InstallationPolicy Trusted |
     Out-Null
 
     Write-Verbose "Removing Module"
-    Get-Module -Name $name |
+    Get-Module -Name $script:ModuleName |
     Remove-Module -Force
 
     Write-Verbose "Finding Module"
-    Find-Module -Name $name -RequiredVersion $version -Repository $name -WarningAction SilentlyContinue
+    Find-Module -Name $script:ModuleName -RequiredVersion $script:ModuleVersion -Repository $script:ModuleName -WarningAction SilentlyContinue
 
     Write-Verbose "Installing Module"
-    Install-Module -Name $name -RequiredVersion $version -Repository $name -AllowClobber -Force -WarningAction SilentlyContinue
+    Install-Module -Name $script:ModuleName -RequiredVersion $script:ModuleVersion -Repository $script:ModuleName -AllowClobber -Force -WarningAction SilentlyContinue
 
     Write-Verbose "Importing Module"
-    Import-Module -Name $name -RequiredVersion $version -Force -WarningAction SilentlyContinue
+    Import-Module -Name $script:ModuleName -RequiredVersion $script:ModuleVersion -Force -WarningAction SilentlyContinue
 
     Write-Host "OK" -ForegroundColor Green
 }
