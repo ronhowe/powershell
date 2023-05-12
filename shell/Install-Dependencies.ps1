@@ -18,7 +18,7 @@ process {
     Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1" |
     Select-Object -ExpandProperty "Modules" |
     ForEach-Object {
-        Write-Output @{ ModuleName = $_.Name ; RequiredVersion = $_.Version }
+        Write-Host "Installing @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) })... " -NoNewline
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
             Write-Verbose "Skipping Module"
         }
@@ -28,7 +28,7 @@ process {
                 AllowClobber       = $true
                 ErrorAction        = "Stop"
                 Force              = $true
-                Name               = $name
+                Name               = $_.Name
                 Repository         = $_.Repository
                 RequiredVersion    = $_.Version
                 Scope              = $_.Scope
@@ -38,6 +38,7 @@ process {
             }
             Install-Module @parameters
         }
+        Write-Host "OK" -ForegroundColor Green
     }
 
     Write-Host "OK" -ForegroundColor Green
