@@ -1,14 +1,6 @@
 #requires -PSEdition "Core"
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "$PSScriptRoot\Configuration.psd1",
-
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [string]$OutputPath = "$PSScriptRoot\Output"
 )
 begin {
     Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
@@ -23,22 +15,14 @@ process {
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
     Write-Verbose "Importing Configuration"
-    $configuration = Import-PowerShellDataFile -Path $Path
-
-    Write-Verbose "Getting Module Path"
-    $modulePath = "$OutputPath\Module"
-    Write-Debug "`$modulePath=$modulePath"
-
-    Write-Verbose "Getting Package Path"
-    $packagePath = "$OutputPath\Package"
-    Write-Debug "`$packagePath=$packagePath"
+    . "$PSScriptRoot\Import-Configuration.ps1"
 
     Write-Verbose "Removing Package Path"
     Remove-Item -Path $packagePath -Recurse -Force -ErrorAction SilentlyContinue
 
     Write-Verbose "Updating Nuspec Version"
-    (Get-Content -Path "$modulePath\$($configuration.ModuleName)\$($configuration.ModuleName).nuspec").Replace("<version>0.0.0<\version>", "<version>$($configuration.ModuleVersion)<\version>") |
-    Set-Content "$modulePath\$($configuration.ModuleName)\$($configuration.ModuleName).nuspec"
+    (Get-Content -Path "$modulePath\$moduleName\$moduleName.nuspec").Replace("<version>0.0.0<\version>", "<version>$moduleVersion)<\version>") |
+    Set-Content "$modulePath\$moduleName\$moduleName.nuspec"
 
     Write-Verbose "Getting Nuget Path"
     $nugetPath = Get-Command -Name "nuget" -CommandType Application |
@@ -51,20 +35,20 @@ process {
         Path             = $nugetPath
         ArgumentList     = @(
             "pack",
-            "$script:ModuleName.nuspec",
+            "$moduleName.nuspec",
             "-Exclude",
             "*.user.json",
             "-NoPackageAnalysis",
             "-OutputDirectory",
-            "..\..\Package", # nuget on linux workaround
+            "..\..\$packageDirectory", # nuget on linux workaround
             "-Verbosity",
             "detailed",
             "-Version",
-            "$script:ModuleVersion"
+            "$moduleVersion"
         )
         NoNewWindow      = $true
         Wait             = $true
-        WorkingDirectory = Resolve-Path -Path "$modulePath\$script:ModuleName"
+        WorkingDirectory = Resolve-Path -Path "$modulePath\$moduleName"
     }
     for ([int]$i = 0; $i -lt $parameters.ArgumentList.Length; $i++) {
         Write-Debug "`$parameters.ArgumentList[$i]=$($parameters.ArgumentList[$i])"

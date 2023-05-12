@@ -14,7 +14,7 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing Dependencies"
+    Write-Verbose "Importing Dependencies Definition"
     Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1" |
     Select-Object -ExpandProperty "Modules" |
     ForEach-Object {

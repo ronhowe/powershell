@@ -15,15 +15,16 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    & "$PSScriptRoot\Import-Configuration.ps1" -Debug -Verbose
+    Write-Verbose "Importing Configuration"
+    . "$PSScriptRoot\Import-Configuration.ps1"
 
-    Get-Module -Name $script:ModuleName |
+    Get-Module -Name $moduleName |
     Remove-Module -Force -Verbose
 
     & "$PSScriptRoot\Start-Build.ps1" -Debug -Verbose
 
     # TODO - Getting an assembly already loaded error on some machines. -ErrorAction SilentlyContinue as workaround.
-    Import-Module -Name "$PSScriptRoot\Output\Module\$script:ModuleName" -Force -Verbose -ErrorAction SilentlyContinue
+    Import-Module -Name "$modulePath\$moduleName" -Force -Verbose -ErrorAction SilentlyContinue
 
     Write-Host "OK" -ForegroundColor Green
 }

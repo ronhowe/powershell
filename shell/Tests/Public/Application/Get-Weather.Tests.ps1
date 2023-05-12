@@ -1,19 +1,15 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
 Describe "Testing Get-Weather" {
     BeforeAll {
-        Write-Verbose "Invoking Import-Configuration"
-        . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
-
-        Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
+        Write-Verbose "Importing Configuration"
+        . "$PSScriptRoot\..\..\..\Import-Configuration.ps1"
+    
+        Import-Module -Name "$modulePath\$moduleName" -Force
     }
     It "Returns Weather" {
-        InModuleScope $Name {
+        InModuleScope $moduleName {
             Mock Invoke-Request { return "mock" }
             Get-Weather |
             Should -Be "mock"

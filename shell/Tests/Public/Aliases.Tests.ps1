@@ -1,9 +1,5 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "$PSScriptRoot\..\..\Source\Module.psd1"
 )
 Describe "Testing Aliases" -ForEach @(
     # sync with Aliases.ps1
@@ -20,10 +16,10 @@ Describe "Testing Aliases" -ForEach @(
     @{ Alias = $SHELL_CODENAME }
 ) {
     BeforeAll {
-        Write-Verbose "Invoking Import-Configuration"
-        . "$PSScriptRoot\..\..\Import-Configuration.ps1" -Path $Path
+        Write-Verbose "Importing Configuration"
+        . "$PSScriptRoot\..\..\Import-Configuration.ps1"
 
-        Import-Module -Name "$PSScriptRoot\..\..\Output\Module\$Name" -Force
+        Import-Module -Name "$modulePath\$moduleName" -Force
     }
     It "Alias Exists [<Name>]" -ForEach @(
         @{ Name = $Alias }

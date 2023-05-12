@@ -15,24 +15,8 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing Build"
-    $configuration = Import-PowerShellDataFile -Path "$PSScriptRoot\Build.psd1"
-
     Write-Verbose "Importing Configuration"
-    $configuration = Import-PowerShellDataFile -Path "$PSScriptRoot\Configuration.psd1"
-
-    $moduleName = $configuration.ModuleName
-    $moduleVersion = $configuration.ModuleVersion
-    $certificateThumbprint = $configuration.Certificate.Thumbprint
-    $certificatePath = $configuration.Certificate.Path
-    Write-Debug "`$moduleName=$moduleName"
-    Write-Debug "`$moduleVersion=$moduleVersion"
-    Write-Debug "`$certificateThumbprint=$certificateThumbprint"
-    Write-Debug "`$certificatePath=$certificatePath"
-
-    Write-Verbose "Getting Module Path"
-    $modulePath = "$OutputPath\Module"
-    Write-Debug "`$modulePath=$modulePath"
+    . "$PSScriptRoot\Import-Configuration.ps1"
 
     Write-Verbose "Removing Module Path"
     Remove-Item -Path $modulePath -Recurse -Force -ErrorAction SilentlyContinue
@@ -40,18 +24,18 @@ process {
     Write-Verbose "Building Module"
     $parameters = @{
         CopyPaths                  = @(
-            (Resolve-Path -Path "$PSScriptRoot\Install-Requirements.ps1"),
+            "$sourcePath\$moduleName.json",
+            "$sourcePath\$moduleName.nuspec",
+            "$PSScriptRoot\Dependencies.psd1",
+            "$PSScriptRoot\Install-Dependencies.ps1",
             "$PSScriptRoot\LICENSE*",
-            "$PSScriptRoot\README.md",
-            "$PSScriptRoot\Requirements.psd1",
-            "$PSScriptRoot\Source\$($configuration.ModuleName).json",
-            "$PSScriptRoot\Source\$($configuration.ModuleName).nuspec"
+            "$PSScriptRoot\README.md"
         )
-        OutputDirectory            = "$OutputPath\Module"
-        SourcePath                 = (Resolve-Path -Path "$PSScriptRoot\Source\$moduleName.psd1")
+        OutputDirectory            = $modulePath
+        SourcePath                 = "$sourcePath\$moduleName.psd1"
         UnversionedOutputDirectory = $true
         Verbose                    = $true
-        Version                    = "0.0.0" # $script:ModuleVersion
+        Version                    = $moduleVersion
     }
     Build-Module @parameters
 
@@ -69,7 +53,7 @@ process {
         Get-ChildItem
 
         Write-Verbose "Signing Module"
-        Get-ChildItem -Path "$OutputPath\Module\$certificateThumbprint\*.ps*" |
+        Get-ChildItem -Path "$modulePath\$certificateThumbprint\*.ps*" |
         ForEach-Object {
             Set-AuthenticodeSignature -Certificate $certificate -FilePath $_
         } |

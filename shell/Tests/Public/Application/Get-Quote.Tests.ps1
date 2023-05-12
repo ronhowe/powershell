@@ -6,12 +6,13 @@ param(
     [string]$Path = "$PSScriptRoot\..\..\..\Source\Module.psd1"
 )
 Describe "Testing Get-Quote" {
-    BeforeEach {
-        Write-Verbose "Invoking Import-Configuration"
-        . "$PSScriptRoot\..\..\..\Import-Configuration.ps1" -Path $Path
+    BeforeAll {
+        Write-Verbose "Importing Configuration"
+        . "$PSScriptRoot\..\..\..\Import-Configuration.ps1"
+    
+        Import-Module -Name "$modulePath\$moduleName" -Force
 
-        Import-Module -Name "$PSScriptRoot\..\..\..\Output\Module\$Name" -Force
-        Mock -ModuleName $Name Invoke-Request { return "[{'text':'mocktext','author':'mockauthor'}]" }
+        Mock -ModuleName $moduleName Invoke-Request { return "[{'text':'mocktext','author':'mockauthor'}]" }
     }
     It "Returns Quote Text" {
         (Get-Quote).text |
