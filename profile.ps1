@@ -40,38 +40,33 @@ else {
 
 #region api
 
-function Invoke-Api {
-    & "$HOME\repos\ronhowe\powershell\api\Test-Api.ps1" -Loop
+function Set-LocationApi {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\api") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell\api"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\api") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell\api"
+    }
 }
 
-New-Alias -Name "api" -Value Invoke-Api -Force -Verbose
+New-Alias -Name "api" -Value Set-LocationApi -Force -Verbose
 
 #endregion api
 
-#region debug
+#region shell
 
-function Start-DebugModule {
-    & "$HOME\repos\ronhowe\powershell\module\Debug-Module.ps1"
-}
-
-New-Alias -Name "debug" -Value Start-DebugModule -Force -Verbose
-
-#endregion debug
-
-#region dev
-
-function Set-LocationModule {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\module") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell\module"
+function Set-LocationShell {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\shell") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell\shell"
     }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\module") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell\module"
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\shell") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell\shell"
     }
 }
 
-New-Alias -Name "dev" -Value Set-LocationModule -Force -Verbose
+New-Alias -Name "shell" -Value Set-LocationShell -Force -Verbose
 
-#endregion dev
+#endregion shell
 
 #region history
 
@@ -146,7 +141,7 @@ New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 
 #endregion posh
 
-#region repos
+#region repos / root
 
 function Set-LocationRepos {
     if (Test-Path -Path "C:\VSTS") {
@@ -158,8 +153,9 @@ function Set-LocationRepos {
 }
 
 New-Alias -Name "repos" -Value Set-LocationRepos -Force -Verbose
+New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
 
-#endregion repos
+#endregion repos / root
 
 #region ronhowe
 
