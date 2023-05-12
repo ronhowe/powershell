@@ -141,7 +141,7 @@ New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 
 #endregion posh
 
-#region repos
+#region repos / root
 
 function Set-LocationRepos {
     if (Test-Path -Path "C:\VSTS") {
@@ -155,7 +155,7 @@ function Set-LocationRepos {
 New-Alias -Name "repos" -Value Set-LocationRepos -Force -Verbose
 New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
 
-#endregion repos
+#endregion repos / root
 
 #region ronhowe
 
