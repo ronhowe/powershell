@@ -16,7 +16,7 @@ process {
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
     Write-Verbose "Importing Configuration"
-    . "$PSScriptRoot\Import-Configuration.ps1"
+    . "$PSScriptRoot\Import-Configuration.ps1" -Debug -Verbose
 
     Get-Module -Name $moduleName |
     Remove-Module -Force -Verbose

@@ -18,11 +18,6 @@ process {
     Write-Verbose "Importing Configuration"
     . "$PSScriptRoot\Import-Configuration.ps1"
 
-    Get-Module -Name $moduleName |
-    Remove-Module -Force
-
-    & "$PSScriptRoot\Start-Build.ps1"
-
     Invoke-Pester -Path $testsPath -Output Detailed
 
     Write-Host "OK" -ForegroundColor Green

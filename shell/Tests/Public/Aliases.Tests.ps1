@@ -9,11 +9,11 @@ Describe "Testing Aliases" -ForEach @(
     @{ Alias = "date" }
     @{ Alias = "help" }
     @{ Alias = "logo" }
+    @{ Alias = "pshell" }
     @{ Alias = "quote" }
     @{ Alias = "ready" }
     @{ Alias = "version" }
     @{ Alias = "weather" }
-    @{ Alias = $SHELL_CODENAME }
 ) {
     BeforeAll {
         Write-Verbose "Importing Configuration"

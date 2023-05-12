@@ -18,11 +18,11 @@ function Show-Help {
         Write-Host "date" -ForegroundColor Green
         Write-Host "help" -ForegroundColor Green
         Write-Host "logo" -ForegroundColor Green
+        Write-Host "pshell" -ForegroundColor Green
         Write-Host "quote" -ForegroundColor Green
         Write-Host "ready" -ForegroundColor Green
         Write-Host "version" -ForegroundColor Green
         Write-Host "weather" -ForegroundColor Green
-        Write-Host $SHELL_CODENAME -ForegroundColor Green
     }
     end {
         Write-Debug "End $($MyInvocation.MyCommand.Name)"

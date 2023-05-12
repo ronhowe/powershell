@@ -25,7 +25,7 @@ function Start-Shell {
 
             Write-Verbose "Starting Shell"
             Clear-Host
-            Write-Ascii -InputObject $SHELL_CODENAME -ForegroundColor Green
+            Write-Ascii "pshell" -ForegroundColor Green
             Show-Logo
             Show-Version
             Show-Date

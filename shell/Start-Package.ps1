@@ -47,6 +47,7 @@ process {
             "$moduleVersion"
         )
         NoNewWindow      = $true
+        Verbose          = $true
         Wait             = $true
         WorkingDirectory = Resolve-Path -Path "$modulePath\$moduleName"
     }
