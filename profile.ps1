@@ -53,6 +53,21 @@ New-Alias -Name "api" -Value Set-LocationApi -Force -Verbose
 
 #endregion api
 
+#region azure
+
+function Set-LocationAzure {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\azure") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell\azure"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\azure") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+    }
+}
+
+New-Alias -Name "azure" -Value Set-LocationAzure -Force -Verbose
+
+#endregion azure
+
 #region shell
 
 function Set-LocationShell {
