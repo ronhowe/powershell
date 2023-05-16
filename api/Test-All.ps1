@@ -16,7 +16,12 @@ while ($true) {
     Where-Object { $_.Enabled -and $_.Endpoint.Name -like $Filter } |
     Select-Object -ExpandProperty "Endpoint"
     if ($data) {
-        Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
+        if ($Filter -ne "Function App") {
+            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
+        }
+        else {
+            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter "api"
+        }
         if ($Filter -ne "*") {
             Write-Ascii -InputObject $data.Name -ForegroundColor Cyan
         }
