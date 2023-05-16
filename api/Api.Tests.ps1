@@ -1,8 +1,10 @@
 param(
     [Parameter(Mandatory)]
     [string]$Name,
+
     [Parameter(Mandatory)]
     [Uri]$Uri,
+
     [Parameter(Mandatory)]
     [string]$CustomHeader
 )

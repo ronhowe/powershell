@@ -1,13 +1,29 @@
 #requires -module "WriteAscii"
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $false)]
+    [ValidateNotNullorEmpty()]
+    [string]$Filter = "*",
+
+    [Parameter(Mandatory = $false)]
+    [ValidateNotNullorEmpty()]
+    [int]$Sleep = 5
+)
 while ($true) {
     Clear-Host
     $path = "$PSScriptRoot\Api.Tests.ps1"
-    $data = @(
-        @{ Name = "Kestrel" ; Uri = "https://localhost:444"; CustomHeader = "default" }
-        @{ Name = "App Service" ; Uri = "https://app-ronhowe-000.azurewebsites.net:443"; CustomHeader = "appcs-ronhowe-000" }
-        @{ Name = "Gateway" ; Uri = "https://apim-ronhowe-000.azure-api.net:443/httpbin/v1"; CustomHeader = "apim-ronhowe-000" }
-        @{ Name = "Front Door" ; Uri = "https://fd-rhowe-000-fsaheecndqcvbthb.z01.azurefd.net/httpbin/v1" ; CustomHeader = "apim-ronhowe-000" }
-    )
-    Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
-    Start-Sleep -Seconds 5
+    $data = (Import-PowerShellDataFile -Path "$PSScriptRoot\Api.Tests.psd1").Endpoints |
+    Where-Object { $_.Enabled -and $_.Endpoint.Name -like $Filter } |
+    Select-Object -ExpandProperty "Endpoint"
+    if ($data) {
+        Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
+        if ($Filter -ne "*") {
+            Write-Ascii -InputObject $data.Name -ForegroundColor Cyan
+        }
+        Write-Host "Sleeping $Sleep Second(s)..." -ForegroundColor Cyan
+        Start-Sleep -Seconds $Sleep
+    }
+    else {
+        Write-Error "No Endpoint Data Found" -ErrorAction Stop
+    }
 }

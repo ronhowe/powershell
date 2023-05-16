@@ -1,0 +1,13 @@
+@{
+    Endpoints = @(
+        # Azure
+        @{ Enabled = $true ; Endpoint = @{ Name = "Front Door" ; Uri = "https://fd-rhowe-000-fsaheecndqcvbthb.z01.azurefd.net/httpbin/v1" ; CustomHeader = "apim-ronhowe-000" } }
+        @{ Enabled = $true ; Endpoint = @{ Name = "Gateway" ; Uri = "https://apim-ronhowe-000.azure-api.net:443/httpbin/v1"; CustomHeader = "apim-ronhowe-000" } }
+        @{ Enabled = $true ; Endpoint = @{ Name = "App Service" ; Uri = "https://app-ronhowe-000.azurewebsites.net:443"; CustomHeader = "appcs-ronhowe-000" } }
+        # Local
+        @{ Enabled = $true ; Endpoint = @{ Name = "Kestrel" ; Uri = "https://localhost:444"; CustomHeader = "default" } }
+        # @{ Enabled = $true ; Endpoint = @{ Name = "Docker (HTTP)" ; Uri = "http://localhost:82"; CustomHeader = "default" } }
+        # @{ Enabled = $true ; Endpoint = @{ Name = "Docker (HTTPS)" ; Uri = "https://localhost:32772"; CustomHeader = "default" } }
+        # @{ Enabled = $true ; Endpoint = @{ Name = "Function App (Local)" ; Uri = "http://localhost:83/api/Function1"; CustomHeader = "default" } }
+    )
+}

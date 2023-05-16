@@ -1,13 +1,1 @@
-#requires -module "WriteAscii"
-while ($true) {
-    Clear-Host
-    $path = "$PSScriptRoot\Api.Tests.ps1"
-    $data = @(
-        @{ Name = "Docker (HTTP)" ; Uri = "http://localhost:82"; CustomHeader = "default" }
-        Write-Warning "TODO - Implement Docker HTTPS Endpoint" -WarningAction Continue
-        # @{ Name = "Docker (HTTPS)" ; Uri = "https://localhost:32772"; CustomHeader = "default" }
-    )
-    Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
-    Write-Ascii $data.Name
-    Start-Sleep -Seconds 5
-}
+& "$PSScriptRoot\Test-All.ps1" -Filter "Docker"
