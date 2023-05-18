@@ -7,8 +7,10 @@ param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string]$Match = "//todo"
+    [string]$Pattern = "(//help|//link|//todo)"
 )
 Get-ChildItem -Path $Path -Include @("*.cs", "*.json") -Recurse |
-Select-String -SimpleMatch $Match |
+Where-Object { $_.FullName -notlike "*\bin\*" -and $_.FullName -notlike "*\obj\*" } |
+Sort-Object -Property "FullName" |
+Select-String -Pattern $Pattern |
 Select-Object -Property @("Path", @{Name = "Line"; Expression = { $_.Line.Trim() } })
