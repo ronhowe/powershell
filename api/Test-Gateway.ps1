@@ -1,1 +1,1 @@
-& "$PSScriptRoot\Test-All.ps1" -Filter "Gateway"
+& "$PSScriptRoot\Test-All.ps1" -Filter "Application (Gateway)"

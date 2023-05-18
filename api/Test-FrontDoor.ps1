@@ -1,1 +1,1 @@
-& "$PSScriptRoot\Test-All.ps1" -Filter "Front Door"
+& "$PSScriptRoot\Test-All.ps1" -Filter "Application (Front Door)"

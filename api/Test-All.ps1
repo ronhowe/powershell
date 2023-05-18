@@ -7,7 +7,9 @@ param(
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullorEmpty()]
-    [int]$Sleep = 5
+    [int]$Sleep = 5,
+
+    [switch]$SkipHealthchecks
 )
 while ($true) {
     Clear-Host
@@ -16,11 +18,11 @@ while ($true) {
     Where-Object { $_.Enabled -and $_.Endpoint.Name -like $Filter } |
     Select-Object -ExpandProperty "Endpoint"
     if ($data) {
-        if ($Filter -ne "Function App") {
-            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
+        if ($SkipHealthchecks) {
+            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter "api"
         }
         else {
-            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter "api"
+            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
         }
         if ($Filter -ne "*") {
             Write-Ascii -InputObject $data.Name -ForegroundColor Cyan
