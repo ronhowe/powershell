@@ -41,11 +41,11 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "FunctionApp1 (Function App)"
-                Uri          = "http://localhost:84/api"
-                CustomHeader = "default"
+                Uri          = "https://func-ronhowe-000.azurewebsites.net/api"
+                CustomHeader = "func-ronhowe-000"
             }
         }
         @{

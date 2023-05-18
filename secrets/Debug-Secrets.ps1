@@ -31,8 +31,13 @@ Get-SecretInfo | Select-Object -Property *
 
 #region scenarios
 Set-Secret -Name "Administrator" -Secret $(Get-Credential) -Metadata @{ Description = "Administrator Credential" }
-Get-SecretInfo | Select-Object -Property *
 Get-Secret -Name "Administrator"
+
+Set-Secret -Name "function-app-code" -Metadata @{ Description = "Function App API Code" }
+Get-Secret -Name "function-app-code" -AsPlainText
+
+Get-SecretInfo | Select-Object -Property *
+
 $(Read-Host -Prompt "Enter Comma Separated Computers") -split "," |
 ForEach-Object { [System.Net.Dns]::GetHostByName($_).HostName.ToUpper() }(Read-Host -Prompt "Enter Computer Name") |
 Invoke-Command -Credential $(Get-Secret -Name "Administrator") -UseSSL -ScriptBlock { $env:COMPUTERNAME }

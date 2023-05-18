@@ -1,12 +1,15 @@
 param(
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory = $true)]
     [string]$Name,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory = $true)]
     [Uri]$Uri,
 
-    [Parameter(Mandatory)]
-    [string]$CustomHeader
+    [Parameter(Mandatory = $true)]
+    [string]$CustomHeader,
+
+    [Parameter(Mandatory = $false)]
+    [string]$Code = (Get-Secret -Name "function-app-code" -Vault "ronhowe-secret-vault" -AsPlainText)
 )
 Describe "IntegrationTests" {
     BeforeAll {
@@ -14,35 +17,35 @@ Describe "IntegrationTests" {
     }
     Context "[<Name>] @ [<Uri>]" {
         It "ApplicationHeaderExists" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
         }
         It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
         It "ApplicationRespondsOKFromNullInput" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
         It "ApplicationReturnsFalseFromNullInput" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
         It "ApplicationRespondsOKFromTrueInput" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1?input=true" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=true" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
         It "ApplicationReturnsTrueFromTrueInput" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1?input=true" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=true" -SkipCertificateCheck
             $response.Content | Should -Be "true"
         }
         It "ApplicationRespondsOKFromFalseInput" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=false" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
         It "ApplicationReturnsFalseFromFalseInput" -Tag "api" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=false" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
         It "HealthCheckRespondsOK" -Tag "healthcheck" {
