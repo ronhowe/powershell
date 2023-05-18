@@ -7,7 +7,8 @@ param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string]$Match = "//"
+    [string]$Match = "//todo"
 )
 Get-ChildItem -Path $Path -Include @("*.cs", "*.json") -Recurse |
-Select-String -SimpleMatch $Match
+Select-String -SimpleMatch $Match |
+Select-Object -Property @("Path", @{Name = "Line"; Expression = { $_.Line.Trim() } })
