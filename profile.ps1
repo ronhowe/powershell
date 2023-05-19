@@ -38,77 +38,77 @@ else {
 
 #endregion imports
 
-#region api
+# #region api
 
-function Set-LocationApi {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\api") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell\api"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\api") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell\api"
-    }
-}
+# function Set-LocationApi {
+#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell\api") {
+#         Set-Location -Path "C:\VSTS\ronhowe\powershell\api"
+#     }
+#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\api") {
+#         Set-Location -Path "$HOME\repos\ronhowe\powershell\api"
+#     }
+# }
 
-New-Alias -Name "api" -Value Set-LocationApi -Force -Verbose
+# New-Alias -Name "api" -Value Set-LocationApi -Force -Verbose
 
-#endregion api
+# #endregion api
 
-#region azure
+# #region azure
 
-function Set-LocationAzure {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\azure") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell\azure"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\azure") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-    }
-}
+# function Set-LocationAzure {
+#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell\azure") {
+#         Set-Location -Path "C:\VSTS\ronhowe\powershell\azure"
+#     }
+#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\azure") {
+#         Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
+#     }
+# }
 
-New-Alias -Name "azure" -Value Set-LocationAzure -Force -Verbose
+# New-Alias -Name "azure" -Value Set-LocationAzure -Force -Verbose
 
-#endregion azure
+# #endregion azure
 
-#region shell
+# #region shell
 
-function Set-LocationShell {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\shell") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell\shell"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\shell") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell\shell"
-    }
-}
+# function Set-LocationShell {
+#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell\shell") {
+#         Set-Location -Path "C:\VSTS\ronhowe\powershell\shell"
+#     }
+#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\shell") {
+#         Set-Location -Path "$HOME\repos\ronhowe\powershell\shell"
+#     }
+# }
 
-New-Alias -Name "shell" -Value Set-LocationShell -Force -Verbose
+# New-Alias -Name "shell" -Value Set-LocationShell -Force -Verbose
 
-#endregion shell
+# #endregion shell
 
-#region history
+# #region history
 
-function Get-PSReadLineHistory {
-    Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
-}
+# function Get-PSReadLineHistory {
+#     Get-Content -Path $(Get-PSReadLineOption).HistorySavePath
+# }
 
-function Clear-PSReadLineHistory {
-    Remove-Item -Path $(Get-PSReadLineOption).HistorySavePath -Verbose
-}
+# function Clear-PSReadLineHistory {
+#     Remove-Item -Path $(Get-PSReadLineOption).HistorySavePath -Verbose
+# }
 
-#endregion history
+# #endregion history
 
-#region holotable
+# #region holotable
 
-function Set-LocationHolotable {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\holotable") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell\holotable"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\holotable") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell\holotable"
-    }
-}
+# function Set-LocationHolotable {
+#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell\holotable") {
+#         Set-Location -Path "C:\VSTS\ronhowe\powershell\holotable"
+#     }
+#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\holotable") {
+#         Set-Location -Path "$HOME\repos\ronhowe\powershell\holotable"
+#     }
+# }
 
-New-Alias -Name "holotable" -Value Set-LocationHolotable -Force -Verbose
+# New-Alias -Name "holotable" -Value Set-LocationHolotable -Force -Verbose
 
-#endregion holotable
+# #endregion holotable
 
 #region home
 
@@ -120,41 +120,41 @@ New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
 
 #endregion home
 
-#region log
+# #region log
 
-function Start-Log {
-    Start-Transcript -Force -ErrorAction SilentlyContinue
-}
-New-Alias -Name "log" -Value Start-Log -Force -Verbose
+# function Start-Log {
+#     Start-Transcript -Force -ErrorAction SilentlyContinue
+# }
+# New-Alias -Name "log" -Value Start-Log -Force -Verbose
 
-#endregion log
+# #endregion log
 
-#region new
+# #region new
 
-function Show-New {
-    Clear-Host
-    Show-RonHowe
-    Set-LocationHome
-}
+# function Show-New {
+#     Clear-Host
+#     Show-RonHowe
+#     Set-LocationHome
+# }
 
-New-Alias -Name "new" -Value Show-New -Force -Verbose
+# New-Alias -Name "new" -Value Show-New -Force -Verbose
 
-#endregion new
+# #endregion new
 
-#region posh
+# #region posh
 
-function Set-LocationPowerShell {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell"
-    }
-}
+# function Set-LocationPowerShell {
+#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
+#         Set-Location -Path "C:\VSTS\ronhowe\powershell"
+#     }
+#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
+#         Set-Location -Path "$HOME\repos\ronhowe\powershell"
+#     }
+# }
 
-New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
+# New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 
-#endregion posh
+# #endregion posh
 
 #region repos / root
 
@@ -172,22 +172,22 @@ New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
 
 #endregion repos / root
 
-#region ronhowe
+# #region ronhowe
 
-function Show-RonHowe {
-    Write-Host "r" -BackgroundColor Red -ForegroundColor Black -NoNewline
-    Write-Host "o" -BackgroundColor DarkYellow -ForegroundColor Black -NoNewline
-    Write-Host "n" -BackgroundColor Yellow -ForegroundColor Black -NoNewline
-    Write-Host "h" -BackgroundColor Green -ForegroundColor Black -NoNewline
-    Write-Host "o" -BackgroundColor DarkBlue -ForegroundColor Black -NoNewline
-    Write-Host "w" -BackgroundColor Blue -ForegroundColor Black -NoNewline
-    Write-Host "e" -BackgroundColor Cyan -ForegroundColor Black -NoNewline
-    Write-Host ".net"
-}
+# function Show-RonHowe {
+#     Write-Host "r" -BackgroundColor Red -ForegroundColor Black -NoNewline
+#     Write-Host "o" -BackgroundColor DarkYellow -ForegroundColor Black -NoNewline
+#     Write-Host "n" -BackgroundColor Yellow -ForegroundColor Black -NoNewline
+#     Write-Host "h" -BackgroundColor Green -ForegroundColor Black -NoNewline
+#     Write-Host "o" -BackgroundColor DarkBlue -ForegroundColor Black -NoNewline
+#     Write-Host "w" -BackgroundColor Blue -ForegroundColor Black -NoNewline
+#     Write-Host "e" -BackgroundColor Cyan -ForegroundColor Black -NoNewline
+#     Write-Host ".net"
+# }
 
-New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
+# New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
 
-#endregion ronhowe
+# #endregion ronhowe
 
 #region root
 
@@ -201,19 +201,19 @@ else {
 
 #endregion root
 
-#region tools
+# #region tools
 
-function Set-LocationTools {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\tools") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell\tools"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\tools") {
-        Set-Location -Path "$HOME\repos\ronhowe\powershell\tools"
-    }
-}
+# function Set-LocationTools {
+#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell\tools") {
+#         Set-Location -Path "C:\VSTS\ronhowe\powershell\tools"
+#     }
+#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\tools") {
+#         Set-Location -Path "$HOME\repos\ronhowe\powershell\tools"
+#     }
+# }
 
-New-Alias -Name "tools" -Value Set-LocationTools -Force -Verbose
+# New-Alias -Name "tools" -Value Set-LocationTools -Force -Verbose
 
-#endregion tools
+# #endregion tools
 
 Set-PSReadLineOption -PredictionViewStyle ListView
