@@ -35,6 +35,6 @@ while ($true) {
         Start-Sleep -Seconds $Sleep
     }
     else {
-        Write-Error "No Endpoint Data Found" -ErrorAction Stop
+        Write-Error "No API Test Data Found" -ErrorAction Stop
     }
 }
