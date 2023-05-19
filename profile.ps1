@@ -141,20 +141,20 @@ New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
 
 # #endregion new
 
-# #region posh
+#region posh
 
-# function Set-LocationPowerShell {
-#     if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
-#         Set-Location -Path "C:\VSTS\ronhowe\powershell"
-#     }
-#     elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
-#         Set-Location -Path "$HOME\repos\ronhowe\powershell"
-#     }
-# }
+function Set-LocationPowerShell {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell"
+    }
+}
 
-# New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
+New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 
-# #endregion posh
+#endregion posh
 
 #region repos / root
 
