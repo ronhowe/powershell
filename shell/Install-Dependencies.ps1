@@ -1,6 +1,6 @@
 #requires -PSEdition "Core"
 [CmdletBinding()]
-param(
+param (
 )
 begin {
     Write-Debug "Begin $($MyInvocation.MyCommand.Name)"

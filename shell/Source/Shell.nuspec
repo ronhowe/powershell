@@ -4,7 +4,7 @@
         <id>Shell</id>
         <version>0.0.0</version>
         <authors>Ron Howe</authors>
-        <projectUrl>https://github.com/ronhowe/powershell/module</projectUrl>
+        <projectUrl>https://github.com/ronhowe/powershell</projectUrl>
         <license type="expression">MIT</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <releaseNotes>Perfect is the enemy of good.</releaseNotes>

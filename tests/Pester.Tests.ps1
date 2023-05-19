@@ -1,7 +1,6 @@
 BeforeAll {
     . $PSCommandPath.Replace(".Tests.ps1", ".ps1")
 }
-
 Describe "Get-Planet" {
     Context "Filter Tests" {
         It "No Filter Returns All Planets" {

@@ -1,6 +1,7 @@
 function Show-Ready {
     [CmdletBinding()]
-    param ()
+    param (
+    )
     begin {
         Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
 

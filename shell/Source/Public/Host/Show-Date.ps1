@@ -1,6 +1,7 @@
 function Show-Date {
     [CmdletBinding()]
-    param ()
+    param (
+    )
     begin {
         Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
 

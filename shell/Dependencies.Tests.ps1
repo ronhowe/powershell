@@ -1,6 +1,6 @@
 #requires -PSEdition "Core"
 [CmdletBinding()]
-param(
+param (
 )
 Describe "Testing Dependencies" {
     BeforeAll {

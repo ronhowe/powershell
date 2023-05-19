@@ -1,7 +1,7 @@
 #requires -PSEdition "Core"
 #requires -Module "Pester"
 [CmdletBinding()]
-param(
+param (
 )
 begin {
     Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
