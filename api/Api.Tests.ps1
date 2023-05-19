@@ -3,6 +3,9 @@ param(
     [string]$Name,
 
     [Parameter(Mandatory = $true)]
+    [string]$Platform,
+
+    [Parameter(Mandatory = $true)]
     [Uri]$Uri,
 
     [Parameter(Mandatory = $true)]
@@ -15,7 +18,7 @@ Describe "IntegrationTests" {
     BeforeAll {
         Write-Host (Get-Date).ToString() -ForegroundColor Yellow
     }
-    Context "[<Name>] @ [<Uri>]" {
+    Context "<Name> (<Platform>) @ <Uri>" {
         It "ApplicationHeaderExists" -Tag "api" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
