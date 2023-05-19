@@ -1,34 +1,30 @@
 #requires -module "WriteAscii"
 [CmdletBinding()]
 param(
-    # [Parameter(Mandatory = $false)]
-    # [ValidateNotNullorEmpty()]
-    # [string]$Filter = "*",
-
     [Parameter(Mandatory = $false)]
-    [ValidateSet("*", "FunctionApp1", "WebApplication1", "Application")]
+    [ValidateSet("*", "Application", "FunctionApp1", "WebApplication1")]
     [string]$Name = "*",
 
     [Parameter(Mandatory = $false)]
-    [ValidateSet("*", "Docker", "VisualStudio", "AppService", "FunctionApp", "Gateway", "FrontDoor")]
+    [ValidateSet("*", "AppService", "Docker", "FrontDoor", "FunctionApp", "Gateway", "VisualStudio")]
     [string]$Platform = "*",
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullorEmpty()]
     [int]$Sleep = 5,
 
-    [switch]$SkipHealthchecks
+    [switch]$SkipHealthChecks
 )
 while ($true) {
     Clear-Host
     $path = "$PSScriptRoot\Api.Tests.ps1"
     $data = (Import-PowerShellDataFile -Path "$PSScriptRoot\Api.Tests.psd1").Endpoints |
     # Where-Object { $_.Enabled -and $_.Endpoint.Name -like $Runtime } |
-    Where-Object { ($_.Endpoint.Name -like $Name ) -and ($_.Endpoint.Platform -like $Platform ) } |
+    Where-Object { ($_.Enabled -eq $true) -and ($_.Endpoint.Name -like $Name) -and ($_.Endpoint.Platform -like $Platform) } |
     Select-Object -ExpandProperty "Endpoint"
     if ($data) {
-        if ($SkipHealthchecks) {
-            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter "api"
+        if ($SkipHealthChecks) {
+            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -ExcludeTagFilter @("healthcheck")
         }
         else {
             Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)

@@ -19,35 +19,35 @@ Describe "IntegrationTests" {
         Write-Host (Get-Date).ToString() -ForegroundColor Yellow
     }
     Context "<Name> (<Platform>) @ <Uri>" {
-        It "ApplicationHeaderExists" -Tag "api" {
+        It "ApplicationHeaderExists" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
         }
-        It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag "api" {
+        It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
-        It "ApplicationRespondsOKFromNullInput" -Tag "api" {
+        It "ApplicationRespondsOKFromNullInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
-        It "ApplicationReturnsFalseFromNullInput" -Tag "api" {
+        It "ApplicationReturnsFalseFromNullInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
-        It "ApplicationRespondsOKFromTrueInput" -Tag "api" {
+        It "ApplicationRespondsOKFromTrueInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=true" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
-        It "ApplicationReturnsTrueFromTrueInput" -Tag "api" {
+        It "ApplicationReturnsTrueFromTrueInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=true" -SkipCertificateCheck
             $response.Content | Should -Be "true"
         }
-        It "ApplicationRespondsOKFromFalseInput" -Tag "api" {
+        It "ApplicationRespondsOKFromFalseInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=false" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
         }
-        It "ApplicationReturnsFalseFromFalseInput" -Tag "api" {
+        It "ApplicationReturnsFalseFromFalseInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?code=$Code&input=false" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
