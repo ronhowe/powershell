@@ -13,6 +13,8 @@ param(
     [ValidateNotNullorEmpty()]
     [int]$Sleep = 5,
 
+    [switch]$SkipApplicationChecks,
+
     [switch]$SkipHealthChecks
 )
 while ($true) {
@@ -22,12 +24,14 @@ while ($true) {
     Where-Object { ($_.Enabled -eq $true) -and ($_.Endpoint.Name -like $Name) -and ($_.Endpoint.Platform -like $Platform) } |
     Select-Object -ExpandProperty "Endpoint"
     if ($data) {
+        $tags = @()
+        if ($SkipApplicationChecks) {
+            $tags += "application"
+        }
         if ($SkipHealthChecks) {
-            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -ExcludeTagFilter @("healthcheck")
+            $tags += "healthcheck"
         }
-        else {
-            Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data)
-        }
+        Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -ExcludeTagFilter $tags
         if ($Filter -ne "*") {
             Write-Ascii -InputObject "$Name ($Platform)" -ForegroundColor Cyan
         }
