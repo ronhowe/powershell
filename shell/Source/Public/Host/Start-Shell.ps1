@@ -31,6 +31,7 @@ function Start-Shell {
             Show-Version
             Show-Date
             Show-Ready
+            Set-Location -Path $HOME
             [System.Console]::Beep(500, 100)
         }
         catch {
