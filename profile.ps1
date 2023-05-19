@@ -201,4 +201,19 @@ else {
 
 #endregion root
 
+#region tools
+
+function Set-LocationTools {
+    if (Test-Path -Path "C:\VSTS\ronhowe\powershell\tools") {
+        Set-Location -Path "C:\VSTS\ronhowe\powershell\tools"
+    }
+    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell\tools") {
+        Set-Location -Path "$HOME\repos\ronhowe\powershell\tools"
+    }
+}
+
+New-Alias -Name "tools" -Value Set-LocationTools -Force -Verbose
+
+#endregion tools
+
 Set-PSReadLineOption -PredictionViewStyle ListView
