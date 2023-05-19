@@ -129,17 +129,17 @@ New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
 
 # #endregion log
 
-# #region new
+#region new
 
-# function Show-New {
-#     Clear-Host
-#     Show-RonHowe
-#     Set-LocationHome
-# }
+function Show-New {
+    Clear-Host
+    # Show-RonHowe
+    Set-LocationHome
+}
 
-# New-Alias -Name "new" -Value Show-New -Force -Verbose
+New-Alias -Name "new" -Value Show-New -Force -Verbose
 
-# #endregion new
+#endregion new
 
 #region posh
 
