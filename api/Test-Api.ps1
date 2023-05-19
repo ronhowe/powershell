@@ -19,7 +19,6 @@ while ($true) {
     Clear-Host
     $path = "$PSScriptRoot\Api.Tests.ps1"
     $data = (Import-PowerShellDataFile -Path "$PSScriptRoot\Api.Tests.psd1").Endpoints |
-    # Where-Object { $_.Enabled -and $_.Endpoint.Name -like $Runtime } |
     Where-Object { ($_.Enabled -eq $true) -and ($_.Endpoint.Name -like $Name) -and ($_.Endpoint.Platform -like $Platform) } |
     Select-Object -ExpandProperty "Endpoint"
     if ($data) {
