@@ -1,8 +1,8 @@
 @{
     Modules = @(
-        @{ Name = 'Az' ; Version = '9.7.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'Az' ; Version = '10.0.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'CliMenu' ; Version = '1.0.52.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'dbatools' ; Version = '2.0.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'dbatools' ; Version = '2.0.3' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'ImportExcel' ; Version = '7.8.4' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'InvokeBuild' ; Version = '5.10.4' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Microsoft.PowerShell.Crescendo' ; Version = '1.0.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
