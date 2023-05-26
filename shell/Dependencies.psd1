@@ -13,7 +13,7 @@
         @{ Name = 'posh-git' ; Version = '1.1.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'PowerConfig' ; Version = '0.1.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'PSWindowsUpdate' ; Version = '2.2.0.3' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'SqlServer' ; Version = '22.0.59' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'SqlServer' ; Version = '22.1.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'WriteAscii' ; Version = '1.2.2.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' }
     )
 }
