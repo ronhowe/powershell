@@ -1,31 +1,45 @@
-#requires -module "WriteAscii"
+$ProgressPreference = "SilentlyContinue"
 
-Write-Ascii "az" -ForegroundColor Green
-az --version
+function Write-Message {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [ValidateNotNullorEmpty()]
+        [string]$Message
+    )
+    Write-Host ("#" * 80) -ForegroundColor Green
+    Write-Host $Message -ForegroundColor Green
+    Write-Host ("#" * 80) -ForegroundColor Green
+}
 
-Write-Ascii "bicep" -ForegroundColor Green
-bicep --version
-
-Write-Ascii "code" -ForegroundColor Green
-code --version
-
-Write-Ascii "dotnet" -ForegroundColor Green
+Write-Message ".NET SDK"
 dotnet --version
 
-Write-Ascii "gh" -ForegroundColor Green
+Write-Message "Azure CLI"
+az --version
+
+Write-Message "Bicep CLI"
+bicep --version
+
+Write-Message "GitHub CLI"
 gh --version
 
-Write-Ascii "git" -ForegroundColor Green
+Write-Message "Git"
 git --version
 
-Write-Ascii "nuget" -ForegroundColor Green
+Write-Message "NuGet"
 nuget | Select-String -SimpleMatch "NuGet Version"
 
-Write-Ascii "pwsh" -ForegroundColor Green
+Write-Message "PowerShell"
 pwsh --version
 
-Write-Ascii "python" -ForegroundColor Green
+Write-Message "Python"
 python --version
 
-Write-Ascii "wsl" -ForegroundColor Green
+Write-Message "Visual Studio Code"
+code --version
+
+Write-Message "Windows Subsystem for Linux"
 wsl --version
+
+Write-Host "OK" -ForegroundColor Green
