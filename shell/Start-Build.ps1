@@ -27,9 +27,11 @@ process {
             "$sourcePath\$moduleName.json",
             "$sourcePath\$moduleName.nuspec",
             "$PSScriptRoot\Dependencies.psd1",
+            "$PSScriptRoot\Dependencies.Tests.ps1",
             "$PSScriptRoot\Install-Dependencies.ps1",
             "$PSScriptRoot\LICENSE*",
-            "$PSScriptRoot\README.md"
+            "$PSScriptRoot\README.md",
+            "$PSScriptRoot\Test-Dependencies.ps1"
         )
         OutputDirectory            = $modulePath
         SourcePath                 = "$sourcePath\$moduleName.psd1"
