@@ -36,8 +36,8 @@ $parameters = @{
     Path         = $vscodePath
     ArgumentList = @(
         "--diff",
-        (Resolve-Path -Path "~\repos\ronhowe\powershell\holotable\darkside.cdf"),
-        (Resolve-Path -Path "~\repos\ronhowe\holotable\darkside.cdf")
+        (Resolve-Path -Path "~\repos\ronhowe\holotable\darkside.cdf"),
+        (Resolve-Path -Path "~\repos\ronhowe\powershell\holotable\darkside.cdf")
     )
     NoNewWindow  = $true
     Wait         = $true
@@ -70,8 +70,8 @@ $parameters = @{
     Path         = $vscodePath
     ArgumentList = @(
         "--diff",
-        (Resolve-Path -Path "~\repos\ronhowe\powershell\holotable\lightside.cdf"),
-        (Resolve-Path -Path "~\repos\ronhowe\holotable\lightside.cdf")
+        (Resolve-Path -Path "~\repos\ronhowe\holotable\lightside.cdf"),
+        (Resolve-Path -Path "~\repos\ronhowe\powershell\holotable\lightside.cdf")
     )
     NoNewWindow  = $true
     Wait         = $true
