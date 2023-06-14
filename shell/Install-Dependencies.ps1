@@ -18,7 +18,7 @@ process {
     Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1" |
     Select-Object -ExpandProperty "Modules" |
     ForEach-Object {
-        Write-Host "Installing @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) })... " -NoNewline
+        Write-Host "Installing @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }... " -NoNewline
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
             Write-Verbose "Skipping Module"
         }
