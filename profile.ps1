@@ -4,6 +4,14 @@ Write-Verbose "PowerShell $($PSVersionTable.PSVersion.ToString())" -Verbose
 
 #region imports
 
+if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
+    Write-Verbose "Importing Az.Tools.Predictor" -Verbose
+    Import-Module -Name "Az.Tools.Predictor"
+}
+else {
+    Write-Verbose "Skipping Az.Tools.Predictor" -Verbose
+}
+
 if ((Get-Module -Name "ISESteroids" -ListAvailable) -and ($host.Name -eq "Windows PowerShell ISE Host")) {
     Write-Verbose "Importing ISESteroids" -Verbose
     Import-Module -Name "ISESteroids"
@@ -121,4 +129,5 @@ New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
 
 #endregion root
 
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -PredictionViewStyle ListView
