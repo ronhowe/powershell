@@ -129,5 +129,7 @@ New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
 
 #endregion root
 
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+if ($PSVersionTable -eq "Core") {
+    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+}
 Set-PSReadLineOption -PredictionViewStyle ListView
