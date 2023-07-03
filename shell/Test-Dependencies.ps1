@@ -1,4 +1,3 @@
-#requires -PSEdition "Core"
 #requires -Module "Pester"
 [CmdletBinding()]
 param (

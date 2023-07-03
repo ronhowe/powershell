@@ -1,4 +1,3 @@
-#requires -PSEdition "Core"
 [CmdletBinding()]
 param (
 )
@@ -15,8 +14,7 @@ process {
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
     Write-Verbose "Importing Dependencies Definition"
-    Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1" |
-    Select-Object -ExpandProperty "Modules" |
+    (Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1").Modules |
     ForEach-Object {
         Write-Host "Installing @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }... " -NoNewline
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
