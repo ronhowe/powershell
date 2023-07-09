@@ -46,7 +46,7 @@ else {
 
 #endregion imports
 
-#region home
+#region Set-LocationHome (aka home)
 
 function Set-LocationHome {
     Set-Location -Path $HOME
@@ -54,21 +54,9 @@ function Set-LocationHome {
 
 New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
 
-#endregion home
+#endregion Set-LocationHome (aka home)
 
-#region new
-
-function Show-New {
-    Clear-Host
-    Show-RonHowe
-    Set-LocationHome
-}
-
-New-Alias -Name "new" -Value Show-New -Force -Verbose
-
-#endregion new
-
-#region posh
+#region Set-LocationPowerShell (aka posh)
 
 function Set-LocationPowerShell {
     if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
@@ -81,9 +69,9 @@ function Set-LocationPowerShell {
 
 New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 
-#endregion posh
+#endregion Set-LocationPowerShell (aka posh)
 
-#region repos
+#region Set-LocationRepos (aka repos)
 
 function Set-LocationRepos {
     if (Test-Path -Path "C:\VSTS") {
@@ -96,9 +84,31 @@ function Set-LocationRepos {
 
 New-Alias -Name "repos" -Value Set-LocationRepos -Force -Verbose
 
-#endregion repos
+#endregion Set-LocationRepos (aka repos)
 
-#region ronhowe
+#region Set-PSReadLineHistory (aka oops)
+
+function Set-PSReadLineHistory {
+    notepad (Get-PSReadLineOption).HistorySavePath
+}
+
+New-Alias -Name "oops" -Value Set-PSReadLineHistory -Force -Verbose
+
+#endregion Set-PSReadLineHistory (aka oops)
+
+#region Show-New (aka new)
+
+function Show-New {
+    Clear-Host
+    Show-RonHowe
+    Set-LocationHome
+}
+
+New-Alias -Name "new" -Value Show-New -Force -Verbose
+
+#endregion Show-New (aka new)
+
+#region Show-RonHowe (aka ronhowe)
 
 function Show-RonHowe {
     Write-Host "r" -BackgroundColor Red -ForegroundColor Black -NoNewline
@@ -113,9 +123,9 @@ function Show-RonHowe {
 
 New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
 
-#endregion ronhowe
+#endregion Show-RonHowe (aka ronhowe)
 
-#region root
+#region $Root
 
 if (Test-Path -Path "C:\VSTS") {
     New-Variable -Name "Root" -Value "C:\VSTS" -Scope "Global" -Force -Verbose
@@ -127,7 +137,7 @@ else {
 
 New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
 
-#endregion root
+#endregion $Root
 
 if ($PSVersionTable -eq "Core") {
     Set-PSReadLineOption -PredictionSource HistoryAndPlugin
