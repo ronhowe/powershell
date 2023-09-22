@@ -26,6 +26,20 @@ process {
     # TODO - Getting an assembly already loaded error on some machines. -ErrorAction SilentlyContinue as workaround.
     Import-Module -Name "$modulePath\$moduleName" -Force -Verbose -ErrorAction SilentlyContinue
 
+    # Set breakpoints in the build output PSM1 module file.
+    # Call function under debug with appropriate parameters.
+    # --Debug is especially helpful as the output will be shown.
+
+    # Call directly...
+    Get-Quote -Debug
+
+    # Or call With Pester.  This can be useful if you need to mock inner dependencies.
+    Describe "Debugging Function" {
+        It "Calling Function" {
+            Get-CatFact -Debug
+        }
+    }
+
     Write-Host "OK" -ForegroundColor Green
 }
 end {
