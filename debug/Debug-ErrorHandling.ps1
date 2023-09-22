@@ -8,7 +8,7 @@ function Debug-Function {
         [string]$Path = "$PSScriptRoot\image.png"
     )
     begin {
-        Write-Debug "Begin$($MyInvocation.MyCommand.Name)"
+        Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
 
         Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
         Select-Object -Property @("Name", "Value") |
@@ -19,7 +19,7 @@ function Debug-Function {
         # $WarningPreference = "SilentlyContinue"
     }
     process {
-        Write-Debug "Process$($MyInvocation.MyCommand.Name)"
+        Write-Debug "Process $($MyInvocation.MyCommand.Name)"
         try {
 
             Write-Verbose "CallingNativeCommand"
@@ -43,7 +43,7 @@ function Debug-Function {
         Write-Host "OK" -ForegroundColor Green
     }
     end {
-        Write-Debug "End$($MyInvocation.MyCommand.Name)"
+        Write-Debug "End $($MyInvocation.MyCommand.Name)"
     }
 }
 Clear-Host
