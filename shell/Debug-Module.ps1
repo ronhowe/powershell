@@ -26,19 +26,28 @@ process {
     # TODO - Getting an assembly already loaded error on some machines. -ErrorAction SilentlyContinue as workaround.
     Import-Module -Name "$modulePath\$moduleName" -Force -Verbose -ErrorAction SilentlyContinue
 
+    ###############################################################################
+    #region Debugging
+
     # Set breakpoints in the build output PSM1 module file.
     # Call function under debug with appropriate parameters.
-    # --Debug is especially helpful as the output will be shown.
 
-    # Call directly...
-    Get-Quote -Debug
+    # Exmaple: Simple direct call.
+    # Get-IDIQuote -Debug
 
-    # Or call With Pester.  This can be useful if you need to mock inner dependencies.
-    Describe "Debugging Function" {
-        It "Calling Function" {
-            Get-CatFact -Debug
-        }
-    }
+    # or
+
+    # Example: Complex call with Pester.  Useful if you need to mock inner dependencies.
+    # Note: Has side effect of this script running twice; once on run here and once again as part of Pester auto-discovery and execution.
+
+    # Describe "Debugging Function" {
+    #     It "Invoking Function" {
+    #         Get-IDICatFact
+    #     }
+    # }
+
+    #endregion Debugging
+    ###############################################################################
 
     Write-Host "OK" -ForegroundColor Green
 }
