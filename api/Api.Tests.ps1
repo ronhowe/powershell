@@ -17,20 +17,16 @@ Describe "IntegrationTests" {
     }
     Context "<Name> (<Platform>) @ <Uri>" {
         It "ApplicationHeaderExists" -Tag "application" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
         }
         It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag "application" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
+            $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
-        It "ApplicationRespondsOKFromNullInput" -Tag "application" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
-            $response.StatusCode | Should -Be 200
-        }
-        It "ApplicationReturnsFalseFromNullInput" -Tag "application" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck
-            $response.Content | Should -Be "false"
+        It "ApplicationRespondsBadRequestOKFromNullInput" -Tag "application" {
+            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck -SkipHttpErrorCheck
+            $response.StatusCode | Should -Be 400
         }
         It "ApplicationRespondsOKFromTrueInput" -Tag "application" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=true" -SkipCertificateCheck

@@ -6,7 +6,7 @@ param(
     [string]$Name = "*",
 
     [Parameter(Mandatory = $false)]
-    [ValidateSet("*", "AppService", "Docker", "FrontDoor", "FunctionApp", "Gateway", "VisualStudio")]
+    [ValidateSet("*", "AppService", "Docker", "FrontDoor", "FunctionApp", "Gateway", "Kestrel")]
     [string]$Platform = "*",
 
     [Parameter(Mandatory = $false)]

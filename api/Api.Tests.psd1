@@ -4,7 +4,7 @@
             Enabled  = $true
             Endpoint = @{
                 Name         = "WebApplication1"
-                Platform     = "VisualStudio"
+                Platform     = "Kestrel"
                 Uri          = "https://localhost:444"
                 CustomHeader = "default"
             }
@@ -31,7 +31,7 @@
             Enabled  = $true
             Endpoint = @{
                 Name         = "FunctionApp1"
-                Platform     = "VisualStudio"
+                Platform     = "Kestrel"
                 Uri          = "http://localhost:83/api"
                 CustomHeader = "default"
             }
