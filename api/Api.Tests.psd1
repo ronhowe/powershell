@@ -10,7 +10,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "Docker"
@@ -19,7 +19,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
@@ -28,7 +28,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "FunctionApp1"
                 Platform     = "Kestrel"
@@ -37,7 +37,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "FunctionApp1"
                 Platform     = "Docker"
@@ -46,7 +46,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "FunctionApp1"
                 Platform     = "FunctionApp"
@@ -55,7 +55,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "Gateway"
@@ -64,7 +64,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "FrontDoor"
