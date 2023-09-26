@@ -15,7 +15,9 @@ param(
 
     [switch]$SkipApplicationChecks,
 
-    [switch]$SkipHealthChecks
+    [switch]$SkipHealthChecks,
+
+    [switch]$Ping
 )
 while ($true) {
     Clear-Host
@@ -24,14 +26,18 @@ while ($true) {
     Where-Object { ($_.Enabled -eq $true) -and ($_.Endpoint.Name -like $Name) -and ($_.Endpoint.Platform -like $Platform) } |
     Select-Object -ExpandProperty "Endpoint"
     if ($data) {
-        $tags = @()
+        $includeTags = @()
+        $excludeTags = @()
         if ($SkipApplicationChecks) {
-            $tags += "application"
+            $excludeTags += "application"
         }
         if ($SkipHealthChecks) {
-            $tags += "healthcheck"
+            $excludeTags += "healthcheck"
         }
-        Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -ExcludeTagFilter $tags
+        if ($Ping) {
+            $includeTags += "ping"
+        }
+        Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter $includeTags -ExcludeTagFilter $excludeTags
         if ($Filter -ne "*") {
             Write-Ascii -InputObject "$Name ($Platform)" -ForegroundColor Cyan
         }

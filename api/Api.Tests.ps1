@@ -20,7 +20,7 @@ Describe "IntegrationTests" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
         }
-        It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag "application" {
+        It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag @("application", "ping") {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
