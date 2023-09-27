@@ -2,6 +2,8 @@ Write-Host "https://github.com/ronhowe/powershell/blob/main/profile.ps1" -Foregr
 
 Write-Verbose "PowerShell $($PSVersionTable.PSVersion.ToString())" -Verbose
 
+Set-Location -Path $HOME
+
 #region imports
 
 if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
@@ -59,10 +61,7 @@ New-Alias -Name "home" -Value Set-LocationHome -Force -Verbose
 #region Set-LocationPowerShell (aka posh)
 
 function Set-LocationPowerShell {
-    if (Test-Path -Path "C:\VSTS\ronhowe\powershell") {
-        Set-Location -Path "C:\VSTS\ronhowe\powershell"
-    }
-    elseif (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
+    if (Test-Path -Path "$HOME\repos\ronhowe\powershell") {
         Set-Location -Path "$HOME\repos\ronhowe\powershell"
     }
 }
@@ -74,10 +73,7 @@ New-Alias -Name "posh" -Value Set-LocationPowerShell -Force -Verbose
 #region Set-LocationRepos (aka repos)
 
 function Set-LocationRepos {
-    if (Test-Path -Path "C:\VSTS") {
-        Set-Location -Path "C:\VSTS"
-    }
-    elseif (Test-Path -Path "$HOME\repos") {
+    if (Test-Path -Path "$HOME\repos") {
         Set-Location -Path "$HOME\repos"
     }
 }
@@ -124,20 +120,6 @@ function Show-RonHowe {
 New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
 
 #endregion Show-RonHowe (aka ronhowe)
-
-#region $Root
-
-if (Test-Path -Path "C:\VSTS") {
-    New-Variable -Name "Root" -Value "C:\VSTS" -Scope "Global" -Force -Verbose
-    Set-Location -Path "C:\VSTS"
-}
-else {
-    Write-Verbose "Skipping `$Root" -Verbose
-}
-
-New-Alias -Name "root" -Value Set-LocationRepos -Force -Verbose
-
-#endregion $Root
 
 if ($PSVersionTable -eq "Core") {
     Set-PSReadLineOption -PredictionSource HistoryAndPlugin
