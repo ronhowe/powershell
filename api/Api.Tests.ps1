@@ -23,7 +23,7 @@ Describe "IntegrationTests" {
                 # note - the best way to get feedback mid-test is with Write-Host
                 Write-Host "`tInvoking Web Request within Polly Policy.." -ForegroundColor DarkGray
                 $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
-                $response.Headers["CustomHeader"] | Should -Be $CustomHeader
+                $response.StatusCode | Should -Be 200
             }
         }
         It "ApplicationHeaderExists" -Tag "application" {
