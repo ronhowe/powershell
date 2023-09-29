@@ -18,10 +18,7 @@ Describe "IntegrationTests" {
     }
     Context "<Name> (<Platform>) @ <Uri>" {
         It "ClientRetries" -Tag @("application", "ping", "polly") {
-            # todo - why doesn't this work the way i think it could or should?
-            # $policy = New-PollyPolicy -Retry -RetryCount 10 -RetryWait (New-TimeSpan -Seconds 1)
-            $policy = New-PollyPolicy -RetryForever
-
+            $policy = New-PollyPolicy -Retry -RetryCount 10 -RetryWait (New-TimeSpan -Seconds 1)
             Invoke-PollyCommand -Policy $policy -ScriptBlock {
                 # note - the best way to get feedback mid-test is with Write-Host
                 Write-Host "`tInvoking Web Request within Polly Policy.." -ForegroundColor DarkGray
