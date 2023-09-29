@@ -3,7 +3,7 @@ param (
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [ValidateScript({ Test-Path -Path $_ })]
-    [string]$Path = "~\repos\ronhowe\dotnet"
+    [string]$Path = "$HOME\repos\ronhowe\dotnet"
 )
 Measure-Command {
     try {
