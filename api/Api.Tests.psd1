@@ -19,12 +19,21 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-rhowe-000.azurewebsites.net:443"
                 CustomHeader = "default"
+            }
+        }
+        @{
+            Enabled  = $true
+            Endpoint = @{
+                Name         = "WebApplication1"
+                Platform     = "AppService"
+                Uri          = "https://app-rhowe-001.azurewebsites.net:443"
+                CustomHeader = "config-rhowe-001"
             }
         }
         @{
