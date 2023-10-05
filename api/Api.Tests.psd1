@@ -24,7 +24,7 @@
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-rhowe-000.azurewebsites.net:443"
-                CustomHeader = "config-rhowe-000"
+                CustomHeader = "default"
             }
         }
         @{

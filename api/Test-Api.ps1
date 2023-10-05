@@ -3,11 +3,11 @@
 param(
     [Parameter(Mandatory = $false)]
     [ValidateSet("*", "Application", "FunctionApp1", "WebApplication1")]
-    [string]$Name = "*",
+    [string]$Name = "WebApplication1",
 
     [Parameter(Mandatory = $false)]
     [ValidateSet("*", "AppService", "Docker", "FrontDoor", "FunctionApp", "Gateway", "Kestrel")]
-    [string]$Platform = "*",
+    [string]$Platform = "AppService",
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullorEmpty()]
