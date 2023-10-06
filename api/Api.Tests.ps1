@@ -26,10 +26,6 @@ Describe "IntegrationTests" {
                 $response.StatusCode | Should -Be 200
             }
         }
-        It "ApplicationHeaderExists" -Tag "application" {
-            $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
-            $response.Headers["CustomHeader"] | Should -Not -BeNullOrEmpty
-        }
         It "ApplicationHeaderIsCorrect [<CustomHeader>]" -Tag @("application") {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader

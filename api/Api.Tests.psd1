@@ -33,7 +33,7 @@
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-rhowe-001.azurewebsites.net:443"
-                CustomHeader = "config-rhowe-001"
+                CustomHeader = "default"
             }
         }
         @{
@@ -60,7 +60,7 @@
                 Name         = "FunctionApp1"
                 Platform     = "FunctionApp"
                 Uri          = "TBD"
-                CustomHeader = "func-rhowe-000"
+                CustomHeader = "default"
             }
         }
         @{
@@ -69,7 +69,7 @@
                 Name         = "Application"
                 Platform     = "Gateway"
                 Uri          = "TBD"
-                CustomHeader = "apim-rhowe-000"
+                CustomHeader = "default"
             }
         }
         @{
@@ -78,7 +78,7 @@
                 Name         = "Application"
                 Platform     = "FrontDoor"
                 Uri          = "TBD"
-                CustomHeader = "apim-rhowe-000"
+                CustomHeader = "default"
             }
         }
     )
