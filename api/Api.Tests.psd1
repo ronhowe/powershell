@@ -37,11 +37,11 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "FunctionApp1"
                 Platform     = "Kestrel"
-                Uri          = "TBD"
+                Uri          = "http://localhost:83/api"
                 CustomHeader = "default"
             }
         }
