@@ -1,5 +1,3 @@
-throw
-
 #region dependencies
 Get-Module -Name "Az" -ListAvailable
 Find-Module -Name "Az" -Repository "PSGallery"
@@ -55,8 +53,9 @@ Publish-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -ArchivePa
 #endregion publish
 
 #region integration test
-Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
-.\Test-ApiAppService.ps1
+Set-Location -Path "$HOME\repos\ronhowe\powershell\api"
+.\Test-Api.ps1 -Name WebApplication1 -Platform AppService
+.\Test-Api.ps1 -Name Application -Platform FrontDoor
 #endregion integration test
 
 #region break and fix
@@ -64,7 +63,7 @@ Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 # https://mohitgoyal.co/2018/02/26/apply-update-application-settings-for-azure-app-service-using-powershell/
 
 # does not preserver existing settings
-# Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockServiceExceptionToggle" = "true" }
+# Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockService1PermanentExceptionToggle" = "true" }
 
 $webApp.SiteConfig.AppSettings | Sort-Object -Property "Name" -OutVariable "appSettings"
 

@@ -19,7 +19,7 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
@@ -28,7 +28,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
@@ -73,11 +73,11 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "FrontDoor"
-                Uri          = "TBD"
+                Uri          = "rhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net"
                 CustomHeader = "default"
             }
         }

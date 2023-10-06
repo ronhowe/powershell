@@ -1,6 +1,6 @@
 @{
-    resourceGroupName = "rg-ronhowe-000"
-    appName           = "app-ronhowe-000"
-    planName          = "plan-ronhowe-000"
+    resourceGroupName = "rg-rhowe-000"
+    appName           = "app-rhowe-000"
+    planName          = "plan-rhowe-000"
     location          = "eastus"
 }
