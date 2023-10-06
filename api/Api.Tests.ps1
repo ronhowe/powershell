@@ -30,6 +30,10 @@ Describe "IntegrationTests" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
+        It "ApplicationRespondsNotFoundFromInvalidRoute" -Tag @("application") {
+            $response = Invoke-WebRequest -Uri "$Uri" -SkipCertificateCheck -SkipHttpErrorCheck
+            $response.StatusCode | Should -Be 404
+        }
         It "ApplicationRespondsBadRequestOKFromNullInput" -Tag @("application") {
             $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck -SkipHttpErrorCheck
             $response.StatusCode | Should -Be 400
