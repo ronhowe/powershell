@@ -29,14 +29,6 @@ Describe "IntegrationTests" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
         }
-        It "ApplicationRespondsNotFoundFromInvalidRoute" -Tag @("application") {
-            $response = Invoke-WebRequest -Uri "$Uri" -SkipCertificateCheck -SkipHttpErrorCheck
-            $response.StatusCode | Should -Be 404
-        }
-        It "ApplicationRespondsBadRequestOKFromNullInput" -Tag @("application") {
-            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck -SkipHttpErrorCheck
-            $response.StatusCode | Should -Be 400
-        }
         It "ApplicationRespondsOKFromTrueInput" -Tag @("application") {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=true" -SkipCertificateCheck
             $response.StatusCode | Should -Be 200
@@ -53,13 +45,21 @@ Describe "IntegrationTests" {
             $response = Invoke-WebRequest -Uri "$Uri/service1?input=false" -SkipCertificateCheck
             $response.Content | Should -Be "false"
         }
-        It "HealthCheckRespondsOK" -Tag @("healthcheck") {
-            $response = Invoke-WebRequest -Uri "$Uri/health" -SkipCertificateCheck
-            $response.StatusCode | Should -Be 200
+        It "ApplicationRespondsBadRequestFromMissingInput" -Tag @("application") {
+            $response = Invoke-WebRequest -Uri "$Uri/service1" -SkipCertificateCheck -SkipHttpErrorCheck
+            $response.StatusCode | Should -Be 400
+        }
+        It "ApplicationRespondsNotFoundFromInvalidRoute" -Tag @("application") {
+            $response = Invoke-WebRequest -Uri "$Uri" -SkipCertificateCheck -SkipHttpErrorCheck
+            $response.StatusCode | Should -Be 404
         }
         It "HealthCheckHeaderIsCorrect [<CustomHeader>]" -Tag @("healthcheck") {
             $response = Invoke-WebRequest -Uri "$Uri/health" -SkipCertificateCheck
             $response.Headers["CustomHeader"] | Should -Be $CustomHeader
+        }
+        It "HealthCheckRespondsOK" -Tag @("healthcheck") {
+            $response = Invoke-WebRequest -Uri "$Uri/health" -SkipCertificateCheck
+            $response.StatusCode | Should -Be 200
         }
         It "HealthCheckReturnsHealthy" -Tag @("healthcheck") {
             $response = Invoke-WebRequest -Uri "$Uri/health" -SkipCertificateCheck
