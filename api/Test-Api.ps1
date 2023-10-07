@@ -15,11 +15,7 @@ param(
 
     [switch]$SkipApplicationChecks,
 
-    [switch]$SkipHealthChecks,
-
-    [switch]$Ping,
-
-    [switch]$Polly
+    [switch]$SkipHealthChecks
 )
 while ($true) {
     Clear-Host
@@ -35,12 +31,6 @@ while ($true) {
         }
         if ($SkipHealthChecks) {
             $excludeTags += "healthcheck"
-        }
-        if ($Ping) {
-            $includeTags += "ping"
-        }
-        if ($Polly) {
-            $includeTags += "polly"
         }
         Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter $includeTags -ExcludeTagFilter $excludeTags
         if ($Filter -ne "*") {

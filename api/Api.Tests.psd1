@@ -19,12 +19,12 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-rhowe-000.azurewebsites.net:443"
-                CustomHeader = "default"
+                CustomHeader = "app-rhowe-000"
             }
         }
         @{
@@ -33,11 +33,11 @@
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-rhowe-001.azurewebsites.net:443"
-                CustomHeader = "default"
+                CustomHeader = "app-rhowe-001"
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "FunctionApp1"
                 Platform     = "Kestrel"
@@ -73,7 +73,7 @@
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "FrontDoor"
