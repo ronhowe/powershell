@@ -3,6 +3,24 @@
         @{
             Enabled  = $true
             Endpoint = @{
+                Name         = "Application"
+                Platform     = "FrontDoor"
+                Uri          = "rhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net"
+                CustomHeader = "app-rhowe-000"
+            }
+        }
+        @{
+            Enabled  = $false
+            Endpoint = @{
+                Name         = "Application"
+                Platform     = "Gateway"
+                Uri          = "TBD"
+                CustomHeader = "default"
+            }
+        }
+        @{
+            Enabled  = $false
+            Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "Kestrel"
                 Uri          = "https://localhost:444"
@@ -19,7 +37,7 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
@@ -28,7 +46,7 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
@@ -60,24 +78,6 @@
                 Name         = "FunctionApp1"
                 Platform     = "FunctionApp"
                 Uri          = "TBD"
-                CustomHeader = "default"
-            }
-        }
-        @{
-            Enabled  = $false
-            Endpoint = @{
-                Name         = "Application"
-                Platform     = "Gateway"
-                Uri          = "TBD"
-                CustomHeader = "default"
-            }
-        }
-        @{
-            Enabled  = $false
-            Endpoint = @{
-                Name         = "Application"
-                Platform     = "FrontDoor"
-                Uri          = "rhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net"
                 CustomHeader = "default"
             }
         }
