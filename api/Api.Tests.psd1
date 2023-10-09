@@ -5,17 +5,17 @@
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "FrontDoor"
-                Uri          = "rhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net"
+                Uri          = "https://rhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net:443"
                 CustomHeader = "app-rhowe-000"
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "Gateway"
-                Uri          = "TBD"
-                CustomHeader = "default"
+                Uri          = "https://api-rhowe-000.azure-api.net:443/httpbin"
+                CustomHeader = "app-rhowe-000"
             }
         }
         @{
