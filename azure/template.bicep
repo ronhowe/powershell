@@ -81,7 +81,6 @@ resource app 'Microsoft.Web/sites@2022-09-01' = {
 resource appName_ftp 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-09-01' = {
   parent: app
   name: 'ftp'
-  location: location
   properties: {
     allow: true
   }
@@ -90,7 +89,6 @@ resource appName_ftp 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@202
 resource appName_scm 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-09-01' = {
   parent: app
   name: 'scm'
-  location: location
   properties: {
     allow: true
   }
@@ -99,7 +97,6 @@ resource appName_scm 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@202
 resource appName_web 'Microsoft.Web/sites/config@2022-09-01' = {
   parent: app
   name: 'web'
-  location: location
   properties: {
     numberOfWorkers: 1
     defaultDocuments: [
@@ -177,7 +174,6 @@ resource appName_web 'Microsoft.Web/sites/config@2022-09-01' = {
 resource appName_appName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2022-09-01' = {
   parent: app
   name: '${appName}.azurewebsites.net'
-  location: location
   properties: {
     siteName: appName
     hostNameType: 'Verified'
