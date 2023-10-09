@@ -33,6 +33,7 @@ $location = $configuration.location ; $location
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 New-AzResourceGroup -Name $resourceGroupName -Location $location -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name (New-Guid) -TemplateFile ".\template.json" -TemplateParameterFile ".\parameters.json" -Mode Incremental -Force -Verbose
+New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile ".\parameters.json" -Mode Incremental -Force -Verbose
 
 Get-AzResourceGroup -Name $resourceGroupName -OutVariable "resourceGroup"
 Get-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -OutVariable "webApp"
