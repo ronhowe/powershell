@@ -6,9 +6,9 @@ resource plan 'Microsoft.Web/serverfarms@2022-09-01' = {
   name: planName
   location: location
   sku: {
-    name: 'B1'
+    name: 'B2'
     tier: 'Basic'
-    size: 'B1'
+    size: 'B2'
     family: 'B'
     capacity: 1
   }
@@ -18,7 +18,7 @@ resource plan 'Microsoft.Web/serverfarms@2022-09-01' = {
     elasticScaleEnabled: false
     maximumElasticWorkerCount: 1
     isSpot: false
-    freeOfferExpirationTime: '2023-05-30T14:00:40.64'
+    freeOfferExpirationTime: '2023-10-09T16:00:46.9576655Z'
     reserved: true
     isXenon: false
     hyperV: false
@@ -123,7 +123,7 @@ resource appName_web 'Microsoft.Web/sites/config@2022-09-01' = {
     detailedErrorLoggingEnabled: false
     publishingUsername: '$app-prod-idso-000'
     scmType: 'None'
-    use32BitWorkerProcess: true
+    use32BitWorkerProcess: false
     webSocketsEnabled: false
     alwaysOn: false
     managedPipelineMode: 'Integrated'

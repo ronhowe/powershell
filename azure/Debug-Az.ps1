@@ -9,20 +9,25 @@ Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.Websites"
 #endregion imports
 
+#region secrets
+Set-Secret -Name "tenantId"
+Set-Secret -Name "subscriptionName"
+#endregion secrets
+
+#region authenticate
+[string]$tenantId = Get-Secret -Name "tenantId" -AsPlainText -OutVariable tenantId
+[string]$subscriptionName = Get-Secret -Name "subscriptionName" -AsPlainText
+Connect-AzAccount -SubscriptionName $subscriptionName -TenantId $tenantId -UseDeviceAuthentication
+#endregion authenticate
+
 #region context
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 $configuration = Import-PowerShellDataFile -Path ".\Configuration.psd1" ; $configuration
-$tenantId = Read-Host -Prompt "tenantId" ; $tenantId
-$subscriptionName = Read-Host -Prompt "subscriptionName" ; $subscriptionName
 $resourceGroupName = $configuration.resourceGroupName ; $resourceGroupName
 $appName = $configuration.appName ; $appName
 $planName = $configuration.planName ; $planName
 $location = $configuration.location ; $location
 #endregion context
-
-#region authenticate
-Connect-AzAccount -SubscriptionName $subscriptionName -TenantId $tenantId -UseDeviceAuthentication
-#endregion authenticate
 
 #region resources
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
@@ -71,10 +76,19 @@ $newAppSettings = @{}
 foreach ($item in $appSettings) {
     $newAppSettings[$item.Name] = $item.Value
 }
+$newAppSettings
 
 # choose
-$newAppSettings.MockServiceExceptionToggle = $true
-$newAppSettings.MockServiceExceptionToggle = $false
+$newAppSettings.MockService1PermanentExceptionToggle = "false"
+$newAppSettings.MockService1TransientExceptionToggle = "false"
+$newAppSettings.MockService1CpuThrottleToggle = "false"
+$newAppSettings.MockService1CpuThrottleIterations = 0
+
+# choose
+$newAppSettings.MockService1PermanentExceptionToggle = "true"
+$newAppSettings.MockService1TransientExceptionToggle = "true"
+$newAppSettings.MockService1CpuThrottleToggle = "true"
+$newAppSettings.MockService1CpuThrottleIterations = 20000
 
 # choose
 $newAppSettings.CustomHeader = "default"
