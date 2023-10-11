@@ -6,7 +6,7 @@
                 Name         = "Application"
                 Platform     = "FrontDoor"
                 Uri          = "https://ronhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net:443"
-                CustomHeader = "app-ronhowe-000"
+                CustomHeader = "default"
             }
         }
         @{
@@ -15,7 +15,7 @@
                 Name         = "Application"
                 Platform     = "Gateway"
                 Uri          = "https://api-ronhowe-000.azure-api.net:443/httpbin"
-                CustomHeader = "app-ronhowe-000"
+                CustomHeader = "default"
             }
         }
         @{
@@ -42,7 +42,7 @@
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-ronhowe-0.azurewebsites.net:443"
-                CustomHeader = "app-ronhowe-0"
+                CustomHeader = "default"
             }
         }
         @{
@@ -51,7 +51,7 @@
                 Name         = "WebApplication1"
                 Platform     = "AppService"
                 Uri          = "https://app-ronhowe-1.azurewebsites.net:443"
-                CustomHeader = "app-ronhowe-1"
+                CustomHeader = "default"
             }
         }
         @{

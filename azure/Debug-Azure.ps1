@@ -88,12 +88,10 @@ Remove-AzResourceGroup -Name $resource -Force -Verbose
 ###############################################################################
 #region managed identity
 
-# Get the system-assigned managed identity of the web app
 $webApp = Get-AzWebApp -ResourceGroupName $resource -Name $app
 $identity = $webApp.Identity
 
-# Grant the identity "app configuration data reader" RBAC permission on the app configuration
-$appConfig = Get-AzAppConfiguration -ResourceGroupName $resource -Name $app
+$appConfig = Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config 
 New-AzRoleAssignment -ObjectId $identity.PrincipalId -RoleDefinitionName "App Configuration Data Reader" -Scope $appConfig.Id
 
 #endregion managed identity

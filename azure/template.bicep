@@ -31,6 +31,7 @@ resource appService 'Microsoft.Web/sites@2022-09-01' = {
       http20Enabled: true
       minTlsVersion: '1.2'
       use32BitWorkerProcess: false
+      healthCheckPath: '/health'
     }
     httpsOnly: true
   }
@@ -47,7 +48,7 @@ resource configStore 'Microsoft.AppConfiguration/configurationStores@2023-03-01'
   }
   properties: {
     enablePurgeProtection: false
-    softDeleteRetentionInDays: 0
+    softDeleteRetentionInDays: 1
   }
   identity: {
     type: 'SystemAssigned'
