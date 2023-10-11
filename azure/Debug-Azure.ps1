@@ -78,6 +78,7 @@ New-AzResourceGroupDeployment -ResourceGroupName $resource -Name (New-Guid) -Tem
 Get-AzResourceGroup -Name $resource
 Get-AzAppServicePlan -ResourceGroupName $resource -Name $plan
 Get-AzWebApp -ResourceGroupName $resource -Name $app
+Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config
 
 Remove-AzResourceGroup -Name $resource -Force -Verbose
 
