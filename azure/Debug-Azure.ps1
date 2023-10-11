@@ -27,6 +27,7 @@ Import-Module -Name "Az.Websites"
 
 ###############################################################################
 #region secrets
+
 Set-Secret -Name "tenantId"
 Set-Secret -Name "subscriptionName"
 Set-Secret -Name "azure-user" -Secret (Get-Credential)
@@ -55,37 +56,44 @@ az logout
 
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
-New-AzResourceGroup -Name "rg-ronhowe-0" -Location "eastus" -Force -Verbose
-New-AzResourceGroupDeployment -ResourceGroupName "rg-ronhowe-0" -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile ".\parameters.0.json" -Mode Incremental -Force -Verbose
+$location = "eastus"
+$resource = "rg-ronhowe-0"
+$plan = "plan-ronhowe-0"
+$app = "app-ronhowe-0"
+$config = "config-ronhowe-0"
+$parameters = ".\parameters.0.json"
 
-New-AzResourceGroup -Name "rg-ronhowe-1" -Location "westus" -Force -Verbose
-New-AzResourceGroupDeployment -ResourceGroupName "rg-ronhowe-1" -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile ".\parameters.1.json" -Mode Incremental -Force -Verbose
+#or
 
-Get-AzResourceGroup -Name "rg-ronhowe-0"
-Get-AzAppServicePlan -ResourceGroupName "rg-ronhowe-0" -Name "plan-ronhowe-0"
-Get-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0"
+$location = "westus"
+$resource = "rg-ronhowe-1"
+$plan = "plan-ronhowe-1"
+$app = "app-ronhowe-1"
+$config = "config-ronhowe-1"
+$parameters = ".\parameters.1.json"
 
-Get-AzResourceGroup -Name "rg-ronhowe-1"
-Get-AzAppServicePlan -ResourceGroupName "rg-ronhowe-1" -Name "plan-ronhowe-1"
-Get-AzWebApp -ResourceGroupName "rg-ronhowe-1" -Name "app-ronhowe-1"
+New-AzResourceGroup -Name $resource -Location $location -Force -Verbose
+New-AzResourceGroupDeployment -ResourceGroupName $resource -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile $parameters -Mode Incremental -Force -Verbose
 
-Remove-AzResourceGroup -Name "rg-ronhowe-0" -Force -Verbose
+Get-AzResourceGroup -Name $resource
+Get-AzAppServicePlan -ResourceGroupName $resource -Name $plan
+Get-AzWebApp -ResourceGroupName $resource -Name $app
 
-Remove-AzResourceGroup -Name "rg-ronhowe-1" -Force -Verbose
+Remove-AzResourceGroup -Name $resource -Force -Verbose
 
 #endregion resources
 ###############################################################################
 
-
 ###############################################################################
-#region configuration
+#region settings
 
 # https://mohitgoyal.co/2018/02/26/apply-update-application-settings-for-azure-app-service-using-powershell/
 
-# does not preserver existing settings
-# Set-AzWebApp -ResourceGroupName $resourceGroupName -Name $appName -AppSettings @{ "MockService1PermanentExceptionToggle" = "true" }
+# danger! this wipes out *all* of the app settings and replaces them solely with what is specified here
+Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "MockService1PermanentExceptionToggle" = "true" }
 
-$appSettings = (Get-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0").SiteConfig.AppSettings |
+# preserve settings by exporting them, modifying them, importing them
+$appSettings = (Get-AzWebApp -ResourceGroupName $resource -Name $app).SiteConfig.AppSettings |
 Sort-Object -Property "Name"
 $appSettings
 
@@ -95,31 +103,36 @@ foreach ($item in $appSettings) {
 }
 $newAppSettings
 
+$newAppSettings.Add("AppConfig__Endpoint", "https://$config.azconfig.io")
 $newAppSettings.CustomHeader = "default"
 $newAppSettings.MockService1PermanentExceptionToggle = "false"
 $newAppSettings.MockService1TransientExceptionToggle = "false"
 $newAppSettings.MockService1CpuThrottleToggle = "false"
 $newAppSettings.MockService1CpuThrottleIterations = 0
 
-$newAppSettings.Add("AppConfig__Endpoint","https://config-ronhowe-0.azconfig.io")
-$newAppSettings
+Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings $newAppSettings
 
-Set-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0" -AppSettings $newAppSettings
+#endregion settings
+###############################################################################
+
+###############################################################################
+#region configuration
 
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
-az appconfig kv export --name "config-ronhowe-0" --destination file --path .\appconfig.json --yes --format json
+az appconfig kv export --name $config --destination file --path .\appconfig.json --yes --format json
 
 Get-Content -Path .\appconfig.json
 code .\appconfig.json
 
-az appconfig kv import --name "config-ronhowe-0" --source file --path .\appconfig.json --yes --format json --import-mode all
+az appconfig kv import --name $config --source file --path .\appconfig.json --yes --format json --import-mode all
 
-# $exportedConfig = Get-AzAppConfigurationKeyValue -Endpoint (Get-Secret -Name "endpoint" -AsPlainText) --auth-mode login
+# work in progress - trying to do the same as above but with Az PowerShell module (it may not be supported, have seen this before)
+# $exportedConfig = Get-AzAppConfigurationKeyValue -Endpoint (Get-Secret -Name "endpoint" -AsPlainText)
 # $exportedConfig | ConvertTo-Json | Out-File -FilePath .\appconfig.json
 
 # $importedConfig = Get-Content -Path .\appconfig.json | ConvertFrom-Json
-# Set-AzAppConfigurationKeyValue -Name "config-ronhowe-0" -InputObject $importedConfig
+# Set-AzAppConfigurationKeyValue -Name $config -InputObject $importedConfig
 
 #endregion configuration
 ###############################################################################
@@ -143,10 +156,9 @@ Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\p
 dotnet publish
 Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
-Publish-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0" -ArchivePath ".\deploy.zip" -Force -Verbose
+Publish-AzWebApp -ResourceGroupName $resource -Name $app -ArchivePath ".\deploy.zip" -Force -Verbose
 
 #endregion build and publish
-
 ###############################################################################
 
 ###############################################################################
