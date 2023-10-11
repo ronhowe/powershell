@@ -1,23 +1,42 @@
+<###############################################################################
+https://github.com/ronhowe/dotnet
+###############################################################################>
+
+throw
+
+###############################################################################
 #region dependencies
+
 Get-Module -Name "Az" -ListAvailable
 Find-Module -Name "Az" -Repository "PSGallery"
 Install-Module -Name "Az" -Repository "PSGallery" -Force
-#endregion dependencies
 
+#endregion dependencies
+###############################################################################
+
+###############################################################################
 #region imports
+
 Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.AppConfiguration"
 Import-Module -Name "Az.Resources"
 Import-Module -Name "Az.Websites"
-#endregion imports
 
+#endregion imports
+###############################################################################
+
+###############################################################################
 #region secrets
 Set-Secret -Name "tenantId"
 Set-Secret -Name "subscriptionName"
 Set-Secret -Name "azure-user" -Secret (Get-Credential)
-#endregion secrets
 
-#region authenticate
+#endregion secrets
+###############################################################################
+
+###############################################################################
+#region authentication
+
 $tenantId = Get-Secret -Name "tenantId" -AsPlainText
 $subscriptionName = Get-Secret -Name "subscriptionName" -AsPlainText
 
@@ -27,52 +46,39 @@ az account set --subscription $subscriptionName
 
 Disconnect-AzAccount
 az logout
-#endregion authenticate
 
+#endregion authentication
+###############################################################################
+
+###############################################################################
 #region resources
+
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
 New-AzResourceGroup -Name "rg-ronhowe-0" -Location "eastus" -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName "rg-ronhowe-0" -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile ".\parameters.0.json" -Mode Incremental -Force -Verbose
 
+New-AzResourceGroup -Name "rg-ronhowe-1" -Location "westus" -Force -Verbose
+New-AzResourceGroupDeployment -ResourceGroupName "rg-ronhowe-1" -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile ".\parameters.1.json" -Mode Incremental -Force -Verbose
+
 Get-AzResourceGroup -Name "rg-ronhowe-0"
 Get-AzAppServicePlan -ResourceGroupName "rg-ronhowe-0" -Name "plan-ronhowe-0"
 Get-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0"
-
-New-AzResourceGroup -Name "rg-ronhowe-1" -Location "westus" -Force -Verbose
-New-AzResourceGroupDeployment -ResourceGroupName "rg-ronhowe-1" -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile ".\parameters.1.json" -Mode Incremental -Force -Verbose
 
 Get-AzResourceGroup -Name "rg-ronhowe-1"
 Get-AzAppServicePlan -ResourceGroupName "rg-ronhowe-1" -Name "plan-ronhowe-1"
 Get-AzWebApp -ResourceGroupName "rg-ronhowe-1" -Name "app-ronhowe-1"
 
 Remove-AzResourceGroup -Name "rg-ronhowe-0" -Force -Verbose
+
 Remove-AzResourceGroup -Name "rg-ronhowe-1" -Force -Verbose
+
 #endregion resources
+###############################################################################
 
-#region unit test
-Set-Location -Path "$HOME\repos\ronhowe\dotnet"
-dotnet build
-dotnet test
-#endregion unit test
 
-#region publish
-Set-Location -Path "$HOME\repos\ronhowe\dotnet"
-dotnet build
-Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -Recurse -Force -Verbose -ErrorAction SilentlyContinue
-dotnet publish
-Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
-Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
-Publish-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0" -ArchivePath ".\deploy.zip" -Force -Verbose
-#endregion publish
-
-#region integration test
-Set-Location -Path "$HOME\repos\ronhowe\powershell\api"
-.\Test-Api.ps1 -Name WebApplication1 -Platform AppService
-.\Test-Api.ps1 -Name Application -Platform FrontDoor
-#endregion integration test
-
-#region break and fix
+###############################################################################
+#region configuration
 
 # https://mohitgoyal.co/2018/02/26/apply-update-application-settings-for-azure-app-service-using-powershell/
 
@@ -100,9 +106,6 @@ $newAppSettings
 
 Set-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0" -AppSettings $newAppSettings
 
-#endregion break and fix
-
-#region configuration
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
 az appconfig kv export --name "config-ronhowe-0" --destination file --path .\appconfig.json --yes --format json
@@ -117,4 +120,40 @@ az appconfig kv import --name "config-ronhowe-0" --source file --path .\appconfi
 
 # $importedConfig = Get-Content -Path .\appconfig.json | ConvertFrom-Json
 # Set-AzAppConfigurationKeyValue -Name "config-ronhowe-0" -InputObject $importedConfig
+
 #endregion configuration
+###############################################################################
+
+###############################################################################
+#region build and test
+
+Set-Location -Path "$HOME\repos\ronhowe\dotnet"
+dotnet build
+dotnet test
+
+#endregion build and test
+###############################################################################
+
+###############################################################################
+#region build and publish
+
+Set-Location -Path "$HOME\repos\ronhowe\dotnet"
+dotnet build
+Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -Recurse -Force -Verbose -ErrorAction SilentlyContinue
+dotnet publish
+Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
+Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
+Publish-AzWebApp -ResourceGroupName "rg-ronhowe-0" -Name "app-ronhowe-0" -ArchivePath ".\deploy.zip" -Force -Verbose
+
+#endregion build and publish
+
+###############################################################################
+
+###############################################################################
+#region live tests
+
+Set-Location -Path "$HOME\repos\ronhowe\powershell\api"
+.\Test-Api.ps1 -Name WebApplication1 -Platform AppService
+
+#endregion live tests
+###############################################################################
