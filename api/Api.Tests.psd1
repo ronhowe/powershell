@@ -1,21 +1,21 @@
 @{
     Endpoints = @(
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "FrontDoor"
-                Uri          = "https://rhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net:443"
-                CustomHeader = "app-rhowe-000"
+                Uri          = "https://ronhowe-fwbuh9b9cxbdhrgs.z01.azurefd.net:443"
+                CustomHeader = "app-ronhowe-000"
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "Application"
                 Platform     = "Gateway"
-                Uri          = "https://api-rhowe-000.azure-api.net:443/httpbin"
-                CustomHeader = "app-rhowe-000"
+                Uri          = "https://api-ronhowe-000.azure-api.net:443/httpbin"
+                CustomHeader = "app-ronhowe-000"
             }
         }
         @{
@@ -41,17 +41,17 @@
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
-                Uri          = "https://app-rhowe-000.azurewebsites.net:443"
-                CustomHeader = "app-rhowe-000"
+                Uri          = "https://app-ronhowe-0.azurewebsites.net:443"
+                CustomHeader = "app-ronhowe-0"
             }
         }
         @{
-            Enabled  = $true
+            Enabled  = $false
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "AppService"
-                Uri          = "https://app-rhowe-001.azurewebsites.net:443"
-                CustomHeader = "app-rhowe-001"
+                Uri          = "https://app-ronhowe-1.azurewebsites.net:443"
+                CustomHeader = "app-ronhowe-1"
             }
         }
         @{

@@ -11,7 +11,7 @@ param(
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullorEmpty()]
-    [int]$Sleep = 5,
+    [int]$Sleep = 3,
 
     [switch]$SkipApplicationChecks,
 
