@@ -86,12 +86,30 @@ Remove-AzResourceGroup -Name $resource -Force -Verbose
 ###############################################################################
 
 ###############################################################################
+#region managed identity
+
+# Get the system-assigned managed identity of the web app
+$webApp = Get-AzWebApp -ResourceGroupName $resource -Name $app
+$identity = $webApp.Identity
+
+# Grant the identity "app configuration data reader" RBAC permission on the app configuration
+$appConfig = Get-AzAppConfiguration -ResourceGroupName $resource -Name $app
+New-AzRoleAssignment -ObjectId $identity.PrincipalId -RoleDefinitionName "App Configuration Data Reader" -Scope $appConfig.Id
+
+#endregion managed identity
+###############################################################################
+
+###############################################################################
 #region settings
 
 # https://mohitgoyal.co/2018/02/26/apply-update-application-settings-for-azure-app-service-using-powershell/
 
 # danger! this wipes out *all* of the app settings and replaces them solely with what is specified here
-Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "MockService1PermanentExceptionToggle" = "true" }
+Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "AppConfig__Endpoint" = "https://$config.azconfig.io" } -Verbose
+Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "CustomHeader" = "$app" } -Verbose
+Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "MockService1PermanentExceptionToggle" = "true" } -Verbose
+
+Restart-AzWebApp -ResourceGroupName $resource -Name $app -Verbose
 
 # preserve settings by exporting them, modifying them, importing them
 $appSettings = (Get-AzWebApp -ResourceGroupName $resource -Name $app).SiteConfig.AppSettings |
@@ -105,7 +123,7 @@ foreach ($item in $appSettings) {
 $newAppSettings
 
 $newAppSettings.Add("AppConfig__Endpoint", "https://$config.azconfig.io")
-$newAppSettings.CustomHeader = "default"
+$newAppSettings.CustomHeader = "$app"
 $newAppSettings.MockService1PermanentExceptionToggle = "false"
 $newAppSettings.MockService1TransientExceptionToggle = "false"
 $newAppSettings.MockService1CpuThrottleToggle = "false"
@@ -139,27 +157,26 @@ az appconfig kv import --name $config --source file --path .\appconfig.json --ye
 ###############################################################################
 
 ###############################################################################
-#region build and test
+#region continuous integration
 
 Set-Location -Path "$HOME\repos\ronhowe\dotnet"
 dotnet build
 dotnet test
 
-#endregion build and test
+#endregion continuous integration
 ###############################################################################
 
 ###############################################################################
-#region build and publish
+#region continuous deployment
 
 Set-Location -Path "$HOME\repos\ronhowe\dotnet"
-dotnet build
 Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -Recurse -Force -Verbose -ErrorAction SilentlyContinue
 dotnet publish
 Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resource -Name $app -ArchivePath ".\deploy.zip" -Force -Verbose
 
-#endregion build and publish
+#endregion build and deployment
 ###############################################################################
 
 ###############################################################################

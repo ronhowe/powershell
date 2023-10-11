@@ -45,6 +45,10 @@ resource configStore 'Microsoft.AppConfiguration/configurationStores@2023-03-01'
   sku: {
     name: 'standard'
   }
+  properties: {
+    enablePurgeProtection: false
+    softDeleteRetentionInDays: 0
+  }
   identity: {
     type: 'SystemAssigned'
   }
