@@ -1,4 +1,3 @@
-#requires -module "WriteAscii"
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
@@ -33,9 +32,6 @@ while ($true) {
             $excludeTags += "healthcheck"
         }
         Invoke-Pester -Path $path -Output Detailed -Container (New-PesterContainer -Path $path -Data $data) -TagFilter $includeTags -ExcludeTagFilter $excludeTags
-        if ($Filter -ne "*") {
-            Write-Ascii -InputObject "$Name ($Platform)" -ForegroundColor Cyan
-        }
         Write-Host "Sleeping $Sleep Second(s)..." -ForegroundColor Cyan
         Start-Sleep -Seconds $Sleep
     }

@@ -13,6 +13,12 @@
         },
         "configStoreName": {
             "value": "config-ronhowe-0"
+        },
+        "workspaceName": {
+            "value": "log-ronhowe-0"
+        },
+        "appInsightsName": {
+            "value": "insights-ronhowe-0"
         }
     }
 }

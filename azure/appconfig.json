@@ -1,7 +1,0 @@
-{
-  "CustomHeader": "app-ronhowe-0",
-  "sentinel": "1",
-  "FeatureManagement": {
-    "MockService1PermanentExceptionToggle": false
-  }
-}

@@ -19,6 +19,8 @@ Install-Module -Name "Az" -Repository "PSGallery" -Force
 
 Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.AppConfiguration"
+Import-Module -Name "Az.ApplicationInsights"
+Import-Module -Name "Az.OperationalInsights"
 Import-Module -Name "Az.Resources"
 Import-Module -Name "Az.Websites"
 
@@ -30,7 +32,7 @@ Import-Module -Name "Az.Websites"
 
 Set-Secret -Name "tenantId"
 Set-Secret -Name "subscriptionName"
-Set-Secret -Name "azure-user" -Secret (Get-Credential)
+Set-Secret -Name "credential" -Secret (Get-Credential)
 
 #endregion secrets
 ###############################################################################
@@ -40,9 +42,10 @@ Set-Secret -Name "azure-user" -Secret (Get-Credential)
 
 $tenantId = Get-Secret -Name "tenantId" -AsPlainText
 $subscriptionName = Get-Secret -Name "subscriptionName" -AsPlainText
+$credential = Get-Secret -Name "credential"
 
-Connect-AzAccount -SubscriptionName $subscriptionName -TenantId $tenantId -Credential (Get-Secret -Name "azure-user")
-az login --username $((Get-Secret -Name "azure-user").UserName) --password $((Get-Secret -Name "azure-user").Password | ConvertFrom-SecureString -AsPlainText) --tenant $tenantId
+Connect-AzAccount -SubscriptionName $subscriptionName -TenantId $tenantId -Credential $credential
+az login --username $($credential.UserName) --password $($credential.Password | ConvertFrom-SecureString -AsPlainText) --tenant $tenantId
 az account set --subscription $subscriptionName
 
 Disconnect-AzAccount
@@ -54,6 +57,9 @@ az logout
 ###############################################################################
 #region resources
 
+# https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
+# https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming-and-tagging-decision-guide
+
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
 $location = "eastus"
@@ -61,15 +67,19 @@ $resource = "rg-ronhowe-0"
 $plan = "plan-ronhowe-0"
 $app = "app-ronhowe-0"
 $config = "config-ronhowe-0"
+$log = "log-ronhowe-0"
+$insights = "insights-ronhowe-0"
 $parameters = ".\parameters.0.json"
 
 #or
 
-$location = "westus"
+$location = "eastus"
 $resource = "rg-ronhowe-1"
 $plan = "plan-ronhowe-1"
 $app = "app-ronhowe-1"
 $config = "config-ronhowe-1"
+$log = "log-ronhowe-1"
+$insights = "insights-ronhowe-1"
 $parameters = ".\parameters.1.json"
 
 New-AzResourceGroup -Name $resource -Location $location -Force -Verbose
@@ -79,6 +89,8 @@ Get-AzResourceGroup -Name $resource
 Get-AzAppServicePlan -ResourceGroupName $resource -Name $plan
 Get-AzWebApp -ResourceGroupName $resource -Name $app
 Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config
+Get-AzOperationalInsightsWorkspace -ResourceGroupName $resource -Name $log
+Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
 
 Remove-AzResourceGroup -Name $resource -Force -Verbose
 
@@ -97,6 +109,10 @@ New-AzRoleAssignment -ObjectId $identity.PrincipalId -RoleDefinitionName "App Co
 #endregion managed identity
 ###############################################################################
 
+$appInsights = Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
+$instrumentationKey = $appInsights.InstrumentationKey
+$connectionString = $appInsights.ConnectionString
+
 ###############################################################################
 #region settings
 
@@ -104,8 +120,6 @@ New-AzRoleAssignment -ObjectId $identity.PrincipalId -RoleDefinitionName "App Co
 
 # danger! this wipes out *all* of the app settings and replaces them solely with what is specified here
 Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "AppConfig__Endpoint" = "https://$config.azconfig.io" } -Verbose
-Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "CustomHeader" = "$app" } -Verbose
-Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings @{ "MockService1PermanentExceptionToggle" = "true" } -Verbose
 
 Restart-AzWebApp -ResourceGroupName $resource -Name $app -Verbose
 
@@ -121,7 +135,9 @@ foreach ($item in $appSettings) {
 $newAppSettings
 
 $newAppSettings.Add("AppConfig__Endpoint", "https://$config.azconfig.io")
+
 $newAppSettings.CustomHeader = "$app"
+
 $newAppSettings.MockService1PermanentExceptionToggle = "false"
 $newAppSettings.MockService1TransientExceptionToggle = "false"
 $newAppSettings.MockService1CpuThrottleToggle = "false"
@@ -137,14 +153,15 @@ Set-AzWebApp -ResourceGroupName $resource -Name $app -AppSettings $newAppSetting
 
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
-az appconfig kv export --name $config --destination file --path .\appconfig.json --yes --format json
+az appconfig kv export --name $config --destination file --path .\configuration.json --yes --format json
 
-Get-Content -Path .\appconfig.json
-code .\appconfig.json
+Get-Content -Path .\configuration.json
+code .\configuration.json
 
-az appconfig kv import --name $config --source file --path .\appconfig.json --yes --format json --import-mode all
+az appconfig kv import --name $config --source file --path .\configuration.json --yes --format json --import-mode all
 
 # work in progress - trying to do the same as above but with Az PowerShell module (it may not be supported, have seen this before)
+
 # $exportedConfig = Get-AzAppConfigurationKeyValue -Endpoint (Get-Secret -Name "endpoint" -AsPlainText)
 # $exportedConfig | ConvertTo-Json | Out-File -FilePath .\appconfig.json
 
