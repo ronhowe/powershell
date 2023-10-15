@@ -3,6 +3,7 @@ param planName string
 param configStoreName string
 param workspaceName string
 param appInsightsName string
+param storageAccountName string
 param location string
 param skuName string = 'B2'
 param skuCapacity int = 1
@@ -74,5 +75,14 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   properties: {
     Application_Type: 'web'
     WorkspaceResourceId: logAnalyticsWorkspace.id
+  }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
   }
 }

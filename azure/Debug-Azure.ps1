@@ -22,6 +22,7 @@ Import-Module -Name "Az.AppConfiguration"
 Import-Module -Name "Az.ApplicationInsights"
 Import-Module -Name "Az.OperationalInsights"
 Import-Module -Name "Az.Resources"
+Import-Module -Name "Az.Storage"
 Import-Module -Name "Az.Websites"
 
 #endregion imports
@@ -69,6 +70,7 @@ $app = "app-ronhowe-0"
 $config = "config-ronhowe-0"
 $log = "log-ronhowe-0"
 $insights = "insights-ronhowe-0"
+$storage = "stronhowe0"
 $parameters = ".\parameters.0.json"
 
 #or
@@ -80,6 +82,7 @@ $app = "app-ronhowe-1"
 $config = "config-ronhowe-1"
 $log = "log-ronhowe-1"
 $insights = "insights-ronhowe-1"
+$storage = "stronhowe1"
 $parameters = ".\parameters.1.json"
 
 New-AzResourceGroup -Name $resource -Location $location -Force -Verbose
@@ -91,6 +94,7 @@ Get-AzWebApp -ResourceGroupName $resource -Name $app
 Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config
 Get-AzOperationalInsightsWorkspace -ResourceGroupName $resource -Name $log
 Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
+Get-AzStorageAccount -ResourceGroupName $resource -Name $storage
 
 Remove-AzResourceGroup -Name $resource -Force -Verbose
 

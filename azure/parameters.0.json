@@ -19,6 +19,9 @@
         },
         "appInsightsName": {
             "value": "insights-ronhowe-0"
+        },
+        "storageAccountName": {
+            "value": "stronhowe0"
         }
     }
 }
