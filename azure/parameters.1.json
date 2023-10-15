@@ -18,10 +18,13 @@
             "value": "log-ronhowe-1"
         },
         "appInsightsName": {
-            "value": "insight-ronhowe-1"
+            "value": "insights-ronhowe-1"
         },
         "storageAccountName": {
-            "value": "stronhowe0"
+            "value": "stronhowe1"
+        },
+        "vaultName": {
+            "value": "key-ronhowe-1"
         }
     }
 }

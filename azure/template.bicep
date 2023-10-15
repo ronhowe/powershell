@@ -7,6 +7,13 @@ param storageAccountName string
 param location string
 param skuName string = 'B2'
 param skuCapacity int = 1
+param vaultName string = 'key-ronhowe-0'
+param keyName string = 'mykey'
+param vaultSku string = 'standard'
+param keyType string = 'RSA'
+param keyOps array = []
+param keySize int = 2048
+param curveName string = ''
 
 // https://learn.microsoft.com/en-us/azure/templates/microsoft.web/serverfarms?pivots=deployment-language-bicep
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
@@ -78,6 +85,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts?pivots=deployment-language-bicep
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
@@ -86,3 +94,41 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     name: 'Standard_LRS'
   }
 }
+
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.keyvault/vaults?pivots=deployment-language-bicep
+resource vault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+  name: vaultName
+  location: location
+  properties: {
+    accessPolicies: []
+    enableRbacAuthorization: true
+    enableSoftDelete: true
+    softDeleteRetentionInDays: 90
+    enabledForDeployment: false
+    enabledForDiskEncryption: false
+    enabledForTemplateDeployment: false
+    tenantId: subscription().tenantId
+    sku: {
+      name: vaultSku
+      family: 'A'
+    }
+    networkAcls: {
+      defaultAction: 'Allow'
+      bypass: 'AzureServices'
+    }
+  }
+}
+
+// https://learn.microsoft.com/en-us/azure/templates/microsoft.keyvault/vaults/keys?pivots=deployment-language-bicep
+resource key 'Microsoft.KeyVault/vaults/keys@2022-07-01' = {
+  parent: vault
+  name: keyName
+  properties: {
+    kty: keyType
+    keyOps: keyOps
+    keySize: keySize
+    curveName: curveName
+  }
+}
+
+output proxyKey object = key.properties

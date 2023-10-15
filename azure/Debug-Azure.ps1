@@ -71,6 +71,7 @@ $config = "config-ronhowe-0"
 $log = "log-ronhowe-0"
 $insights = "insights-ronhowe-0"
 $storage = "stronhowe0"
+$key = "key-ronhowe-0"
 $parameters = ".\parameters.0.json"
 
 #or
@@ -83,6 +84,7 @@ $config = "config-ronhowe-1"
 $log = "log-ronhowe-1"
 $insights = "insights-ronhowe-1"
 $storage = "stronhowe1"
+$key = "key-ronhowe-1"
 $parameters = ".\parameters.1.json"
 
 New-AzResourceGroup -Name $resource -Location $location -Force -Verbose
@@ -95,6 +97,7 @@ Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config
 Get-AzOperationalInsightsWorkspace -ResourceGroupName $resource -Name $log
 Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
 Get-AzStorageAccount -ResourceGroupName $resource -Name $storage
+Get-AzKeyVault -ResourceGroupName $resource -Name $key
 
 Remove-AzResourceGroup -Name $resource -Force -Verbose
 

@@ -22,6 +22,9 @@
         },
         "storageAccountName": {
             "value": "stronhowe0"
+        },
+        "vaultName": {
+            "value": "key-ronhowe-0"
         }
     }
 }
