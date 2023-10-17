@@ -26,7 +26,10 @@ function Start-Shell {
 
             Write-Verbose "Starting Shell"
             Clear-Host
-            Write-Ascii "pshell" -ForegroundColor Green
+            # module fails with a Sort command on Linux
+            if ($PSVersionTable.Platform -ne "Unix") {
+                Write-Ascii "pshell" -ForegroundColor Green
+            }
             Show-Logo
             Show-Version
             Show-Date
