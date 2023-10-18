@@ -1,5 +1,5 @@
 <###############################################################################
-https://github.com/ronhowe/dotnet
+https://github.com/ronhowe
 ###############################################################################>
 
 throw
@@ -116,9 +116,9 @@ New-AzRoleAssignment -ObjectId $identity.PrincipalId -RoleDefinitionName "App Co
 #endregion managed identity
 ###############################################################################
 
-$appInsights = Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
-$instrumentationKey = $appInsights.InstrumentationKey
-$connectionString = $appInsights.ConnectionString
+# $appInsights = Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
+# $instrumentationKey = $appInsights.InstrumentationKey
+# $connectionString = $appInsights.ConnectionString
 
 ###############################################################################
 #region settings
