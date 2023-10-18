@@ -30,12 +30,17 @@ function Start-Shell {
             if ($PSVersionTable.Platform -ne "Unix") {
                 Write-Ascii "pshell" -ForegroundColor Green
             }
+            else {
+                Write-Host "pshell" -ForegroundColor Green
+            }
             Show-Logo
             Show-Version
             Show-Date
             Show-Ready
             Set-Location -Path $HOME
-            [System.Console]::Beep(500, 100)
+            if ($PSVersionTable.Platform -ne "Unix") {
+                [System.Console]::Beep(500, 100)
+            }
         }
         catch {
             Write-Error "Starting Shell Failed"
