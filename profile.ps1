@@ -1,5 +1,7 @@
 Write-Host "https://github.com/ronhowe/powershell/blob/main/profile.ps1" -ForegroundColor Green
 
+$ProgressPreference = "SilentlyContinue"
+
 Write-Verbose "PowerShell $($PSVersionTable.PSVersion.ToString())" -Verbose
 
 Set-Location -Path $HOME
