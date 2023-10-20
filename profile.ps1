@@ -127,3 +127,6 @@ if ($PSVersionTable -eq "Core") {
     Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 }
 Set-PSReadLineOption -PredictionViewStyle ListView
+
+# legacy build machine support
+New-Variable -Name "Root" -Value "$HOME\repos" -Scope Global -Force -ErrorAction SilentlyContinue
