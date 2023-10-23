@@ -9,7 +9,7 @@
         @{ Name = 'Microsoft.PowerShell.Crescendo' ; Version = '1.1.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Microsoft.PowerShell.SecretManagement' ; Version = '1.1.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Microsoft.PowerShell.SecretStore' ; Version = '1.0.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'ModuleBuilder' ; Version = '3.0.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'ModuleBuilder' ; Version = '3.0.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Pester' ; Version = '5.5.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'posh-git' ; Version = '1.1.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         # todo - PoShLog # https://github.com/PoShLog/PoShLog
