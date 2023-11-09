@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"name": "dotnet",
+			"path": "C:/Users/ronhowe/repos/ronhowe/dotnet"
+		},
+		{
+			"name": "holotable",
+			"path": "C:/Users/ronhowe/repos/ronhowe/holotable"
+		},
+		{
+			"name": "powershell",
+			"path": "C:/Users/ronhowe/repos/ronhowe/powershell"
+		},
+		{
+			"name": "roll20",
+			"path": "C:/Users/ronhowe/repos/ronhowe/roll20"
+		},
+		{
+			"name": "ronhowe",
+			"path": "C:/Users/ronhowe/repos/ronhowe/ronhowe"
+		},
+		{
+			"name": "swccg-card-json",
+			"path": "C:/Users/ronhowe/repos/ronhowe/swccg-card-json"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "c:\\Users\\ronhowe\\repos\\ronhowe\\powershell",
+		"debug.internalConsoleOptions": "neverOpen"
+	}
+}
