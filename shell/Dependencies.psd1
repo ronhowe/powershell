@@ -1,7 +1,7 @@
 @{
     Modules = @(
-        @{ Name = 'Az' ; Version = '10.4.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'Az.Tools.Predictor' ; Version = '1.1.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'Az' ; Version = '11.0.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'Az.Tools.Predictor' ; Version = '1.1.3' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'CliMenu' ; Version = '1.0.52.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'dbatools' ; Version = '2.1.5' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'ImportExcel' ; Version = '7.8.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
