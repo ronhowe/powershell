@@ -16,7 +16,7 @@
         @{ Name = 'PowerConfig' ; Version = '0.1.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'PSPolly' ; Version = '0.0.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' }, # https://github.com/adamdriscoll/pspolly
         @{ Name = 'PSReadLine' ; Version = '2.3.4' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'PSWindowsUpdate' ; Version = '2.2.1.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'PSWindowsUpdate' ; Version = '2.2.1.3' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'SqlServer' ; Version = '22.1.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'WriteAscii' ; Version = '1.2.2.1' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' }
     )
