@@ -3,34 +3,31 @@ BeforeAll {
 }
 
 Describe "ConvertTo-CdfRarity" {
-    Context "Some Context" {
-        It "RarityParses" {
-            @'
+    It "RarityParses" {
+        @'
 {
 "rarity": "U"
 }
 '@ |
-            ConvertFrom-Json |
-            ConvertTo-CdfRarity |
-            Should -Be "U"
-        }
+        ConvertFrom-Json |
+        ConvertTo-CdfRarity |
+        Should -Be "U"
     }
 }
 
 Describe "ConvertTo-CdfDeploy" {
-    Context "SomeContext" {
-        It "BraniacParses" {
-            @'
+    It "BraniacParses" {
+        @'
 {
 "id": 319
 }
 '@ |
-            ConvertFrom-Json |
-            ConvertTo-CdfDeploy |
-            Should -Be "Y"
-        }
-        It "NonBrianiacParses" {
-            @"
+        ConvertFrom-Json |
+        ConvertTo-CdfDeploy |
+        Should -Be "Y"
+    }
+    It "NonBrianiacParses" {
+        @"
 {
 "front": {
     "deploy": "0"
@@ -38,10 +35,31 @@ Describe "ConvertTo-CdfDeploy" {
 "id": 0
 }
 "@ |
-            ConvertFrom-Json |
-            ConvertTo-CdfDeploy |
-            Should -Be "0"
-        }
+        ConvertFrom-Json |
+        ConvertTo-CdfDeploy |
+        Should -Be "0"
+    }
+}
+
+Describe "Format-CdfTagGroup" {
+    It "OutputIsEmptyWithEmptyTagValue" {
+        Format-CdfTagGroup -Tags @("a", "b") |
+        Should -Be "a b\n"
+    }
+    It "TagsAreTrimmed" {
+        Format-CdfTagGroup -Tags @(" a ", " b ") |
+        Should -Be "a b\n"
+    }
+}
+
+Describe "Format-CdfTagPrefix" {
+    It "OutputIsEmptyWithEmptyTagValue" {
+        Format-CdfTagPrefix -TagName "tagname" -TagValue "" |
+        Should -Be ""
+    }
+    It "OutputIsTrimmed" {
+        Format-CdfTagPrefix -TagName " tagname " -TagValue " tagvalue " |
+        Should -Be "tagname: tagvalue"
     }
 }
 

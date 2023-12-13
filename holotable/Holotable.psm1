@@ -442,39 +442,39 @@ function ConvertTo-CdfLine {
 
     try {
         $ability = ConvertTo-CdfAbility -Context $Context
-        $abilityTag = Format-CdfTagPrefix -Context $Context -TagName "Ability" -TagValue $ability
+        $abilityTag = Format-CdfTagPrefix -TagName "Ability" -TagValue $ability
         $armor = ConvertTo-CdfArmor -Context $Context
-        $armorTag = Format-CdfTagPrefix -Context $Context -TagName "Armor" -TagValue $armor
+        $armorTag = Format-CdfTagPrefix -TagName "Armor" -TagValue $armor
         $darkSideIcons = ConvertTo-CdfForceIconsDark -Context $Context
         $deploy = ConvertTo-CdfDeploy -Context $Context
-        $deployTag = Format-CdfTagPrefix -Context $Context -TagName "Deploy" -TagValue $deploy
+        $deployTag = Format-CdfTagPrefix -TagName "Deploy" -TagValue $deploy
         $destiny = ConvertTo-CdfDestiny -Context $Context
         $extraText = ConvertTo-CdfExtraText -Context $Context
         $forfeit = ConvertTo-CdfForfeit -Context $Context
-        $forfeitTag = Format-CdfTagPrefix -Context $Context -TagName "Forfeit" -TagValue $forfeit
+        $forfeitTag = Format-CdfTagPrefix -TagName "Forfeit" -TagValue $forfeit
         $gametext = ConvertTo-CdfGameText -Context $Context
-        $gametextTag = Format-CdfTagPrefix -Context $Context -TagName "Text" -TagValue $gametext
+        $gametextTag = Format-CdfTagPrefix -TagName "Text" -TagValue $gametext
         $hyperspeed = ConvertTo-CdfHypderspeed -Context $Context
-        $hyperspeedTag = Format-CdfTagPrefix -Context $Context -TagName "Hyperspeed" -TagValue $hyperspeed
+        $hyperspeedTag = Format-CdfTagPrefix -TagName "Hyperspeed" -TagValue $hyperspeed
         $icons = ConvertTo-CdfIcons -Context $Context
-        $iconsTag = Format-CdfTagPrefix -Context $Context -TagName "Icons" -TagValue $icons
+        $iconsTag = Format-CdfTagPrefix -TagName "Icons" -TagValue $icons
         $image = ConvertTo-CdfImage -Context $Context
         $landspeed = ConvertTo-CdfLandspeed -Context $Context
-        $landspeedTag = Format-CdfTagPrefix -Context $Context -TagName "Landspeed" -TagValue $landspeed
+        $landspeedTag = Format-CdfTagPrefix -TagName "Landspeed" -TagValue $landspeed
         $lightSideIcons = ConvertTo-CdfForceIconsLight -Context $Context
         $lore = ConvertTo-CdfLore -Context $Context
-        $loreTag = Format-CdfTagPrefix -Context $Context -TagName "Lore" -TagValue $lore
+        $loreTag = Format-CdfTagPrefix -TagName "Lore" -TagValue $lore
         $maneuver = ConvertTo-CdfManeuver -Context $Context
-        $maneuverTag = Format-CdfTagPrefix -Context $Context -TagName "Maneuver" -TagValue $maneuver
+        $maneuverTag = Format-CdfTagPrefix -TagName "Maneuver" -TagValue $maneuver
         $parsec = ConvertTo-CdfParsec -Context $Context
-        $parsecTag = Format-CdfTagPrefix -Context $Context -TagName "Parsec" -TagValue $parsec
+        $parsecTag = Format-CdfTagPrefix -TagName "Parsec" -TagValue $parsec
         $politics = ConvertTo-CdfPolitics -Context $Context
-        $politicsTag = Format-CdfTagPrefix -Context $Context -TagName "Politics" -TagValue $politics
+        $politicsTag = Format-CdfTagPrefix -TagName "Politics" -TagValue $politics
         $power = ConvertTo-CdfPower -Context $Context
-        $powerTag = Format-CdfTagPrefix -Context $Context -TagName "Power" -TagValue $power
+        $powerTag = Format-CdfTagPrefix -TagName "Power" -TagValue $power
         $rarity = ConvertTo-CdfRarity -Context $Context
         $set = ConvertTo-CdfSet -Context $Context -SetsJson $SetsJson
-        $setTag = Format-CdfTagPrefix -Context $Context -TagName "Set" -TagValue $set
+        $setTag = Format-CdfTagPrefix -TagName "Set" -TagValue $set
         $side = ConvertTo-CdfSide -Context $Context
         $subType = ConvertTo-CdfSubType -Context $Context
         $title = ConvertTo-CdfTitle -Context $Context
@@ -1259,7 +1259,7 @@ function Format-CdfTagGroup {
         $Tags |
         ForEach-Object {
             if ($_ -ne "") {
-                $output = $output + $("{0} " -f $_)
+                $output = $output + $("{0} " -f $_.Trim())
             }
         }
     }
@@ -1274,10 +1274,6 @@ function Format-CdfTagGroup {
 function Format-CdfTagPrefix {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline = $true)]
-        [PSCustomObject]
-        $Context,
-
         [string]
         $TagName,
 
@@ -1288,7 +1284,7 @@ function Format-CdfTagPrefix {
     [string]$output = ""
 
     if ($TagValue -ne "") {
-        $output = "{0}: {1}" -f $TagName, $TagValue
+        $output = "{0}: {1}" -f $TagName.Trim(), $TagValue.Trim()
     }
 
     $output = $output.Trim()
