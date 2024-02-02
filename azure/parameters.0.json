@@ -6,25 +6,25 @@
             "value": "eastus"
         },
         "appName": {
-            "value": "app-ronhowe-0"
+            "value": "app-rhowe-idso-000"
         },
         "planName": {
-            "value": "plan-ronhowe-0"
+            "value": "asp-rhowe-idso-000"
         },
         "configStoreName": {
-            "value": "config-ronhowe-0"
+            "value": "appcs-rhowe-idso-000"
         },
         "workspaceName": {
-            "value": "log-ronhowe-0"
+            "value": "log-rhowe-idso-000"
         },
         "appInsightsName": {
-            "value": "insights-ronhowe-0"
+            "value": "appi-rhowe-idso-000"
         },
         "storageAccountName": {
-            "value": "stronhowe0"
+            "value": "strhoweidso000"
         },
         "vaultName": {
-            "value": "key-ronhowe-0"
+            "value": "kv-rhowe-idso-000"
         }
     }
 }

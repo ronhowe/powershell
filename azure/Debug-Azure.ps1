@@ -20,6 +20,7 @@ Install-Module -Name "Az" -Repository "PSGallery" -Force
 Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.AppConfiguration"
 Import-Module -Name "Az.ApplicationInsights"
+Import-Module -Name "Az.KeyVault"
 Import-Module -Name "Az.OperationalInsights"
 Import-Module -Name "Az.Resources"
 Import-Module -Name "Az.Storage"
@@ -63,41 +64,41 @@ az logout
 
 Set-Location -Path "$HOME\repos\ronhowe\powershell\azure"
 
+$app = "app-rhowe-idso-000"
+$config = "appcs-rhowe-idso-000"
+$insights = "appi-rhowe-idso-000"
+$key = "kv-rhowe-idso-000"
 $location = "eastus"
-$resource = "rg-ronhowe-0"
-$plan = "plan-ronhowe-0"
-$app = "app-ronhowe-0"
-$config = "config-ronhowe-0"
-$log = "log-ronhowe-0"
-$insights = "insights-ronhowe-0"
-$storage = "stronhowe0"
-$key = "key-ronhowe-0"
+$log = "log-rhowe-idso-000"
 $parameters = ".\parameters.0.json"
+$plan = "asp-rhowe-idso-000"
+$resource = "rg-rhowe-idso-000"
+$storage = "strhoweidso000"
 
 #or
 
-$location = "eastus"
-$resource = "rg-ronhowe-1"
-$plan = "plan-ronhowe-1"
 $app = "app-ronhowe-1"
-$config = "config-ronhowe-1"
+$config = "appcs-ronhowe-1"
+$insights = "appi-ronhowe-1"
+$key = "kv-ronhowe-1"
+$location = "westus"
 $log = "log-ronhowe-1"
-$insights = "insights-ronhowe-1"
-$storage = "stronhowe1"
-$key = "key-ronhowe-1"
 $parameters = ".\parameters.1.json"
+$plan = "asp-ronhowe-1"
+$resource = "rg-ronhowe-1"
+$storage = "stronhowe1"
 
 New-AzResourceGroup -Name $resource -Location $location -Force -Verbose
 New-AzResourceGroupDeployment -ResourceGroupName $resource -Name (New-Guid) -TemplateFile ".\template.bicep" -TemplateParameterFile $parameters -Mode Incremental -Force -Verbose
 
-Get-AzResourceGroup -Name $resource
-Get-AzAppServicePlan -ResourceGroupName $resource -Name $plan
-Get-AzWebApp -ResourceGroupName $resource -Name $app
 Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config
-Get-AzOperationalInsightsWorkspace -ResourceGroupName $resource -Name $log
 Get-AzApplicationInsights -ResourceGroupName $resource -Name $insights
-Get-AzStorageAccount -ResourceGroupName $resource -Name $storage
+Get-AzAppServicePlan -ResourceGroupName $resource -Name $plan
 Get-AzKeyVault -ResourceGroupName $resource -Name $key
+Get-AzOperationalInsightsWorkspace -ResourceGroupName $resource -Name $log
+Get-AzResourceGroup -Name $resource
+Get-AzStorageAccount -ResourceGroupName $resource -Name $storage
+Get-AzWebApp -ResourceGroupName $resource -Name $app
 
 Remove-AzResourceGroup -Name $resource -Force -Verbose
 
@@ -110,7 +111,7 @@ Remove-AzResourceGroup -Name $resource -Force -Verbose
 $webApp = Get-AzWebApp -ResourceGroupName $resource -Name $app
 $identity = $webApp.Identity
 
-$appConfig = Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config 
+$appConfig = Get-AzAppConfigurationStore -ResourceGroupName $resource -Name $config
 New-AzRoleAssignment -ObjectId $identity.PrincipalId -RoleDefinitionName "App Configuration Data Reader" -Scope $appConfig.Id
 
 #endregion managed identity
@@ -167,6 +168,21 @@ code .\configuration.json
 
 az appconfig kv import --name $config --source file --path .\configuration.json --yes --format json --import-mode all
 
+Get-AzAppConfigurationKeyValue -Endpoint "https://appcs-rhowe-idso-000.azconfig.io"
+
+# configuration(s)
+Get-AzAppConfigurationKeyValue -Endpoint "https://appcs-rhowe-idso-000.azconfig.io" -Key "Sentinel"
+Set-AzAppConfigurationKeyValue -Endpoint "https://appcs-rhowe-idso-000.azconfig.io" -Key "Sentinel" -Value (Get-Date -AsUTC)
+
+# feature toggle(s)
+Get-AzAppConfigurationKeyValue -Endpoint "https://appcs-rhowe-idso-000.azconfig.io" -Key ".appconfig.featureflag/MockService1PermanentExceptionToggle"
+
+$json = '{"id":"MockService1PermanentExceptionToggle","description":"","enabled":false,"conditions":{"client_filters":[]}}'
+Set-AzAppConfigurationKeyValue -Endpoint "https://appcs-rhowe-idso-000.azconfig.io" -Key ".appconfig.featureflag/MockService1PermanentExceptionToggle" -Value $json -ContentType "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
+
+$json = '{"id":"MockService1PermanentExceptionToggle","description":"","enabled":true,"conditions":{"client_filters":[]}}'
+Set-AzAppConfigurationKeyValue -Endpoint "https://appcs-rhowe-idso-000.azconfig.io" -Key ".appconfig.featureflag/MockService1PermanentExceptionToggle" -Value $json -ContentType "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
+
 # work in progress - trying to do the same as above but with Az PowerShell module (it may not be supported, have seen this before)
 
 # $exportedConfig = Get-AzAppConfigurationKeyValue -Endpoint (Get-Secret -Name "endpoint" -AsPlainText)
@@ -191,10 +207,13 @@ dotnet test
 ###############################################################################
 #region continuous deployment
 
+Get-Service -Name "W3SVC" | Stop-Service -Force -Verbose
+Get-Service -Name "W3SVC" | Start-Service -Verbose
+
 Set-Location -Path "$HOME\repos\ronhowe\dotnet"
-Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -Recurse -Force -Verbose -ErrorAction SilentlyContinue
+Remove-Item -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Release\net8.0\publish" -Recurse -Force -Verbose -ErrorAction SilentlyContinue
 dotnet publish
-Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Debug\net7.0\publish" -ErrorAction Stop
+Set-Location -Path "$HOME\repos\ronhowe\dotnet\WebApplication1\bin\Release\net8.0\publish" -ErrorAction Stop
 Compress-Archive -Path * -DestinationPath ".\deploy.zip" -Force -Verbose
 Publish-AzWebApp -ResourceGroupName $resource -Name $app -ArchivePath ".\deploy.zip" -Force -Verbose
 

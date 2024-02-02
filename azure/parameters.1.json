@@ -9,22 +9,22 @@
             "value": "app-ronhowe-1"
         },
         "planName": {
-            "value": "plan-ronhowe-1"
+            "value": "asp-ronhowe-1"
         },
         "configStoreName": {
-            "value": "config-ronhowe-1"
+            "value": "appcs-ronhowe-1"
         },
         "workspaceName": {
             "value": "log-ronhowe-1"
         },
         "appInsightsName": {
-            "value": "insights-ronhowe-1"
+            "value": "appi-ronhowe-1"
         },
         "storageAccountName": {
             "value": "stronhowe1"
         },
         "vaultName": {
-            "value": "key-ronhowe-1"
+            "value": "kv-ronhowe-1"
         }
     }
 }
