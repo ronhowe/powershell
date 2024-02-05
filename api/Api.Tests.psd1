@@ -23,7 +23,7 @@
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "IIS"
-                Uri          = "https://localhost"
+                Uri          = "https://localhost:443"
                 CustomHeader = "default"
             }
         }
@@ -82,11 +82,11 @@
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "FunctionApp1"
                 Platform     = "FunctionApp"
-                Uri          = "TBD"
+                Uri          = "https://func-rhowe-idso-000.azurewebsites.net"
                 CustomHeader = "default"
             }
         }
