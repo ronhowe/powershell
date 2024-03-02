@@ -130,3 +130,9 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 
 # legacy build machine support
 New-Variable -Name "Root" -Value "$HOME\repos" -Scope Global -Force -ErrorAction SilentlyContinue
+
+function Set-Prompt {
+    function global:prompt { "> " }
+}
+
+New-Alias -Name "quiet" -Value Set-Prompt -Force -Verbose
