@@ -23,12 +23,12 @@
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "IIS"
-                Uri          = "https://localhost:443"
+                Uri          = "https://lab-web-01:443"
                 CustomHeader = "default"
             }
         }
         @{
-            Enabled  = $false
+            Enabled  = $true
             Endpoint = @{
                 Name         = "WebApplication1"
                 Platform     = "Kestrel"
