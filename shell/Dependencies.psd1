@@ -6,7 +6,7 @@
         @{ Name = 'CliMenu' ; Version = '1.0.52.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'dbatools' ; Version = '2.1.8' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'ImportExcel' ; Version = '7.8.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'InvokeBuild' ; Version = '5.10.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'InvokeBuild' ; Version = '5.11.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Microsoft.PowerShell.Crescendo' ; Version = '1.1.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Microsoft.PowerShell.SecretManagement' ; Version = '1.1.2' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Microsoft.PowerShell.SecretStore' ; Version = '1.0.6' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
