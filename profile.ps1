@@ -123,9 +123,12 @@ New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
 
 #endregion Show-RonHowe (aka ronhowe)
 
-if ($PSVersionTable -eq "Core") {
+if ($PSVersionTable.PSEdition -eq "Core") {
     Set-PSReadLineOption -PredictionSource HistoryAndPlugin
     Set-PSReadLineOption -PredictionViewStyle ListView -WarningAction SilentlyContinue
+}
+else {
+    Set-PSReadLineOption -PredictionViewStyle InlineView -WarningAction SilentlyContinue
 }
 
 # legacy build machine support
