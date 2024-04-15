@@ -139,3 +139,5 @@ function Set-Prompt {
 }
 
 New-Alias -Name "quiet" -Value Set-Prompt -Force -Verbose
+
+Set-Prompt
