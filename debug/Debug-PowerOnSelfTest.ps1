@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
-    [guid]
-    $Value = (New-Guid)
+    [string]
+    $Why = "Power-On Self-Test"
 )
 begin {
     Write-Debug "Power-On Self-Test (1 of 5) => `$DebugPreference = $DebugPreference" -Debug
@@ -21,14 +21,20 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Writing Output"
-
-    Write-Output $Value
-
-    Write-Host (Get-Date)
+    Write-Host "WHO"
     Write-Host $env:USERNAME
+
+    Write-Host "WHAT"
+    Write-Host $PSVersionTable
+
+    Write-Host "WHERE"
     Write-Host $env:COMPUTERNAME
-    Write-Host $PWD
+
+    Write-Host "WHEN"
+    Write-Host (Get-Date)
+
+    Write-Host "WHY"
+    Write-Host $Why
 
     Write-Host "OK" -ForegroundColor Green
 }
