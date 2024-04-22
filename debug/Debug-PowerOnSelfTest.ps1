@@ -22,13 +22,13 @@ process {
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
     Write-Host "WHO"
-    Write-Host $env:USERNAME
+    Write-Host $env:USERNAME $env:USER
 
     Write-Host "WHAT"
     Write-Host $PSVersionTable
 
     Write-Host "WHERE"
-    Write-Host $env:COMPUTERNAME
+    Write-Host $env:COMPUTERNAME $env:NAME
 
     Write-Host "WHEN"
     Write-Host (Get-Date)
