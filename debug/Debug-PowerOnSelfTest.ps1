@@ -25,6 +25,11 @@ process {
 
     Write-Output $Value
 
+    Write-Host (Get-Date)
+    Write-Host $env:USERNAME
+    Write-Host $env:COMPUTERNAME
+    Write-Host $PWD
+
     Write-Host "OK" -ForegroundColor Green
 }
 end {
