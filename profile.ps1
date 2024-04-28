@@ -134,10 +134,16 @@ else {
 # legacy build machine support
 New-Variable -Name "Root" -Value "$HOME\repos" -Scope Global -Force -ErrorAction SilentlyContinue
 
-function Set-Prompt {
+function Set-PromptMinimal {
     function global:prompt { "> " }
 }
 
-New-Alias -Name "quiet" -Value Set-Prompt -Force -Verbose
+New-Alias -Name "quiet" -Value Set-PromptMinimal -Force -Verbose
 
-Set-Prompt
+Set-PromptMinimal
+
+function Set-PromptOff {
+    function global:prompt { " " }
+}
+
+New-Alias -Name "silence" -Value Set-PromptOff -Force -Verbose
