@@ -140,8 +140,6 @@ function Set-PromptMinimal {
 
 New-Alias -Name "quiet" -Value Set-PromptMinimal -Force -Verbose
 
-Set-PromptMinimal
-
 function Set-PromptOff {
     function global:prompt { " " }
 }
