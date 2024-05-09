@@ -4,12 +4,6 @@ param (
     $Why = "Power-On Self-Test"
 )
 begin {
-    Write-Debug "Power-On Self-Test (1 of 5) => `$DebugPreference = $DebugPreference" -Debug
-    Write-Verbose "Power-On Self-Test (2 of 5) => `$VerbosePreference = $VerbosePreference" -Verbose
-    Write-Information "Power-On Self-Test (3 of 5) => `$InformationPreference = $InformationPreference" -InformationAction Continue
-    Write-Warning "Power-On Self-Test (4 of 5) => `$WarningPreference = $WarningPreference" -WarningAction Continue
-    Write-Error "Power-On Self-Test (5 of 5) => `$ErrorActionPreference = $ErrorActionPreference" -ErrorAction Continue
-
     Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
 
     Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
@@ -21,21 +15,28 @@ process {
 
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    Write-Host "WHO"
-    Write-Host @($env:USERNAME, $env:USER)
+    Write-Verbose "Power-On Self-Test (1 of 5) => `$DebugPreference = $DebugPreference"
+    Write-Verbose "Power-On Self-Test (2 of 5) => `$VerbosePreference = $VerbosePreference"
+    Write-Verbose "Power-On Self-Test (3 of 5) => `$InformationPreference = $InformationPreference"
+    Write-Verbose "Power-On Self-Test (4 of 5) => `$WarningPreference = $WarningPreference"
+    Write-Verbose "Power-On Self-Test (5 of 5) => `$ErrorActionPreference = $ErrorActionPreference"
 
-    Write-Host "WHAT"
-    Write-Host $PSVersionTable
+    Write-Verbose "Logging Who"
+    @($env:USERNAME, $env:USER)
 
-    Write-Host "WHERE"
-    Write-Host @($env:COMPUTERNAME, $env:NAME)
+    Write-Verbose "Logging What"
+    $PSVersionTable.PSVersion.ToString()
 
-    Write-Host "WHEN"
-    Write-Host (Get-Date)
+    Write-Verbose "Logging Where"
+    @($env:COMPUTERNAME, $env:NAME)
 
-    Write-Host "WHY"
-    Write-Host $Why
+    Write-Verbose "Logging When"
+    (Get-Date).DateTime
 
+    Write-Verbose "Logging Why"
+    $Why
+
+    # does not output in Azure Automation
     Write-Host "OK" -ForegroundColor Green
 }
 end {
