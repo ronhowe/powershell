@@ -145,3 +145,12 @@ function Set-PromptOff {
 }
 
 New-Alias -Name "silence" -Value Set-PromptOff -Force -Verbose
+
+function Get-UpgradeStatus {
+    . "$HOME\repos\ronhowe\powershell\tools\Get-DevOpsTools.ps1"
+    . "$HOME\repos\ronhowe\powershell\shell\Test-Dependencies.ps1"
+    dotnet list .\repos\ronhowe\dotnet\dotnet.sln package --outdated
+    winget upgrade
+}
+
+New-Alias -Name "upgrade" -Value Get-UpgradeStatus -Force -Verbose
