@@ -154,3 +154,9 @@ function Get-UpgradeStatus {
 }
 
 New-Alias -Name "upgrade" -Value Get-UpgradeStatus -Force -Verbose
+
+function Start-WslCmatrix {
+    wsl cmatrix
+}
+
+New-Alias -Name "matrix" -Value Start-WslCmatrix -Force -Verbose
