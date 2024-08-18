@@ -156,6 +156,9 @@ function Get-UpgradeStatus {
 New-Alias -Name "upgrade" -Value Get-UpgradeStatus -Force -Verbose
 
 function Start-WslCmatrix {
+    Clear-Host
+    Write-Host "The Matrix has you..." -ForegroundColor Green
+    Start-Sleep -Seconds 3
     wsl cmatrix
 }
 
