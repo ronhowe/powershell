@@ -23,7 +23,8 @@
 	],
 	"settings": {
 		"powershell.cwd": "c:\\Users\\ronhowe\\repos\\ronhowe\\powershell",
-		"debug.internalConsoleOptions": "neverOpen"
+		"debug.internalConsoleOptions": "neverOpen",
+		"azureAutomation.directory.basePath": "c:\\Users\\ronhowe"
 	},
 	"tasks": {
 		"tasks": [
