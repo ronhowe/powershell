@@ -1,7 +1,7 @@
 @{
     Modules = @(
-        @{ Name = 'Az' ; Version = '12.4.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
-        @{ Name = 'Az.ConnectedMachine' ; Version = '0.10.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'Az' ; Version = '12.5.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
+        @{ Name = 'Az.ConnectedMachine' ; Version = '1.0.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'Az.Tools.Predictor' ; Version = '1.1.3' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'CliMenu' ; Version = '1.0.52.0' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
         @{ Name = 'dbatools' ; Version = '2.1.27' ; Repository = 'PSGallery' ; Scope = 'CurrentUser' },
