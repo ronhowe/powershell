@@ -135,7 +135,7 @@ else {
 New-Variable -Name "Root" -Value "$HOME\repos" -Scope Global -Force -ErrorAction SilentlyContinue
 
 function Set-PromptMinimal {
-    function global:prompt { "#> " }
+    function global:prompt { "~> " }
 }
 
 New-Alias -Name "quiet" -Value Set-PromptMinimal -Force -Verbose
