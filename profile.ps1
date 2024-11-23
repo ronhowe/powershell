@@ -50,6 +50,19 @@ else {
 
 #endregion imports
 
+#region Get-UpgradeStatus (aka upgrade)
+
+function Get-UpgradeStatus {
+    . "$HOME\repos\ronhowe\powershell\tools\Get-DevOpsTools.ps1"
+    . "$HOME\repos\ronhowe\powershell\shell\Test-Dependencies.ps1"
+    dotnet list .\repos\ronhowe\dotnet\dotnet.sln package --outdated
+    winget upgrade
+}
+
+New-Alias -Name "upgrade" -Value Get-UpgradeStatus -Force -Verbose
+
+#endregion Get-UpgradeStatus (aka upgrade)
+
 #region Set-LocationHome (aka home)
 
 function Set-LocationHome {
@@ -83,6 +96,26 @@ function Set-LocationRepos {
 New-Alias -Name "repos" -Value Set-LocationRepos -Force -Verbose
 
 #endregion Set-LocationRepos (aka repos)
+
+#region Set-PromptMinimal (aka quiet)
+
+function Set-PromptMinimal {
+    function global:prompt { "~> " }
+}
+
+New-Alias -Name "quiet" -Value Set-PromptMinimal -Force -Verbose
+
+#endregion Set-PromptMinimal (aka quiet)
+
+#region Set-PromptOff (aka silence)
+
+function Set-PromptOff {
+    function global:prompt { "`0" }
+}
+
+New-Alias -Name "silence" -Value Set-PromptOff -Force -Verbose
+
+#endregion Set-PromptOff (aka silence)
 
 #region Set-PSReadLineHistory (aka oops)
 
@@ -123,37 +156,7 @@ New-Alias -Name "ronhowe" -Value Show-RonHowe -Force -Verbose
 
 #endregion Show-RonHowe (aka ronhowe)
 
-if ($PSVersionTable.PSEdition -eq "Core") {
-    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-    Set-PSReadLineOption -PredictionViewStyle ListView -WarningAction SilentlyContinue
-}
-else {
-    Set-PSReadLineOption -PredictionViewStyle InlineView -WarningAction SilentlyContinue
-}
-
-# legacy build machine support
-New-Variable -Name "Root" -Value "$HOME\repos" -Scope Global -Force -ErrorAction SilentlyContinue
-
-function Set-PromptMinimal {
-    function global:prompt { "~> " }
-}
-
-New-Alias -Name "quiet" -Value Set-PromptMinimal -Force -Verbose
-
-function Set-PromptOff {
-    function global:prompt { "`0" }
-}
-
-New-Alias -Name "silence" -Value Set-PromptOff -Force -Verbose
-
-function Get-UpgradeStatus {
-    . "$HOME\repos\ronhowe\powershell\tools\Get-DevOpsTools.ps1"
-    . "$HOME\repos\ronhowe\powershell\shell\Test-Dependencies.ps1"
-    dotnet list .\repos\ronhowe\dotnet\dotnet.sln package --outdated
-    winget upgrade
-}
-
-New-Alias -Name "upgrade" -Value Get-UpgradeStatus -Force -Verbose
+#region Start-WslCmatrix (aka matrix)
 
 function Start-WslCmatrix {
     Clear-Host
@@ -163,3 +166,20 @@ function Start-WslCmatrix {
 }
 
 New-Alias -Name "matrix" -Value Start-WslCmatrix -Force -Verbose
+
+#endregion Start-WslCmatrix (aka matrix)
+
+#region PSReadLine Configuration
+
+if ($PSVersionTable.PSEdition -eq "Core") {
+    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+    Set-PSReadLineOption -PredictionViewStyle ListView -WarningAction SilentlyContinue
+}
+else {
+    Set-PSReadLineOption -PredictionViewStyle InlineView -WarningAction SilentlyContinue
+}
+
+#endregion PSReadLine Configuration
+
+# legacy build machine support
+New-Variable -Name "Root" -Value "$HOME\repos" -Scope Global -Force -ErrorAction SilentlyContinue
