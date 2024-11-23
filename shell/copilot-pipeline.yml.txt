@@ -1,0 +1,134 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Define the version number
+  major: 1
+  minor: 0
+  patch: $(Build.BuildId)
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '6.x.x'
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $moduleVersion = "$($env:major).$($env:minor).$($env:patch)"
+          Write-Output "##vso[task.setvariable variable=ModuleVersion]$moduleVersion"
+
+          # Build the PowerShell module
+          dotnet build MyModule.sln
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
+
+- stage: Publish
+  dependsOn: Build
+  jobs:
+  - job: Publish
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $moduleVersion = "$(ModuleVersion)"
+          Write-Output "Publishing PowerShell module version $moduleVersion"
+
+          # Publish the module to the PowerShell Gallery
+          Publish-Module -Path $(Build.ArtifactStagingDirectory) -NuGetApiKey $(NuGetApiKey) -Repository PSGallery
+
+Here's a basic Azure Pipelines YAML file for building and publishing a PowerShell module with versioning support:
+
+```yaml
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Define the version number
+  major: 1
+  minor: 0
+  patch: $(Build.BuildId)
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '6.x.x'
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $moduleVersion = "$($env:major).$($env:minor).$($env:patch)"
+          Write-Output "##vso[task.setvariable variable=ModuleVersion]$moduleVersion"
+
+          # Build the PowerShell module
+          dotnet build MyModule.sln
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
+
+- stage: Publish
+  dependsOn: Build
+  jobs:
+  - job: Publish
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $moduleVersion = "$(ModuleVersion)"
+          Write-Output "Publishing PowerShell module version $moduleVersion"
+
+          # Publish the module to the PowerShell Gallery
+          Publish-Module -Path $(Build.ArtifactStagingDirectory) -NuGetApiKey $(NuGetApiKey) -Repository PSGallery
+
+```
+
+# Key Points:
+#- **Versioning**: This file defines version variables (`major`, `minor`, `patch`) and combines them to form the `ModuleVersion`.
+#- **Stages**: The pipeline has two stages: `Build` and `Publish`.
+#  - **Build Stage**: Builds the PowerShell module and archives the build artifacts.
+#  - **Publish Stage**: Publishes the module to the PowerShell Gallery.
+#- **Dependencies**: The `Publish` stage depends on the successful completion of the `Build` stage.
+#- **Artifacts**: The module is archived and published as a build artifact.
+
+#Make sure to replace `MyModule.sln`, `$(Build.ArtifactStagingDirectory)`, and other placeholders with your actual paths and variables. Also, ensure that you have your `NuGetApiKey` set up as a pipeline secret.
+
+#Does this help, or do you need further customization for your specific setup?
