@@ -2,7 +2,7 @@ function Get-Planet {
     param(
         [string]$Name = "*"
     )
-    $planets = @(
+    @(
         @{ Name = "Mercury" }
         @{ Name = "Venus" }
         @{ Name = "Earth" }
@@ -11,7 +11,7 @@ function Get-Planet {
         @{ Name = "Saturn" }
         @{ Name = "Uranus" }
         @{ Name = "Neptune" }
-    ) | ForEach-Object { [pscustomobject] $_ }
-
-    $planets | Where-Object { $_.Name -like $Name }
+    ) |
+    ForEach-Object { [PSCustomObject] $_ } |
+    Where-Object { $_.Name -like $Name }
 }
