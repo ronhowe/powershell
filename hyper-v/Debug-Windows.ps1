@@ -102,8 +102,8 @@ Invoke-Command -ComputerName $nodeName -Credential $credential -ScriptBlock $scr
 $scriptBlock = {
     $ProgressPreference = "SilentlyContinue"
     Import-Module -Name "BitsTransfer"
-    $source = "https://github.com/PowerShell/PowerShell/releases/download/v7.3.3/PowerShell-7.3.3-win-x64.msi"
-    $destination = "~\Downloads\PowerShell-7.3.3-win-x64.msi"
+    $source = "https://github.com/PowerShell/PowerShell/releases/download/v7.4.6/PowerShell-7.4.6-win-x64.msi"
+    $destination = "~\Downloads\PowerShell-7.4.6-win-x64.msi"
     Start-BitsTransfer -Source $source -Destination $destination -Verbose
 }
 Invoke-Command -ComputerName $nodeName -Credential $credential -ScriptBlock $scriptBlock
@@ -111,7 +111,7 @@ Invoke-Command -ComputerName $nodeName -Credential $credential -ScriptBlock $scr
 # Install PowerShell Core.  This will terminate the session.
 $scriptBlock = {
     Set-Location -Path "~\Downloads"
-    msiexec.exe /package PowerShell-7.3.3-win-x64.msi /quiet ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1 ENABLE_PSREMOTING=1 REGISTER_MANIFEST=1 USE_MU=1 ENABLE_MU=1
+    msiexec.exe /package PowerShell-7.4.6-win-x64.msi /quiet ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1 ENABLE_PSREMOTING=1 REGISTER_MANIFEST=1 USE_MU=1 ENABLE_MU=1
 }
 Invoke-Command -ComputerName $nodeName -Credential $credential -ScriptBlock $scriptBlock
 
