@@ -10,7 +10,7 @@ $os = Read-Host -Prompt "(L)inux or (W)indows"
 $isoPath =
 switch ($os) {
     "L" { "C:\Users\ronhowe\Downloads\LAB\ubuntu-20.04.4-live-server-amd64.iso" }
-    "W" { "C:\Users\ronhowe\Downloads\LAB\Windows Server 2022.iso" }
+    "W" { "C:\Users\ronhowe\Downloads\LAB\Windows Server 2025.iso" }
     default { throw }
 }
 
@@ -30,10 +30,10 @@ $switchName = "Internal Switch"
 New-VHD -Path $vhdPath -SizeBytes 127GB -Dynamic
 
 # Create the virtual machine.
-New-VM -Name $nodeName -MemoryStartupBytes 4GB -VHDPath $vhdPath -SwitchName $switchName -Generation 2
+New-VM -Name $nodeName -MemoryStartupBytes 8GB -VHDPath $vhdPath -SwitchName $switchName -Generation 2
 
 # Set the processor count.
-Set-VM -VMName $nodeName -ProcessorCount 4
+Set-VM -VMName $nodeName -ProcessorCount 8
 
 # Disable automatic checkpoints.
 Set-VM -Name $nodeName -AutomaticCheckpointsEnabled $false
