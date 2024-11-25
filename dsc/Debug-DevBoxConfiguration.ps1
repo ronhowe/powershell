@@ -8,7 +8,7 @@ Clear-Host
 Import-Module -Name "Pester"
 
 Clear-Host
-Invoke-Pester -Path ".\Test-DevBoxConfiguration.ps1" -Output Detailed
+Invoke-Pester -Path ".\DevBoxConfiguration.Tests.ps1" -Output Detailed
 
 # https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/?view=powershell-5.1
 Clear-Host
