@@ -1,28 +1,22 @@
 [CmdletBinding()]
 param(
 )
-Describe "Alias Tests" -ForEach @(
-    # sync with Aliases.ps1
-    # sync with Aliases.Tests.ps1
-    # sync with Show-Help.ps1
-    # @{ Alias = "api" }
-    @{ Alias = "catfact" }
-    @{ Alias = "date" }
-    @{ Alias = "help" }
-    @{ Alias = "home" }
-    @{ Alias = "matrix" }
-    @{ Alias = "menu" }
-    @{ Alias = "new" }
-    @{ Alias = "oops" }
-    @{ Alias = "redact" }
-    @{ Alias = "repos" }
-    @{ Alias = "shell" }
-    @{ Alias = "time" }
-    @{ Alias = "version" }
-    @{ Alias = "weather" }
-) {
+Describe "Alias Tests" {
     It "Asserting Alias [<Name>] Exists" -ForEach @(
-        @{ Name = $Alias }
+        @{ Alias = "catfact" }
+        @{ Alias = "date" }
+        @{ Alias = "help" }
+        @{ Alias = "home" }
+        @{ Alias = "matrix" }
+        @{ Alias = "menu" }
+        @{ Alias = "new" }
+        @{ Alias = "oops" }
+        @{ Alias = "redact" }
+        @{ Alias = "repos" }
+        @{ Alias = "shell" }
+        @{ Alias = "time" }
+        @{ Alias = "version" }
+        @{ Alias = "weather" }
     ) {
         Get-Alias -Name $Alias |
         Should -Not -BeNullOrEmpty

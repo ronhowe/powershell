@@ -1,9 +1,4 @@
 Describe "Dependency Tests" {
-    BeforeAll {
-        # $ErrorActionPreference = "Stop"
-        # $ProgressPreference = "SilentlyContinue"
-        # $WarningPreference = "SilentlyContinue"
-    }
     It "Asserting Dependency Is Current @{ ModuleName = '<Name>' ; RequiredVersion = '<Version>' }" -ForEach `
     $(
         (Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1").Modules
