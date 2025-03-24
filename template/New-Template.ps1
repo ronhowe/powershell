@@ -7,7 +7,7 @@ param(
     $Path,
 
     [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-    [Alias("Node", "NodeName", "VMName")]
+    [Alias("Name", "Node", "NodeName", "VMName")]
     [ValidateNotNullorEmpty()]
     [string[]]
     $ComputerName,
