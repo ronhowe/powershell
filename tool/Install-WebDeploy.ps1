@@ -3,25 +3,25 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Msi = "PowerShell-7.4.6-win-x64.msi",
+    $Msi = "webdeploy_amd64_en-US.msi",
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Source = "https://github.com/PowerShell/PowerShell/releases/download/v7.4.6/PowerShell-7.4.6-win-x64.msi",
+    $Source = "https://download.microsoft.com/download/b/d/8/bd882ec4-12e0-481a-9b32-0fae8e3c0b78/webdeploy_amd64_en-US.msi",
 
     [switch]
     $Cleanup
 )
 begin {
-    Write-Verbose "Beginning $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 
     Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
     Select-Object -Property @("Name", "Value") |
     ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
 }
 process {
-    Write-Verbose "Processing $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     $ErrorActionPreference = "Stop"
     $ProgressPreference = "SilentlyContinue"
@@ -39,16 +39,10 @@ process {
     $parameters = @{
         FilePath         = "msiexec.exe"
         ArgumentList     = @(
-            "/package",
+            "/i",
             $destination,
             "/quiet",
-            "ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1",
-            "ADD_FILE_CONTEXT_MENU_RUNPOWERSHELL=1",
-            "ENABLE_PSREMOTING=1",
-            "REGISTER_MANIFEST=1",
-            "USE_MU=1",
-            "ENABLE_MU=1",
-            "ADD_PATH=1"
+            "/norestart"
         )
         NoNewWindow      = $true
         Wait             = $true
@@ -57,15 +51,11 @@ process {
     Write-Debug "`$parameters = $($parameters | Out-String)"
     Start-Process @parameters
 
-    Write-Verbose "Asserting Cleanup"
     if ($Cleanup) {
         Write-Verbose "Removing Installer"
         Remove-Item -Path $destination
     }
-    else {
-        Write-Verbose "Skipping Cleanup"
-    }
 }
 end {
-    Write-Verbose "Ending $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
 }
