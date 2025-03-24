@@ -20,6 +20,15 @@ process {
         Write-Warning "PowerShell Core Not Detected"
     }
 
+    Write-Verbose "Setting PSReadLine Options"
+    if ($PSVersionTable.PSEdition -eq "Core") {
+        Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+        Set-PSReadLineOption -PredictionViewStyle ListView -WarningAction SilentlyContinue
+    }
+    else {
+        Set-PSReadLineOption -PredictionViewStyle InlineView -WarningAction SilentlyContinue
+    }
+
     Set-Location -Path $HOME
 }
 end {
