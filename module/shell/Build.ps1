@@ -1,4 +1,5 @@
 #requires -Module "ModuleBuilder"
+#requires -Module "Pester"
 
 [CmdletBinding()]
 param(
@@ -12,7 +13,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Task Debug Remove, Clean, Build, Import
+    Task Debug Remove, Clean, Build, Import, Test
     Task . Clean, Build
 
     Task Build {
@@ -46,6 +47,13 @@ process {
     Task Import {
         Write-Verbose "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
+    }
+
+    Task Test {
+        Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
+        ForEach-Object {
+            Invoke-Pester -Path $($_.FullName) -Output Detailed
+        }
     }
 }
 end {
