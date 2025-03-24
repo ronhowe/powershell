@@ -1,42 +1,43 @@
 [CmdletBinding()]
 param(
+    [Parameter(Mandatory = $false)]
+    [ValidateNotNullOrEmpty()]
+    [ValidateScript({ Test-Path -Path $_ })]
+    [string]
+    $Path = "$HOME\repos\ronhowe\dotnet"
 )
 begin {
-    Write-Verbose "Beginning $($MyInvocation.MyCommand.Name)"
-
-    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
-    Select-Object -Property @("Name", "Value") |
-    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
+    Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 }
 process {
-    Write-Verbose "Processing $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     $ErrorActionPreference = "Stop"
 
     Write-Verbose "Pushing Location"
-    Push-Location -Path "$HOME\repos\ronhowe\code"
+    Push-Location -Path $Path
 
     try {
         Write-Verbose "Running .NET Clean"
-        dotnet clean ./dotnet
+        dotnet clean
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Clean Failed"
         }
     
         Write-Verbose "Running .NET Restore"
-        dotnet restore ./dotnet
+        dotnet restore
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Restore Failed"
         }
 
         Write-Verbose "Running .NET Build"
-        dotnet build ./dotnet --no-restore
+        dotnet build --no-restore
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Build Failed"
         }
 
         Write-Verbose "Running .NET Test"
-        dotnet test ./dotnet --no-build --nologo --filter "TestCategory=UnitTest" --verbosity normal
+        dotnet test --no-build --nologo --filter "TestCategory=UnitTest" --verbosity normal
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Test Failed"
         }
@@ -50,5 +51,5 @@ process {
     }
 }
 end {
-    Write-Verbose "Ending $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
 }
