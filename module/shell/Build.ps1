@@ -1,9 +1,4 @@
-#region requires
-#requires -Module "Configuration"
-#requires -Module "Metadata"
-#requires -Module "InvokeBuild"
 #requires -Module "ModuleBuilder"
-#endregion requires
 
 [CmdletBinding()]
 param(
@@ -11,15 +6,16 @@ param(
     [string]
     $Version = "0.0.0"
 )
-begin {}
+begin {
+    Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+}
 process {
-    #region tasks
-    task full clean, build, import
-    task . build
-    #endregion tasks
+    Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    #region build
-    task build {
+    Task Debug Remove, Clean, Build, Import
+    Task . Clean, Build
+
+    Task Build {
         Write-Verbose "Building Module"
         $parameters = @{
             CopyPaths                  = @(
@@ -35,24 +31,23 @@ process {
         Build-Module @parameters |
         Out-Null
     }
-    #endregion  build
 
-    #region clean
-    task clean {
-        Write-Verbose "Removing Module"
-        Get-Module -Name "Shell" |
-        Remove-Module -Force
-
+    Task Clean {
         Write-Verbose "Removing Output"
         Remove-Item -Path "$PSScriptRoot\bin" -Recurse -Force -ErrorAction SilentlyContinue
     }
-    #endregion clean
 
-    #region import
-    task import {
+    Task Remove {
+        Write-Verbose "Removing Module"
+        Get-Module -Name "Shell" |
+        Remove-Module -Force
+    }
+
+    Task Import {
         Write-Verbose "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
     }
-    #endregion import
 }
-end {}
+end {
+    Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
+}

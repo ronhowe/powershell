@@ -1,3 +1,5 @@
+#requires -Module "InvokeBuild"
+
 [CmdletBinding()]
 param(
 )
@@ -8,7 +10,7 @@ process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     Write-Verbose "Invoking Build"
-    Invoke-Build -File "$PSScriptRoot\Build.ps1" -Task "full" -Verbose
+    Invoke-Build -File "$PSScriptRoot\Build.ps1" -Task "Debug"
 }
 end {
     Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
