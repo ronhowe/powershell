@@ -27,6 +27,22 @@ process {
         Set-PSReadLineOption -PredictionViewStyle InlineView -WarningAction SilentlyContinue
     }
 
+    Write-Verbose "Asserting Shell Module Exists"
+    if (Test-Path -Path "$PSScriptRoot\..\module\shell\bin\Shell\Shell.psm1") {
+        Write-Verbose "Removing Shell Module"
+        Get-Module -Name "Shell" |
+        Remove-Module -Force
+
+        Write-Verbose "Importing Shell Module"
+        Import-Module -Name "$PSScriptRoot\..\module\shell\bin\Shell" -Global -Force
+    
+        Write-Verbose "Starting Shell"
+        Start-Shell
+    }
+    else {
+        Write-Warning "Shell Module Not Found"
+    }
+
     Write-Verbose "Setting Location"
     Set-Location -Path $HOME
 }
