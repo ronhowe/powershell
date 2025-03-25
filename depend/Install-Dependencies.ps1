@@ -11,8 +11,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1" |
-    Select-Object -ExpandProperty "Modules" |
+    (Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1").Modules |
     ForEach-Object {
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
             Write-Verbose "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"

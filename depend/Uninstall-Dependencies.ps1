@@ -7,8 +7,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1" |
-    Select-Object -ExpandProperty "Modules" |
+    (Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1").Modules |
     ForEach-Object {
         $moduleName = $_.Name
         $moduleVersion = $_.Version
