@@ -1,4 +1,4 @@
-#requires -PSEdition Desktop
+#requires -PSEdition "Desktop"
 #requires -RunAsAdministrator
 [CmdletBinding()]
 param(
@@ -18,7 +18,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Warning "Creating Self-Signed Certificate"
+    Write-Warning "Creating Self-Signed Certificate" -WarningAction
 
     Write-Verbose "Creating Certificate"
     $certificate = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName "DscEncryptionCert" -HashAlgorithm SHA256
@@ -35,7 +35,7 @@ process {
     $certificate |
     Remove-Item -Force
 
-    Write-Verbose "Importing Certificate"
+    Write-Verbose "Importing Public Key"
     Import-Certificate -FilePath "$PSScriptRoot\DscPublicKey.cer" -CertStoreLocation $CertStoreLocation
 }
 end {
