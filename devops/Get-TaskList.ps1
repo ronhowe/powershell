@@ -2,8 +2,15 @@
 param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [ValidateScript({ Test-Path -Path $_ })]
-    $Path = "$HOME\repos\ronhowe"
+    $Path = @(
+        "$HOME\repos\ronhowe\azure",
+        "$HOME\repos\ronhowe\dev",
+        "$HOME\repos\ronhowe\dotnet",
+        "$HOME\repos\ronhowe\powershell",
+        "$HOME\repos\ronhowe\roll20",
+        "$HOME\repos\ronhowe\ronhowe",
+        "$HOME\repos\ronhowe\sql"
+    )
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"

@@ -3,22 +3,18 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Msi = "PowerShell-7.5.0-win-x64.msi",
+    $Msi = "dotnet-hosting-9.0.0-win.exe",
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Source = "https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/PowerShell-7.5.0-win-x64.exe",
+    $Source = "https://download.visualstudio.microsoft.com/download/pr/e1ae9d41-3faf-4755-ac27-b24e84eef3d1/5e3a24eb8c1a12272ea1fe126d17dfca/dotnet-hosting-9.0.0-win.exe",
 
     [switch]
     $Cleanup
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
-
-    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
-    Select-Object -Property @("Name", "Value") |
-    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
 }
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
@@ -39,31 +35,22 @@ process {
     $parameters = @{
         FilePath         = "msiexec.exe"
         ArgumentList     = @(
-            "/package",
+            "/i",
             $destination,
             "/quiet",
-            "ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1",
-            "ADD_FILE_CONTEXT_MENU_RUNPOWERSHELL=1",
-            "ENABLE_PSREMOTING=1",
-            "REGISTER_MANIFEST=1",
-            "USE_MU=1",
-            "ENABLE_MU=1",
-            "ADD_PATH=1"
+            "/norestart"
         )
         NoNewWindow      = $true
         Wait             = $true
         WorkingDirectory = $env:TEMP
     }
     Write-Debug "`$parameters = $($parameters | Out-String)"
-    Start-Process @parameters
+    Write-Warning "Downloaded ; Not Installed" -WarningAction Continue
+    # Start-Process @parameters
 
-    Write-Verbose "Asserting Cleanup"
     if ($Cleanup) {
         Write-Verbose "Removing Installer"
         Remove-Item -Path $destination
-    }
-    else {
-        Write-Verbose "Skipping Cleanup"
     }
 }
 end {
