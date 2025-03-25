@@ -401,3 +401,7 @@ FodyWeavers.xsd
 
 # Holotable
 *.cdf
+
+# Certificates
+*.cer
+*.pfx
