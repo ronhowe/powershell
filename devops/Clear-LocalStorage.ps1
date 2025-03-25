@@ -7,14 +7,10 @@ param(
     $LogsPath = "D:\home\LogFiles\MyLogs"
 )
 begin {
-    Write-Verbose "Beginning $($MyInvocation.MyCommand.Name)"
-
-    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
-    Select-Object -Property @("Name", "Value") |
-    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
+    Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 }
 process {
-    Write-Verbose "Processing $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     $ErrorActionPreference = "Stop"
 
@@ -31,5 +27,5 @@ process {
     Remove-Item -Force -ErrorAction Continue
 }
 end {
-    Write-Verbose "Ending $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
 }
