@@ -2,7 +2,7 @@
 param(
 )
 Describe "Alias Tests" {
-    It "Asserting Alias [<Name>] Exists" -ForEach @(
+    It "Asserting Alias [<Alias>] Exists" -ForEach @(
         @{ Alias = "catfact" }
         @{ Alias = "date" }
         @{ Alias = "help" }
