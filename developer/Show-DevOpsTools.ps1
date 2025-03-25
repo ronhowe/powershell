@@ -1,24 +1,13 @@
-#requires -Module "WriteAscii"
 [CmdletBinding()]
 param(
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
-
-    function Write-Header {
-        param(
-            [Parameter(Mandatory = $true)]
-            [ValidateNotNullOrEmpty()]
-            [string]
-            $Header
-        )
-        Write-Host ("#" * 80) -ForegroundColor Blue
-        Write-Ascii $Header
-        Write-Host ("#" * 80) -ForegroundColor Blue
-    }
 }
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
+
+    . "$PSScriptRoot\Write-Header.ps1"
 
     Write-Header -Header "dotnet"
     Write-Verbose "Getting .NET (dotnet) Version"

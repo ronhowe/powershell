@@ -11,23 +11,31 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    $ErrorActionPreference = "Continue"
+    . "$PSScriptRoot\Write-Header.ps1"
 
+    $ErrorActionPreference = "Stop"
+
+    Write-Header -Header "Tools"
     Write-Verbose "Showing DevOps Tools"
-    & "$Path\powershell\devops\Show-DevOpsTools.ps1" -Verbose
+    & "$Path\powershell\developer\Show-DevOpsTools.ps1" -Verbose
 
+    Write-Header -Header "Build"
     Write-Verbose "Invoking Build Workflow"
-    & "$Path\powershell\devops\Invoke-BuildWorkflow.ps1" -Verbose
+    & "$Path\powershell\developer\Invoke-BuildWorkflow.ps1" -Verbose
 
+    Write-Header -Header "Packages"
     Write-Verbose "Running .NET List"
     dotnet list "$Path\dotnet\MySolution.sln" package --outdated
 
+    Write-Header -Header "Dependencies"
     Write-Verbose "Testing Dependencies"
     & "$Path\powershell\depend\Test-Dependencies.ps1"
 
+    Write-Header -Header "Module"
     Write-Verbose "Debugging Module"
-    & "$HOME\powershell\module\shell\Debug-Build.ps1"
+    & "$Path\powershell\module\shell\Debug-Build.ps1"
 
+    Write-Header -Header "WinGet"
     Write-Verbose "Running WinGet Upgrade"
     winget upgrade
 }
