@@ -18,7 +18,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Warning "Creating Self-Signed Certificate" -WarningAction
+    Write-Warning "Creating Self-Signed Certificate" -WarningAction Continue
 
     Write-Verbose "Creating Certificate"
     $certificate = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName "DscEncryptionCert" -HashAlgorithm SHA256
