@@ -1,11 +1,8 @@
 Configuration DevBoxDsc {
-    param(
-    )
-
     # https://learn.microsoft.com/en-us/powershell/module/psdesiredstateconfiguration/?view=dsc-1.1
     Import-DscResource -ModuleName "PSDesiredStateConfiguration" -ModuleVersion "1.1"
 
-    Node "localhost" {
+    Node "LOCALHOST" {
         # https://learn.microsoft.com/en-us/powershell/dsc/reference/resources/windows/logresource?view=dsc-1.1
         Log "PowerOnSelfTest" {
             Message = "Power-On Self-Test"
