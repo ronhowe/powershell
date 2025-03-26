@@ -43,10 +43,9 @@ process {
 
     Write-Host "Starting Installer"
     $parameters = @{
-        FilePath         = "msiexec.exe"
+        FilePath         = $destination
         ArgumentList     = @(
             "/install",
-            $destination,
             "/quiet",
             "/norestart"
         )
