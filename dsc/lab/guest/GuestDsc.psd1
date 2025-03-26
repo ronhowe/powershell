@@ -1,20 +1,20 @@
 @{
     AllNodes = @(
         @{
-            ActionAfterReboot    = "ContinueConfiguration"
+            ActionAfterReboot    = 'ContinueConfiguration'
             PSDscAllowDomainUser = $true
-            CertificateFile      = "$PSScriptRoot\DscPublicKey.cer"
-            ConfigurationMode    = "ApplyAndAutoCorrect"
-            DnsIpAddress         = "192.168.1.1"
-            DomainName           = "LAB.LOCAL"
-            GatewayIpAddress     = "192.168.0.1"
-            NodeName             = "*"
+            CertificateFile      = '~\repos\ronhowe\powershell\dsc\lab\DscPublicKey.cer'
+            ConfigurationMode    = 'ApplyAndAutoCorrect'
+            DnsIpAddress         = '192.168.1.1'
+            DomainName           = 'LAB.LOCAL'
+            GatewayIpAddress     = '192.168.0.1'
+            NodeName             = '*'
             RebootNodeIfNeeded   = $true
             RestartCount         = 3
             Subnet               = 20
-            TimeZone             = "Eastern Standard Time"
+            TimeZone             = 'Eastern Standard Time'
             WaitTimeout          = 300
-            FirewallRules        = @"
+            FirewallRules        = @'
 Name
 FPS-ICMP4-ERQ-In
 FPS-ICMP4-ERQ-Out
@@ -39,39 +39,39 @@ NETDIS-WSDEVNTS-In-TCP
 NETDIS-WSDEVNTS-Out-TCP
 RemoteDesktop-UserMode-In-TCP
 WMI-RPCSS-In-TCP
-"@
+'@
         },
         ## TODO: Determine if , or ; or both are the appropriate delimiters.
         @{
-            IpAddress = "192.168.0.20/24"
-            NodeName  = "LAB-APP-00"
-            Sku       = "Desktop"
+            IpAddress = '192.168.0.20/24'
+            NodeName  = 'LAB-APP-00'
+            Sku       = 'Desktop'
         };
         @{
-            DatabasePath                = "C:\Windows\NTDS"
-            IpAddress                   = "192.168.0.10/24"
-            LogPath                     = "C:\Windows\NTDS"
-            NodeName                    = "LAB-DC-00"
-            Sku                         = "Desktop"
+            DatabasePath                = 'C:\Windows\NTDS'
+            IpAddress                   = '192.168.0.10/24'
+            LogPath                     = 'C:\Windows\NTDS'
+            NodeName                    = 'LAB-DC-00'
+            Sku                         = 'Desktop'
             SkipCcmClientSDK            = $true
             SkipComponentBasedServicing = $true
             SkipPendingFileRename       = $true
             SkipWindowsUpdate           = $true
-            SysvolPath                  = "C:\Windows\SYSVOL"
+            SysvolPath                  = 'C:\Windows\SYSVOL'
         };
         @{
-            Features            = "SQLENGINE"
-            IpAddress           = "192.168.0.30/24"
-            InstanceName        = "MSSQLSERVER"
-            NodeName            = "LAB-SQL-00"
-            Sku                 = "Desktop"
-            SourcePath          = "E:\"
-            SQLSysAdminAccounts = @("Administrators")
+            Features            = 'SQLENGINE'
+            IpAddress           = '192.168.0.30/24'
+            InstanceName        = 'MSSQLSERVER'
+            NodeName            = 'LAB-SQL-00'
+            Sku                 = 'Desktop'
+            SourcePath          = 'E:\'
+            SQLSysAdminAccounts = @('Administrators')
         };
         @{
-            IpAddress = "192.168.0.40/24"
-            NodeName  = "LAB-WEB-00"
-            Sku       = "Desktop"
+            IpAddress = '192.168.0.40/24'
+            NodeName  = 'LAB-WEB-00'
+            Sku       = 'Desktop'
         };
     );
 }

@@ -1,41 +1,38 @@
-function Invoke-HostDsc {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [ValidateNotNullOrEmpty()]
-        [string[]]
-        $Nodes,
+#requires -Module "PSDesiredStateConfiguration"
+#requires -PSEdition "Desktop"
+#requires -RunAsAdministrator
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string[]]
+    $Nodes,
 
-        [Parameter(Mandatory = $true)]
-        [ValidateSet("Present", "Absent")]
-        [string]
-        $Ensure,
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("Present", "Absent")]
+    [string]
+    $Ensure,
 
-        [switch]
-        $Wait
-    )
-    begin {
-        Write-Verbose "Beginning $($MyInvocation.MyCommand.Name)"
+    [switch]
+    $Wait
+)
+begin {
+    Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+}
+process {
+    Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
-        Select-Object -Property @("Name", "Value") |
-        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
-    }
-    process {
-        Write-Verbose "Processing $($MyInvocation.MyCommand.Name)"
+    Write-Verbose "Importing Host Dsc"
+    . "$PSScriptRoot\HostDsc.ps1" |
+    Out-Null
 
-        Write-Verbose "Importing Host Dsc"
-        . "$PSScriptRoot\HostDsc.ps1" -Verbose:$false 4>&1 |
-        Out-Null
+    Write-Verbose "Compiling Host Dsc"
+    HostDsc -ConfigurationData "$PSScriptRoot\HostDsc.psd1" -Nodes $Nodes -Ensure $Ensure -OutputPath "$env:TEMP\HostDsc" |
+    Out-Null
 
-        Write-Verbose "Compiling Host Dsc"
-        HostDsc -ConfigurationData "$PSScriptRoot\HostDsc.psd1" -Nodes $Nodes -Ensure $Ensure -OutputPath "$env:TEMP\HostDsc" |
-        Out-Null
-
-        Write-Verbose "Starting Host Dsc"
-        Start-DscConfiguration -Path "$env:TEMP\HostDsc" -Force -Wait:$Wait
-    }
-    end {
-        Write-Verbose "Ending $($MyInvocation.MyCommand.Name)"
-    }
+    Write-Verbose "Starting Host Dsc"
+    Start-DscConfiguration -Path "$env:TEMP\HostDsc" -Force -Wait:$Wait -Verbose
+}
+end {
+    Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
 }

@@ -14,4 +14,9 @@ Describe "Host Configuration Tests" {
             Should -Be "Running"
         }
     }
+    It "Asserting all LAB VMs are Running" -ForEach $(Get-VM -Name "LAB*") {
+        param ($VM)
+        $VM.State |
+        Should -Be "Running"
+    }
 }

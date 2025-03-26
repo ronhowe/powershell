@@ -1,13 +1,7 @@
 throw
 
-Get-Module -Name "Shell"
-Assert-RunAsAdministrator
-Assert-RunAsWindowsPowerShell
-Set-LocationCode
-
 Import-Module -Name "Hyper-V"
 Import-Module -Name "Pester"
-Import-Module -Name "PSDesiredStateConfiguration"
 
 # all at once
 $nodes = @("LAB-DC-00", "LAB-APP-00", "LAB-SQL-00", "LAB-WEB-00")
@@ -20,54 +14,23 @@ $nodes = @("LAB-WEB-00")
 $credential = Get-Credential -Message "Enter Administrator Credential" -UserName "Administrator"
 $pfxPassword = Read-Host -Prompt "Enter PFX Password" -AsSecureString
 
-## NOTE: Creates public key (.CER) and public/private key pair (.PFX).  Only .CER is Git safe.
-# first time
-. .\powershell\prototypes\hyper-v\New-DscEncryptionCertificate.ps1
-$thumbprint = (New-DscEncryptionCertificate -Verbose).Thumbprint ; $thumbprint
-# and beyond
-$thumbprint = Get-ChildItem -Path "Cert:\LocalMachine\My\" |
+& "$HOME\repos\ronhowe\powershell\dsc\lab\New-DscEncryptionCertificate.ps1" -PfxPassword $pfxPassword -Verbose
+
+Get-ChildItem -Path "Cert:\LocalMachine\My\" |
 Where-Object { $_.Subject -eq "CN=DscEncryptionCert" } |
-Select-Object -ExpandProperty "Thumbprint" ; $thumbprint
+Format-Table -AutoSize -OutVariable thumbprint
 
-Find-Module -Name "ActiveDirectoryCSDsc" -Repository "PSGallery"
-Find-Module -Name "ActiveDirectoryDsc" -Repository "PSGallery"
-Find-Module -Name "ComputerManagementDsc" -Repository "PSGallery"
-Find-Module -Name "NetworkingDsc" -Repository "PSGallery"
-Find-Module -Name "SqlServerDsc" -Repository "PSGallery"
-Find-Module -Name "xHyper-V" -Repository "PSGallery"
-
-## NOTE: xHyper-V 3.18.0 => HyperVDsc 4.x (some day).
-# Find-Module -Name "HyperVDsc" -Repository "PSGallery"
-
-## NOTE: Last checked as of 2025-01-02.
-# Version    Name                                Repository           Description
-# -------    ----                                ----------           -----------
-# 5.0.0      ActiveDirectoryCSDsc                PSGallery            DSC resources for installing, uninstalling and configuring Certificate Services components in Windows Server.
-# 6.6.0      ActiveDirectoryDsc                  PSGallery            The ActiveDirectoryDsc module contains DSC resources for deployment and configuration of Active Directory....
-# 9.2.0      ComputerManagementDsc               PSGallery            DSC resources for configuration of a Windows computer. These DSC resources allow you to perform computer management tasks, such as renaming the computer,...
-# 9.0.0      NetworkingDsc                       PSGallery            DSC resources for configuring settings related to networking.
-# 17.0.0     SqlServerDsc                        PSGallery            Module with DSC resources for deployment and configuration of Microsoft SQL Server.
-# 3.18.0     xHyper-V                            PSGallery            This module contains DSC resources for deployment and configuration of Microsoft Hyper-V.
-
-. .\powershell\prototypes\hyper-v\Install-HostDscResources.ps1
-Install-HostDscResources -Verbose
-
-. .\powershell\prototypes\hyper-v\Invoke-HostDsc.ps1
-
-. .\powershell\prototypes\hyper-v\Remove-Lab.ps1
-Remove-Lab -Nodes $nodes -Verbose
-
-. .\powershell\prototypes\hyper-v\New-Lab.ps1
-New-Lab -Nodes $nodes -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Absent" -Wait -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Present" -Wait -Verbose
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "NEW" -Verbose
 $nodes | Start-VM -Verbose
 
-Invoke-Pester -Script ".\powershell\prototypes\hyper-v\HostDsc.Tests.ps1" -Output Detailed
+Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\dsc\lab\host\HostDsc.Tests.ps1" -Output Detailed
 
 ## NOTE: Launching this many vmconnect processes is taxing.
-$nodes | ForEach-Object { Start-Process -FilePath "vmconnect.exe" -ArgumentList @("localhost", $_) }
+$nodes | ForEach-Object { Start-Process -FilePath "vmconnect.exe" -ArgumentList @("localhost", $_) ; Start-Sleep -Seconds 3 }
 
 ## NOTE: Complete the OOBE process including login for each node.
 
@@ -76,16 +39,14 @@ $nodes | Checkpoint-VM -SnapshotName "POST-OOBE" -Verbose
 $nodes | Start-VM -Verbose
 
 ## NOTE: Rename-Guest is idempotent.
-. .\powershell\prototypes\hyper-v\Rename-Guest.ps1
-Rename-Guest -Nodes $nodes -Credential $credential -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Rename-Guest.ps1" -Nodes $nodes -Credential $credential
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-RENAME" -Verbose
 $nodes | Start-VM -Verbose
 
 ## NOTE: Initialize-Guest is idempotent.
-. .\powershell\prototypes\hyper-v\Initialize-Guest.ps1
-Initialize-Guest -Nodes $nodes -Credential $credential -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Initialize-Guest.ps1" -Nodes $nodes -Credential $credential
 
 ## NOTE: Patch Windows for each node.
 
@@ -93,17 +54,13 @@ $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-INITIALIZE" -Verbose
 $nodes | Start-VM -Verbose
 
-. .\powershell\prototypes\hyper-v\Install-GuestDscResources.ps1
-Install-GuestDscResources -Nodes $nodes -Credential $credential -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Install-GuestResources.ps1" -Nodes $nodes -Credential $credential
 
-. .\powershell\prototypes\hyper-v\Publish-DscEncryptionCertificate.ps1
-Publish-DscEncryptionCertificate -Nodes $nodes -Credential $credential -PfxPath ".\DscPrivateKey.pfx" -PfxPassword $pfxPassword -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\Publish-DscEncryptionCertificate.ps1" -Nodes $nodes -Credential $credential -PfxPath "$HOME\repos\ronhowe\powershell\dsc\lab\DscPrivateKey.pfx" -PfxPassword $pfxPassword
 
-. .\powershell\prototypes\hyper-v\Invoke-GuestDsc.ps1
-Invoke-GuestDsc -Nodes $nodes -Credential $credential -DscEncryptionCertificateThumbprint $thumbprint -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -DscEncryptionCertificateThumbprint $thumbprint
 
-. .\powershell\prototypes\hyper-v\Wait-GuestDsc.ps1
-Wait-GuestDsc -Nodes $nodes -Credential $credential -RetryInterval 3 -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Wait-GuestDsc.ps1" -Nodes $nodes -Credential $credential -RetryInterval 3
 
 Invoke-Pester -Script ".\powershell\prototypes\hyper-v\GuestDsc.Tests.ps1" -Output Detailed
 
@@ -124,7 +81,6 @@ Invoke-Command -ComputerName $nodes -Credential $credential -FilePath ".\powersh
 $port = 8172
 New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Domain" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Domain
 New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Private" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Private
-
 
 Copy-Item -Path ".\repos\ronhowe\code\powershell\module\bin\Shell" -Recurse -Destination "C:\installers" -ToSession $session -Verbose -Force
 

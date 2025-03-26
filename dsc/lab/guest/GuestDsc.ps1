@@ -12,8 +12,8 @@ Configuration GuestDsc {
     )
 
     Import-DscResource -ModuleName "ActiveDirectoryCSDsc" -ModuleVersion "5.0.0"
-    Import-DscResource -ModuleName "ActiveDirectoryDsc" -ModuleVersion "6.6.0"
-    Import-DscResource -ModuleName "ComputerManagementDsc" -moduleVersion "9.2.0"
+    Import-DscResource -ModuleName "ActiveDirectoryDsc" -ModuleVersion "6.6.2"
+    Import-DscResource -ModuleName "ComputerManagementDsc" -moduleVersion "10.0.0"
     Import-DscResource -ModuleName "NetworkingDsc" -ModuleVersion "9.0.0"
     Import-DscResource -ModuleName "PSDesiredStateConfiguration" -ModuleVersion "1.1"
     Import-DscResource -ModuleName "SqlServerDsc" -ModuleVersion "17.0.0"
@@ -51,7 +51,6 @@ Configuration GuestDsc {
             InterfaceAlias = "Ethernet"
             IPAddress      = $Node.IpAddress
         }
-
         DefaultGatewayAddress "SetDefaultGatewayIpAddress" {
             Address        = $Node.GatewayIpAddress
             AddressFamily  = "IPv4"
