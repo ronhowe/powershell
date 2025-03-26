@@ -13,7 +13,7 @@ param (
     [Parameter(Mandatory = $false)]
     [ValidateNotNullorEmpty()]
     [int]
-    $RetryInterval = 15
+    $RetryInterval = 60
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"

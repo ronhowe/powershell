@@ -8,7 +8,7 @@ Configuration GuestDsc {
         [Parameter(Mandatory = $true)]
         [ValidateNotNullorEmpty()]
         [string]
-        $DscEncryptionCertificateThumbprint
+        $Thumbprint
     )
 
     Import-DscResource -ModuleName "ActiveDirectoryCSDsc" -ModuleVersion "5.0.0"
@@ -20,12 +20,16 @@ Configuration GuestDsc {
 
     $domainCredential = New-Object System.Management.Automation.PSCredential ($("{0}\{1}" -f $Node.DomainName, $Credential.UserName), $Credential.Password)
 
+    #region AllNodes
     Node $AllNodes.NodeName {
         LocalConfigurationManager {
             ActionAfterReboot  = $Node.ActionAfterReboot
-            CertificateId      = $DscEncryptionCertificateThumbprint
+            CertificateId      = $Thumbprint
             ConfigurationMode  = $Node.ConfigurationMode
             RebootNodeIfNeeded = $Node.RebootNodeIfNeeded
+        }
+        Log PowerOnSelfTest {
+            Message = "Power-On Self-Test"
         }
         File "CreateInstallersFolder" {
             DestinationPath = "C:\installers"
@@ -123,15 +127,13 @@ Configuration GuestDsc {
         #     NetworkCategory = "Private"
         # }
     }
+    #endregion AllNodes
+    #region LAB-APP-00
     Node "LAB-APP-00" {
-        Log PowerOnSelfTest {
-            Message = "Power-On Self-Test LAB-APP-00"
-        }
     }
+    #endregion LAB-APP-00
+    #region LAB-DC-00
     Node "LAB-DC-00" {
-        Log PowerOnSelfTest {
-            Message = "Power-On Self-Test LAB-DC-00"
-        }
         WindowsFeature "InstallActiveDirectoryServices" {
             Ensure = "Present"
             Name   = "AD-Domain-Services"
@@ -161,6 +163,7 @@ Configuration GuestDsc {
             SkipWindowsUpdate           = $Node.SkipWindowsUpdate
         }
         WaitForADDomain "WaitForActiveDirectory" {
+            DependsOn    = "[PendingReboot]RebootAfterConfigureActiveDirectory"
             Credential   = $Credential
             DomainName   = $Node.DomainName
             RestartCount = $Node.RestartCount
@@ -173,10 +176,9 @@ Configuration GuestDsc {
             ForestFQDN                        = $Node.DomainName
         }
     }
+    #endregion LAB-DC-00
+    #region LAB-SQL-00
     Node "LAB-SQL-00" {
-        Log PowerOnSelfTest {
-            Message = "Power-On Self-Test LAB-SQL-00"
-        }
         SqlSetup "InstallSqlServer" {
             DependsOn            = "[Computer]JoinDomain"
             Features             = $Node.Features
@@ -198,10 +200,9 @@ Configuration GuestDsc {
             SourcePath   = $Node.SourcePath
         }
     }
+    #endregion LAB-SQL-00
+    #region LAB-WEB-00
     Node "LAB-WEB-00" {
-        Log PowerOnSelfTest {
-            Message = "Power-On Self-Test LAB-WEB-00"
-        }
         WindowsFeature "InstallWeb-Asp-Net45" {
             Name   = "Web-Asp-Net45"
             Ensure = "Present"
@@ -262,4 +263,5 @@ Configuration GuestDsc {
             DependsOn = "[WindowsFeature]InstallWeb-Server"
         }
     }
+    #endregion LAB-WEB-00
 }

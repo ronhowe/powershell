@@ -4,10 +4,10 @@ Import-Module -Name "Hyper-V"
 Import-Module -Name "Pester"
 
 # all at once
-$nodes = @("LAB-DC-00", "LAB-APP-00", "LAB-SQL-00", "LAB-WEB-00")
+$nodes = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00")
 # or one at a time
-$nodes = @("LAB-DC-00")
 $nodes = @("LAB-APP-00")
+$nodes = @("LAB-DC-00")
 $nodes = @("LAB-SQL-00")
 $nodes = @("LAB-WEB-00")
 
@@ -54,13 +54,17 @@ $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-INITIALIZE" -Verbose
 $nodes | Start-VM -Verbose
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Install-GuestResources.ps1" -Nodes $nodes -Credential $credential
-
 & "$HOME\repos\ronhowe\powershell\dsc\lab\Publish-DscEncryptionCertificate.ps1" -Nodes $nodes -Credential $credential -PfxPath "$HOME\repos\ronhowe\powershell\dsc\lab\DscPrivateKey.pfx" -PfxPassword $pfxPassword
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -DscEncryptionCertificateThumbprint $thumbprint
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Install-GuestResources.ps1" -Nodes $nodes -Credential $credential
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Wait-GuestDsc.ps1" -Nodes $nodes -Credential $credential -RetryInterval 3
+$nodes | Stop-VM -Force -Verbose
+$nodes | Checkpoint-VM -SnapshotName "PRE-DSC" -Verbose
+$nodes | Start-VM -Verbose
+
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -Thumbprint $thumbprint
+
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Wait-GuestDsc.ps1" -Nodes $nodes -Credential $credential -RetryInterval 5
 
 Invoke-Pester -Script ".\powershell\prototypes\hyper-v\GuestDsc.Tests.ps1" -Output Detailed
 

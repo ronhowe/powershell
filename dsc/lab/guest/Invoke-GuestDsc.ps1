@@ -16,7 +16,7 @@ param(
     [Parameter(Mandatory = $true)]
     [ValidateNotNullorEmpty()]
     [string]
-    $DscEncryptionCertificateThumbprint,
+    $Thumbprint,
 
     [switch]
     $Wait
@@ -28,18 +28,16 @@ process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     Write-Host "Importing Guest Dsc"
-    . "$PSScriptRoot\GuestDsc.ps1" |
-    Out-Null
+    . "$PSScriptRoot\GuestDsc.ps1"
 
     Write-Host "Compiling Guest Dsc"
     $parameters = @{
-        ConfigurationData                  = "$PSScriptRoot\GuestDsc.psd1"
-        OutputPath                         = "$env:TEMP\GuestDsc"
-        Credential                         = $Credential
-        DscEncryptionCertificateThumbprint = $DscEncryptionCertificateThumbprint
+        ConfigurationData = "$PSScriptRoot\GuestDsc.psd1"
+        OutputPath        = "$env:TEMP\GuestDsc"
+        Credential        = $Credential
+        Thumbprint        = $Thumbprint
     }
-    GuestDsc @parameters |
-    Out-Null
+    GuestDsc @parameters
 
     Write-Host "Invoking Guest Dsc On $node"
     foreach ($node in $Nodes) {
