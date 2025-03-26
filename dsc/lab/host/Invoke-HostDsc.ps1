@@ -22,15 +22,13 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing Host Dsc"
-    . "$PSScriptRoot\HostDsc.ps1" |
-    Out-Null
+    Write-Host "Importing Host Dsc"
+    . "$PSScriptRoot\HostDsc.ps1"
 
-    Write-Verbose "Compiling Host Dsc"
-    HostDsc -ConfigurationData "$PSScriptRoot\HostDsc.psd1" -Nodes $Nodes -Ensure $Ensure -OutputPath "$env:TEMP\HostDsc" |
-    Out-Null
+    Write-Host "Compiling Host Dsc"
+    HostDsc -ConfigurationData "$PSScriptRoot\HostDsc.psd1" -Nodes $Nodes -Ensure $Ensure -OutputPath "$env:TEMP\HostDsc"
 
-    Write-Verbose "Starting Host Dsc"
+    Write-Host "Starting Host Dsc"
     Start-DscConfiguration -Path "$env:TEMP\HostDsc" -Force -Wait:$Wait -Verbose
 }
 end {

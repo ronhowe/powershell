@@ -14,14 +14,14 @@ $nodes = @("LAB-WEB-00")
 $credential = Get-Credential -Message "Enter Administrator Credential" -UserName "Administrator"
 $pfxPassword = Read-Host -Prompt "Enter PFX Password" -AsSecureString
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\New-DscEncryptionCertificate.ps1" -PfxPassword $pfxPassword -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\New-DscEncryptionCertificate.ps1" -PfxPassword $pfxPassword
 
 Get-ChildItem -Path "Cert:\LocalMachine\My\" |
 Where-Object { $_.Subject -eq "CN=DscEncryptionCert" } |
 Format-Table -AutoSize -OutVariable thumbprint
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Absent" -Wait -Verbose
-& "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Present" -Wait -Verbose
+& "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Absent" -Wait
+& "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Present" -Wait
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "NEW" -Verbose
