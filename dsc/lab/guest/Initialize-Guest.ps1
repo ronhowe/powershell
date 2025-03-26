@@ -62,11 +62,11 @@ process {
             # Get-NetAdapter -Name "Ethernet" |
             # Set-NetConnectionProfile -NetworkCategory Private
 
-            Write-Host "Enabling WinRM On $env:COMPUTERNAME"
-            Start-Process -FilePath "winrm" -ArgumentList @("quickconfig", "-force") -Wait -NoNewWindow
-
             Write-Host "Setting Execution Policy To Unrestricted On $env:COMPUTERNAME"
             Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force
+
+            Write-Host "Enabling WinRM On $env:COMPUTERNAME"
+            Start-Process -FilePath "winrm" -ArgumentList @("quickconfig", "-force") -Wait -NoNewWindow
 
             ## TODO: The IP should be passed in.
             Write-Host "Asserting Static IP Address On $env:COMPUTERNAME"
@@ -81,8 +81,11 @@ process {
             Write-Debug "`$ipAddress = $ipAddress"
 
             Write-Host "Asserting Net Adapter Interface On $env:COMPUTERNAME"
-            $interfaceIndex = $(Get-NetAdapter -Name "Ethernet").ifIndex
+            $interfaceIndex = (Get-NetAdapter -Name "Ethernet").ifIndex
             Write-Debug "`$interfaceIndex = $interfaceIndex"
+
+            Write-Host "Setting Net Connection Profile To Private On $env:COMPUTERNAME"
+            Set-NetConnectionProfile -InterfaceIndex $interfaceIndex -NetworkCategory "Private"
 
             Write-Host "Removing Net IP Address On $env:COMPUTERNAME"
             Remove-NetIPAddress -InterfaceIndex $interfaceIndex -Confirm:$false -ErrorAction Continue
@@ -91,7 +94,7 @@ process {
             Remove-NetRoute -InterfaceIndex $interfaceIndex -Confirm:$false -ErrorAction Continue
 
             ## TODO: The gateway IP and subnet mask should be passed in.
-            Write-Host "Creating Net IP Address On $env:COMPUTERNAME"
+            Write-Host "Creating Net IP Address $ipAddress On $env:COMPUTERNAME"
             New-NetIPAddress -IPAddress $ipAddress -AddressFamily IPv4 -PrefixLength $PrefixLength -InterfaceIndex $interfaceIndex -DefaultGateway $GatewayIpAddress |
             Out-Null
 

@@ -18,9 +18,11 @@ $pfxPassword = Read-Host -Prompt "Enter PFX Password" -AsSecureString
 
 Get-ChildItem -Path "Cert:\LocalMachine\My\" |
 Where-Object { $_.Subject -eq "CN=DscEncryptionCert" } |
-Format-Table -AutoSize -OutVariable thumbprint
+Select-Object -ExpandProperty "Thumbprint" -OutVariable thumbprint
 
+$nodes | Stop-VM -Force -Verbose
 & "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Absent" -Wait
+
 & "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Present" -Wait
 
 $nodes | Stop-VM -Force -Verbose
@@ -56,10 +58,10 @@ $nodes | Start-VM -Verbose
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\Publish-DscEncryptionCertificate.ps1" -Nodes $nodes -Credential $credential -PfxPath "$HOME\repos\ronhowe\powershell\dsc\lab\DscPrivateKey.pfx" -PfxPassword $pfxPassword
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Install-GuestResources.ps1" -Nodes $nodes -Credential $credential
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Install-GuestDscResources.ps1" -Nodes $nodes -Credential $credential
 
 $nodes | Stop-VM -Force -Verbose
-$nodes | Checkpoint-VM -SnapshotName "PRE-DSC" -Verbose
+$nodes | Checkpoint-VM -SnapshotName "POST-DSC-RESOURCES" -Verbose
 $nodes | Start-VM -Verbose
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -Thumbprint $thumbprint
