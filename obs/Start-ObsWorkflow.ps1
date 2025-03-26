@@ -17,35 +17,15 @@ param (
 )
 begin {
     Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
-
-    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
-    Select-Object -Property @("Name", "Value") |
-    ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
 }
 process {
-    $ErrorActionPreference = "Stop"
-
     Write-Debug "Process $($MyInvocation.MyCommand.Name)"
 
-    #region Validate Parameters
+    $ErrorActionPreference = "Stop"
 
-    if (-not (Test-Path -Path $HandbrakeInputPath)) {
-        Write-Error "Could not find $HandbrakeInputPath."
-    }
+    #region Transcode With Handbrake CLI
 
-    if (-not (Test-Path -Path $HandbrakeOutputPath)) {
-        Write-Error "Could not find $HandbrakeInputPath." -ErrorAction Stop
-    }
-
-    if (-not (Test-Path -Path $HandbrakeCliPath)) {
-        Write-Error "Could not find $HandbrakeCliPath." -ErrorAction Stop
-    }
-
-    #endregion Validate Parameters
-
-    #region Transcode with Handbrake CLI
-
-    Write-Verbose "Transcoding with Handbrake CLI"
+    Write-Host "Transcoding With Handbrake CLI"
 
     Get-ChildItem -Path $HandbrakeInputPath -Filter "*.mkv" |
     ForEach-Object {
@@ -56,7 +36,7 @@ process {
         Write-Debug "`$Mp4Path = $Mp4Path"
 
         if (-not (Test-Path -Path $Mp4Path)) {
-            Write-Verbose "Starting Handbrake CLI"
+            Write-Host "Starting Handbrake CLI"
 
             # https://handbrake.fr/docs/en/latest/cli/command-line-reference.html
             Start-Process -Path $HandbrakeCliPath -ArgumentList "--input", "`"$MkvPath`"", "--output", "`"$Mp4Path`"", "--all-audio" -Wait -NoNewWindow
@@ -65,7 +45,7 @@ process {
         ## TODO: Handle Process Return Code
 
         if (Test-Path -Path $Mp4Path) {
-            Write-Verbose "Confirmed $Mp4Path"
+            Write-Host "Confirmed $Mp4Path"
         }
         else {
             Write-Error "Could not find $Mp4Path"
@@ -73,7 +53,7 @@ process {
         }
     }
 
-    #endregion Transcode with Handbrake CLI
+    #endregion Transcode With Handbrake CLI
 
     Write-Host "OK" -ForegroundColor Green
 }
