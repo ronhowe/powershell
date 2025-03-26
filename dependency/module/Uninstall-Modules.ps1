@@ -16,12 +16,12 @@ process {
         Where-Object { $_.Version -ne $moduleVersion } |
         Sort-Object -Property "Version" |
         ForEach-Object {
-            if ($_.Name -ne "Pester" -and $_.Name -ne "PSReadLine") {
+            if ($_.Name -ne "Metadata" -and $_.Name -ne "Pester" -and $_.Name -ne "PSReadLine") {
                 Write-Host "Uninstalling Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
                 Uninstall-Module -Name $_.Name -RequiredVersion $_.Version
             }
             else {
-                ## TODO: Understand why Pester and PSReadLine are tricky to uninstall.
+                ## TODO: Understand why Metadata, Pester and PSReadLine are tricky to uninstall.
                 Write-Warning "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
             }
         }
