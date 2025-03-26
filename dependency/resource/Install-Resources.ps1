@@ -15,11 +15,11 @@ process {
 
     (Import-PowerShellDataFile -Path "$PSScriptRoot\Resources.psd1").Resources |
     ForEach-Object {
-        if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
-            Write-Verbose "Skipping Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
+        if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable) {
+            Write-Host "Skipping Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
         }
         else {
-            Write-Verbose "Installing Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+            Write-Host "Installing Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
             $parameters = @{
                 AllowClobber       = $true
                 Force              = $true

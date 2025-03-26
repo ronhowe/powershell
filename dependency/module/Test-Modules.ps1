@@ -8,6 +8,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
+    Write-Host "Invoking Pester"
     Invoke-Pester -Path "$PSScriptRoot\Modules.Tests.ps1" -Output Detailed
 }
 end {

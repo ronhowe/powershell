@@ -11,14 +11,14 @@ process {
     ForEach-Object {
         $moduleName = $_.Name
         $moduleVersion = $_.Version
-        Write-Verbose "Getting Installed Modules @{ ModuleName = $moduleName }"
-        Get-InstalledModule -Name $moduleName -AllVersions -Verbose:$false |
+        Write-Host "Getting Installed Modules @{ ModuleName = $moduleName }"
+        Get-InstalledModule -Name $moduleName -AllVersions |
         Where-Object { $_.Version -ne $moduleVersion } |
         Sort-Object -Property "Version" |
         ForEach-Object {
             if ($_.Name -ne "Pester" -and $_.Name -ne "PSReadLine") {
-                Write-Verbose "Uninstalling Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
-                Uninstall-Module -Name $_.Name -RequiredVersion $_.Version -Verbose:$false
+                Write-Host "Uninstalling Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+                Uninstall-Module -Name $_.Name -RequiredVersion $_.Version
             }
             else {
                 ## TODO: Understand why Pester and PSReadLine are tricky to uninstall.

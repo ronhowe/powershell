@@ -18,7 +18,7 @@ process {
         Where-Object { $_.Version -ne $moduleVersion } |
         Sort-Object -Property "Version" |
         ForEach-Object {
-            if ($_.Name -ne "Pester" -and $_.Name -ne "PSReadLine") {
+            if ($_.Name -ne "Metadata" -and $_.Name -ne "Pester" -and $_.Name -ne "PSReadLine") {
                 Write-Verbose "Uninstalling Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
                 Uninstall-Module -Name $_.Name -RequiredVersion $_.Version -Verbose:$false
             }

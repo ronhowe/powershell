@@ -11,13 +11,13 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    (Import-PowerShellDataFile -Path "$PSScriptRoot\Dependencies.psd1").Modules |
+    (Import-PowerShellDataFile -Path "$PSScriptRoot\Modules.psd1").Modules |
     ForEach-Object {
-        if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
-            Write-Verbose "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
+        if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable) {
+            Write-Host "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
         }
         else {
-            Write-Verbose "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+            Write-Host "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
             $parameters = @{
                 AllowClobber       = $true
                 Force              = $true
