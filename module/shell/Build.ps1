@@ -17,7 +17,7 @@ process {
     Task . Clean, Build
 
     Task Build {
-        Write-Verbose "Building Module"
+        Write-Host "Building Module"
         $parameters = @{
             CopyPaths                  = @(
                 "$PSScriptRoot\source\Shell.json",
@@ -34,18 +34,18 @@ process {
     }
 
     Task Clean {
-        Write-Verbose "Removing Output"
+        Write-Host "Removing Output"
         Remove-Item -Path "$PSScriptRoot\bin" -Recurse -Force -ErrorAction SilentlyContinue
     }
 
     Task Remove {
-        Write-Verbose "Removing Module"
+        Write-Host "Removing Module"
         Get-Module -Name "Shell" |
         Remove-Module -Force
     }
 
     Task Import {
-        Write-Verbose "Importing Module"
+        Write-Host "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
     }
 
