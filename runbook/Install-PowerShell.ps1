@@ -8,7 +8,7 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Source = "https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/PowerShell-7.5.0-win-x64.exe",
+    $Source = "https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/PowerShell-7.5.0-win-x64.msi",
 
     [switch]
     $Cleanup
@@ -22,16 +22,26 @@ process {
     $ErrorActionPreference = "Stop"
     $ProgressPreference = "SilentlyContinue"
 
-    Write-Verbose "Importing BitsTransfer Module"
-    Import-Module -Name "BitsTransfer" -Verbose:$false 4>&1 |
+    Write-Host "Importing BitsTransfer Module"
+    Import-Module -Name "BitsTransfer" |
     Out-Null
 
-    Write-Verbose "Downloading Installer"
+    Write-Host "Starting Bits Transfer"
     $destination = "C:\installers\$Msi"
     Write-Debug "`$destination = $destination"
-    Start-BitsTransfer -Source $Source -Destination $destination
 
-    Write-Verbose "Starting Installer"
+    try {
+        Start-BitsTransfer -Source $Source -Destination $destination -ErrorAction Stop
+    }
+    catch {
+        throw "Failed To Transfer Bits Bits Transfer From $Source ; $_"
+    }
+
+    if (-not (Test-Path -Path $destination)) {
+        throw "Failed To Find Installer At $destination"
+    }
+
+    Write-Host "Starting Installer"
     $parameters = @{
         FilePath         = "msiexec.exe"
         ArgumentList     = @(
@@ -47,19 +57,24 @@ process {
             "ADD_PATH=1"
         )
         NoNewWindow      = $true
+        PassThru         = $true
         Wait             = $true
         WorkingDirectory = $env:TEMP
     }
     Write-Debug "`$parameters = $($parameters | Out-String)"
-    Start-Process @parameters
+    $process = Start-Process @parameters
 
-    Write-Verbose "Asserting Cleanup"
+    if ($process.ExitCode -ne 0) {
+        throw "Failed To Install With Exit Code $($process.ExitCode)"
+    }
+
+    Write-Host "Asserting Cleanup"
     if ($Cleanup) {
-        Write-Verbose "Removing Installer"
+        Write-Host "Removing Installer"
         Remove-Item -Path $destination
     }
     else {
-        Write-Verbose "Skipping Cleanup"
+        Write-Host "Skipping Cleanup"
     }
 }
 end {

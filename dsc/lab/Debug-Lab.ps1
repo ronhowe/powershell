@@ -47,8 +47,8 @@ $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-RENAME" -Verbose
 $nodes | Start-VM -Verbose
 
-## NOTE: Initialize-Guest is idempotent.
-& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Initialize-Guest.ps1" -Nodes $nodes -Credential $credential
+## NOTE: Initialize-Guest is idempotent.a
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Initilize-Guest.ps1" -Nodes $nodes -Credential $credential
 
 ## NOTE: Patch Windows for each node.
 
@@ -66,30 +66,27 @@ $nodes | Start-VM -Verbose
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -Thumbprint $thumbprint
 
+## TODO: Network profile is getting set to Public again somehow despite Initilize-Guest.ps1 doing it.
+
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Wait-GuestDsc.ps1" -Nodes $nodes -Credential $credential -RetryInterval 5
 
 Invoke-Pester -Script ".\powershell\prototypes\hyper-v\GuestDsc.Tests.ps1" -Output Detailed
 
 ## NOTE: Install-PowerShell is idempotent.
-Invoke-Command -ComputerName $nodes -Credential $credential -FilePath ".\powershell\runbooks\Install-PowerShell.ps1"
 ## NOTE: It works, but causes this error due to WinRm being reset by the installer.
-# OpenError: [LAB-DC-00] Processing data from remote server LAB-DC-00 failed with the following error message:
-# The I/O operation has been aborted because of either a thread exit or an application request.
-# For more information, see the about_Remote_Troubleshooting Help topic.
+    # OpenError: [LAB-DC-00] Processing data from remote server LAB-DC-00 failed with the following error message:
+    # The I/O operation has been aborted because of either a thread exit or an application request.
+    # For more information, see the about_Remote_Troubleshooting Help topic.
+Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\runbook\Install-PowerShell.ps1"
 
 ## NOTE: Install-WebDeploy is idempotent.
-Invoke-Command -ComputerName $nodes -Credential $credential -FilePath ".\powershell\runbooks\Install-WebDeploy.ps1"
+Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\runbook\Install-WebDeploy.ps1"
 
 ## NOTE: Install-NetCoreHostingBundle is idempotent.
-Invoke-Command -ComputerName $nodes -Credential $credential -FilePath ".\powershell\runbooks\Install-NetCoreHostingBundle.ps1"
+## TODO: Not working.
+Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\runbook\Install-NetCoreHostingBundle.ps1"
 
 ## TODO: Refactor into GuestDsc.  Enables Web Management Service for publishing web applications.
 $port = 8172
 New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Domain" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Domain
 New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Private" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Private
-
-Copy-Item -Path ".\repos\ronhowe\code\powershell\module\bin\Shell" -Recurse -Destination "C:\installers" -ToSession $session -Verbose -Force
-
-Install-Module -Name "Pester" -Repository "PSGallery" -Force -SkipPublisherCheck
-Remove-Module -Name "Pester" -Force -Verbose
-Import-Module -Name "Pester" -Force -Verbose
