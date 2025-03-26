@@ -7,10 +7,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    . "$PSScriptRoot\Write-Header.ps1"
-
-    Write-Header -Header "dotnet"
-    Write-Verbose "Getting .NET (dotnet) Version"
+    Write-Host "Getting .NET (dotnet) Version"
     if (Get-Command -Name "dotnet" -ErrorAction SilentlyContinue) {
         $(dotnet --version) |
         Out-String |
@@ -20,9 +17,8 @@ process {
         Write-Warning ".NET (dotnet) Not Found"
     }
 
-    Write-Header -Header "az"
+    Write-Host "Getting Azure CLI (az) Version"
     if (Get-Command -Name "az" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting Azure CLI (az) Version"
         $(az --version) |
         Out-String |
         Write-Host
@@ -31,9 +27,8 @@ process {
         Write-Warning "Azure CLI (az) Not Found"
     }
 
-    Write-Header -Header "bicep"
+    Write-Host "Getting Bicep CLI (bicep) Version"
     if (Get-Command -Name "bicep" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting Bicep CLI (bicep) Version"
         $(bicep --version) |
         Out-String |
         Write-Host
@@ -42,9 +37,8 @@ process {
         Write-Warning "Bicep CLI (bicep) Not Found"
     }
 
-    Write-Header -Header "git"
+    Write-Host "Getting Git CLI (git) Version"
     if (Get-Command -Name "git" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting Git CLI (git) Version"
         $(git --version) |
         Out-String |
         Write-Host
@@ -53,9 +47,8 @@ process {
         Write-Warning "Git CLI (git) Not Found"
     }
 
-    Write-Header -Header "gh"
+    Write-Host "Getting GitHub CLI (gh) Version"
     if (Get-Command -Name "gh" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting GitHub CLI (gh) Version"
         $(gh --version) |
         Out-String |
         Write-Host
@@ -64,9 +57,8 @@ process {
         Write-Warning "GitHub CLI (gh) Not Found"
     }
 
-    Write-Header -Header "nuget"
+    Write-Host "Getting NuGet (nuget) Version"
     if (Get-Command -Name "nuget" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting NuGet (nuget) Version"
         $(nuget | Select-String -SimpleMatch "NuGet Version") |
         Out-String |
         Write-Host
@@ -75,9 +67,8 @@ process {
         Write-Warning "NuGet (nuget) Not Found"
     }
 
-    Write-Header -Header "pwsh"
+    Write-Host "Getting PowerShell (pwsh) Version"
     if (Get-Command -Name "pwsh" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting PowerShell (pwsh) Version"
         $(pwsh --version) |
         Out-String |
         Write-Host
@@ -86,9 +77,8 @@ process {
         Write-Warning "PowerShell (pwsh) Not Found"
     }
 
-    Write-Header -Header "python"
+    Write-Host "Getting Python (python) Version"
     if (Get-Command -Name "python" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting Python (python) Version"
         $(python --version) |
         Out-String |
         Write-Host
@@ -97,9 +87,8 @@ process {
         Write-Warning "Python (python) Not Found"
     }
 
-    Write-Header -Header "code"
+    Write-Host "Getting Visual Studio Code (code) Version"
     if (Get-Command -Name "code" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting Visual Studio Code (code) Version"
         $(code --version) |
         Out-String |
         Write-Host
@@ -108,9 +97,8 @@ process {
         Write-Warning "Visual Studio Code (code) Not Found"
     }
 
-    Write-Header -Header "wsl"
+    Write-Host "Getting Windows Subsystem For Linux (wsl) Version"
     if (Get-Command -Name "wsl" -ErrorAction SilentlyContinue) {
-        Write-Verbose "Getting Windows Subsystem For Linux (wsl) Version"
         $(wsl --version) |
         Out-String |
         Write-Host

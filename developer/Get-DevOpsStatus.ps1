@@ -16,31 +16,18 @@ process {
     $ErrorActionPreference = "Stop"
 
     Write-Header -Header "Tools"
-    Write-Verbose "Showing DevOps Tools"
     & "$Path\powershell\developer\Show-DevOpsTools.ps1" -Verbose
 
-    # Write-Header -Header "Build"
-    # Write-Verbose "Invoking Build Workflow"
-    # & "$Path\powershell\developer\Invoke-BuildWorkflow.ps1" -Verbose
-
     Write-Header -Header "Packages"
-    Write-Verbose "Running .NET List"
     dotnet list "$Path\dotnet\MySolution.sln" package --outdated
 
     Write-Header -Header "Modules"
-    Write-Verbose "Testing Modules"
     & "$Path\powershell\dependency\module\Test-Modules.ps1"
 
-    Write-Header -Header "Resources"
-    Write-Verbose "Testing Resources"
-    & "$Path\powershell\dependency\resource\Test-Resources.ps1"
-
-    # Write-Header -Header "Module"
-    # Write-Verbose "Debugging Module"
-    # & "$Path\powershell\module\shell\Debug-Build.ps1"
+    # Write-Header -Header "Resources"
+    # & "$Path\powershell\dependency\resource\Test-Resources.ps1"
 
     Write-Header -Header "WinGet"
-    Write-Verbose "Running WinGet Upgrade"
     winget upgrade
 }
 end {
