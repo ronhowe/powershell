@@ -5,14 +5,10 @@ param(
     $Why = "Debugging"
 )
 begin {
-    Write-Verbose "Beginning $($MyInvocation.MyCommand.Name)"
-
-    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
-    Select-Object -Property @("Name", "Value") |
-    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
+    Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 }
 process {
-    Write-Verbose "Processing $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     Write-Host "Writing Who (`$env:USERNAME)"
     Write-Host $env:USERNAME
@@ -24,7 +20,7 @@ process {
     Write-Host $PSVersionTable.PSVersion
 
     Write-Host "Writing Where (`$env:COMPUTERNAME`)"
-    Write-Output $env:COMPUTERNAME
+    Write-Host $env:COMPUTERNAME
 
     Write-Host "Writing When"
     ## NOTE: PowerShell Core only
@@ -46,5 +42,5 @@ process {
     Write-Host $PSScriptRoot
 }
 end {
-    Write-Verbose "Ending $($MyInvocation.MyCommand.Name)"
+    Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
 }
