@@ -7,17 +7,14 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Creating Profile"
+    Write-Host "Creating Profile"
     New-Item -Path $profile -ItemType File -Force
 
-    Write-Verbose "Setting Profile"
-    "# auto-generated" |
+    Write-Host "Setting Profile"
+    "# auto-generated`n. $(Resolve-Path -Path "$PSScriptRoot\profile.ps1")" |
     Set-Content -Path $profile -Force
 
-    ". $(Resolve-Path -Path "$PSScriptRoot\profile.ps1")" |
-    Add-Content -Path $profile
-
-    Write-Verbose "Loading Profile"
+    Write-Host "Loading Profile"
     . $profile
 }
 end {
