@@ -10,16 +10,14 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Importing DevBox Dsc"
-    . "$PSScriptRoot\DevBoxDsc.ps1" |
-    Out-Null
+    Write-Host "Importing DevBox Dsc"
+    . "$PSScriptRoot\DevBoxDsc.ps1"
 
-    Write-Verbose "Compiling DevBox Dsc"
-    DevBoxDsc -ConfigurationData "$PSScriptRoot\DevBoxDsc.psd1" -OutputPath "$env:TEMP\DevBoxDsc" |
-    Out-Null
+    Write-Host "Compiling DevBox Dsc"
+    DevBoxDsc -ConfigurationData "$PSScriptRoot\DevBoxDsc.psd1" -OutputPath "$env:TEMP\DevBoxDsc"
 
-    Write-Verbose "Starting DevBox Dsc"
-    Start-DscConfiguration -Path "$env:TEMP\DevBoxDsc" -Force -Wait
+    Write-Host "Starting DevBox Dsc"
+    Start-DscConfiguration -Path "$env:TEMP\DevBoxDsc" -Force -Wait -Verbose
 }
 end {
     Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
