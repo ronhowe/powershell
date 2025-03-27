@@ -8,7 +8,6 @@ function Test-RunAsPowerShellCore {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Returning Running As PowerShell Core"
         return ($PSVersionTable.PSEdition -eq "Core")
     }
     end {

@@ -8,7 +8,6 @@ function Test-RunAsWindowsPowerShell {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Returning Running As Windows PowerShell"
         return ($PSVersionTable.PSEdition -eq "Desktop")
     }
     end {

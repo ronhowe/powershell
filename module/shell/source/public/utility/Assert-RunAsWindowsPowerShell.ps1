@@ -8,7 +8,6 @@ function Assert-RunAsWindowsPowerShell {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Testing Running As Windows PowerShell"
         if (-not (Test-RunAsWindowsPowerShell)) {
             throw [System.UnauthorizedAccessException] "Not Running As Windows PowerShell"
         }

@@ -17,15 +17,15 @@ function Export-FunctionToSession {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Defining Function"
+        Write-Host "Getting Function Definition"
         $command = "function $FunctionName() {" + (Get-Command -Name $FunctionName).Definition + "}"
         Write-Debug "`$command = $command"
 
-        Write-Verbose "Defining Script Block From Function"
+        Write-Host "Creating Script Block From Function Definition"
         $scriptBlock = { Invoke-Expression $using:command }
 
         foreach ($node in $Session) {
-            Write-Verbose "Exporting Script Block To Session"
+            Write-Host "Exporting Script Block To Session"
             Invoke-Command -Session $node -ScriptBlock $scriptBlock
         }
     }
