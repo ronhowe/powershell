@@ -18,7 +18,7 @@ function Get-HostByName {
                 [System.Net.Dns]::GetHostByName($computer).HostName.ToUpper()
             }
             catch {
-                Write-Error "Error converting $computer to fully qualified domain name."
+                Write-Error "Failed Getting Host By Name For $computer"
             }
         }
     }
