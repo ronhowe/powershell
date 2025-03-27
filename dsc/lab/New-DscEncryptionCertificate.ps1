@@ -2,6 +2,11 @@
 #requires -RunAsAdministrator
 [CmdletBinding()]
 param(
+    [Parameter(Mandatory = $false)]
+    [ValidateNotNullorEmpty()]
+    [string]
+    $Subject = "DscEncryptionCert",
+
     [Parameter(Mandatory = $true)]
     [ValidateNotNullorEmpty()]
     [securestring]
@@ -21,7 +26,7 @@ process {
     Write-Warning "Creating Self-Signed Certificate" -WarningAction Continue
 
     Write-Host "Creating Certificate"
-    $certificate = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName "DscEncryptionCert" -HashAlgorithm SHA256
+    $certificate = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName $Subject -HashAlgorithm SHA256
 
     Write-Host "Exporting Private Key"
     $certificate |

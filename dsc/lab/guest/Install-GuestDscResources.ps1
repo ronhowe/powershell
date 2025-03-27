@@ -24,26 +24,26 @@ process {
             $ProgressPreference = "SilentlyContinue"
 
             Write-Host "Installing Nuget Package Provider"
-            Install-PackageProvider -Name "nuget" |
+            Install-PackageProvider -Name "nuget" -Force |
             Out-Null
 
             Write-Host "Installing ActiveDirectoryCSDsc Resource"
-            Install-Module -Name "ActiveDirectoryCSDsc" -RequiredVersion "5.0.0" -Repository "PSGallery" -Scope AllUsers
+            Install-Module -Name "ActiveDirectoryCSDsc" -RequiredVersion "5.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing ActiveDirectoryDsc Resource"
-            Install-Module -Name "ActiveDirectoryDsc" -RequiredVersion "6.6.2" -Repository "PSGallery" -Scope AllUsers
+            Install-Module -Name "ActiveDirectoryDsc" -RequiredVersion "6.6.2" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing ComputerManagementDsc Resource"
-            Install-Module -Name "ComputerManagementDsc" -RequiredVersion "10.0.0" -Repository "PSGallery" -Scope AllUsers
+            Install-Module -Name "ComputerManagementDsc" -RequiredVersion "10.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing NetworkingDsc Resource"
-            Install-Module -Name "NetworkingDsc" -RequiredVersion "9.0.0" -Repository "PSGallery" -Scope AllUsers
+            Install-Module -Name "NetworkingDsc" -RequiredVersion "9.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing SecurityPolicyDsc Resource"
-            Install-Module -Name "SecurityPolicyDsc" -RequiredVersion "2.10.0.0" -Repository "PSGallery" -Scope AllUsers
+            Install-Module -Name "SecurityPolicyDsc" -RequiredVersion "2.10.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing SqlServerDsc Resource"
-            Install-Module -Name "SqlServerDsc" -RequiredVersion "17.0.0" -Repository "PSGallery" -Scope AllUsers
+            Install-Module -Name "SqlServerDsc" -RequiredVersion "17.0.0" -Repository "PSGallery" -Scope AllUsers -Force
         }
         Invoke-Command -Session $session -ScriptBlock $scriptBlock
 
