@@ -50,6 +50,7 @@ process {
     }
 
     Task Test {
+        Write-Host "Testing Module"
         Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
         ForEach-Object {
             Invoke-Pester -Path $($_.FullName) -Output Detailed
