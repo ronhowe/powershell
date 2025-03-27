@@ -12,13 +12,13 @@ function Start-Menu {
 
         $ErrorActionPreference = "Continue"
 
-        Write-Verbose "Removing CliMenu Module"
+        Write-Host "Removing CliMenu Module"
         Remove-Module -Name "CliMenu" -Force -ErrorAction SilentlyContinue
 
-        Write-Verbose "Asserting CliMenu Module Exists"
+        Write-Host "Asserting CliMenu Module Exists"
         if (Get-Module -Name "CliMenu" -ListAvailable) {
-            Write-Verbose "Importing CliMenu"
-            Import-Module -Name "CliMenu" -Verbose:$false
+            Write-Host "Importing CliMenu"
+            Import-Module -Name "CliMenu"
         }
         else {
             Write-Error "Import Failed Becuase CliMenu Module Does Not Exist"
@@ -27,7 +27,7 @@ function Start-Menu {
         ################################################################################
         #region Options
 
-        Write-Verbose "Setting Menu Options"
+        Write-Host "Setting Menu Options"
         $parameters = @{
             FooterTextColor = "DarkGray"
             Heading         = "Shell Menu"
@@ -51,7 +51,7 @@ function Start-Menu {
             Name           = "Exit"
             DisplayName    = "Exit"
             Action         = {
-                Show-Date
+                Show-DateTime
             }
             DisableConfirm = $true
         }
@@ -61,7 +61,7 @@ function Start-Menu {
             Name           = "Main"
             DisplayName    = "Main"
             Action         = {
-                Show-Date
+                Show-DateTime
                 Show-Menu
             }
             DisableConfirm = $true
@@ -265,7 +265,7 @@ function Start-Menu {
             Name           = "ShowDevOpsTools"
             DisplayName    = "Show DevOps Tools"
             Action         = {
-                & "$HOME\repos\ronhowe\code\powershell\runbooks\Show-DevOpsTools.ps1" -Verbose
+                & "$HOME\repos\ronhowe\powershell\developer\Show-DevOpsTools.ps1"
                 Show-Menu -MenuName "DevOps"
             }
             DisableConfirm = $true
@@ -277,7 +277,7 @@ function Start-Menu {
             Name           = "ClearLocalStorage"
             DisplayName    = "Clear Local Storage"
             Action         = {
-                & "$HOME\repos\ronhowe\code\powershell\runbooks\Clear-LocalStorage.ps1" -Verbose
+                & "$HOME\repos\ronhowe\powershell\developer\Clear-LocalStorage.ps1"
                 Show-Menu -MenuName "DevOps"
             }
             DisableConfirm = $true
@@ -373,7 +373,7 @@ function Start-Menu {
             Name           = "NewShellConfiguration"
             DisplayName    = "New"
             Action         = {
-                New-ShellConfiguration -Verbose
+                New-ShellConfiguration
                 Show-Menu -MenuName "Configuration"
             }
             DisableConfirm = $false
@@ -385,7 +385,7 @@ function Start-Menu {
             Name           = "OpenShellConfiguration"
             DisplayName    = "Open"
             Action         = {
-                Open-ShellConfiguration -Verbose
+                Open-ShellConfiguration
                 Show-Menu -MenuName "Configuration"
             }
             DisableConfirm = $true
@@ -397,7 +397,7 @@ function Start-Menu {
             Name           = "ImportShellConfiguration"
             DisplayName    = "Import"
             Action         = {
-                Import-ShellConfiguration -Verbose |
+                Import-ShellConfiguration |
                 Out-Null
                 Show-ShellConfiguration
                 Show-Menu -MenuName "Configuration"
@@ -444,7 +444,7 @@ function Start-Menu {
             Name           = "TestDependencies"
             DisplayName    = "Test"
             Action         = {
-                & "$PSScriptRoot\Test-Dependencies.ps1"
+                & "$HOME\repos\ronhowe\powershell\dependency\module\Test-Modules.ps1"
                 Show-Menu -MenuName "Dependencies"
             }
             DisableConfirm = $true
@@ -456,7 +456,7 @@ function Start-Menu {
             Name           = "InstallDependencies"
             DisplayName    = "Install"
             Action         = {
-                & "$PSScriptRoot\Install-Dependencies.ps1"
+                & "$HOME\repos\ronhowe\powershell\dependency\module\Install-Modules.ps1"
                 Show-Menu -MenuName "Dependencies"
             }
             DisableConfirm = $true
@@ -504,7 +504,7 @@ function Start-Menu {
             Name           = "Clock"
             DisplayName    = "Clock"
             Action         = {
-                Show-Date
+                Show-DateTime
                 Show-Menu -MenuName "Main"
             }
             DisableConfirm = $true
@@ -519,26 +519,26 @@ function Start-Menu {
 
         if ($StartTranscript) {
             try {
-                Write-Verbose "Stopping Transcript"
+                Write-Host "Stopping Transcript"
                 Stop-Transcript -ErrorAction SilentlyContinue
             }
             catch {
             }
             finally {
-                Write-Verbose "Starting Transcript"
+                Write-Host "Starting Transcript"
                 Start-Transcript
             }
         }
 
-        Write-Verbose "Showing Menu"
+        Write-Host "Showing Menu"
         Show-Menu -Verbose:$false
 
-        Write-Verbose "Removing CliMenu Module"
+        Write-Host "Removing CliMenu Module"
         Remove-Module -Name "CliMenu" -Force -ErrorAction SilentlyContinue
 
-        Write-Verbose "Stopping Transcript"
+        Write-Host "Stopping Transcript"
         try {
-            Write-Verbose "Stopping Transcript"
+            Write-Host "Stopping Transcript"
             Stop-Transcript -ErrorAction SilentlyContinue
         }
         catch {
