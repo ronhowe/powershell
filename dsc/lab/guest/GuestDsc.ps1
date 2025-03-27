@@ -229,6 +229,24 @@ Configuration GuestDsc {
             ServiceAccount = $SqlCredential
             ServiceType    = "DatabaseEngine"
         }
+        ## TODO: Warning.  Clear text password and no way to check the Test block.
+        # $u = $SqlCredential.UserName
+        # $p = $SqlCredential.GetNetworkCredential().Password
+        # Script "SetSqlServerServiceAccount" {
+        #     DependsOn  = "[SqlServiceAccount]SetSqlServerDatabaseEngineRunAsAccount"
+        #     GetScript  = {
+        #         @{
+        #             Result = "Get operation not implemented for this script."
+        #         }
+        #     }
+        #     SetScript  = {
+        #         sc.exe config MSSQLSERVER obj= $using:u password= $using:p |
+        #         Out-Null
+        #     }
+        #     TestScript = {
+        #         return $false
+        #     }
+        # }
         UserRightsAssignment "AssignLogOnAsAServicePermissionToSqlServerService" {
             DependsOn            = "[Computer]JoinDomain"
             Force                = $false

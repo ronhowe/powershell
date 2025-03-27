@@ -61,7 +61,10 @@ $nodes | Start-VM -Verbose
 $sqlCredential = Get-Credential -Message "Enter SQL Server Credential" -UserName "LAB\svcSqlServer"
 $thumbprint = & "$HOME\repos\ronhowe\powershell\dsc\lab\Get-DscEncryptionCertificate.ps1"
 
+# without wait
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -SqlCredential $sqlCredential -Thumbprint $thumbprint
+# with wait
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -SqlCredential $sqlCredential -Thumbprint $thumbprint -Wait
 
 ## TODO: Network profile is getting set to Public again somehow despite Initilize-Guest.ps1 doing it.
 
