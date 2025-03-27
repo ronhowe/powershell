@@ -32,13 +32,18 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
+    Write-Host "Creating Mof Folder"
+    if (-not (Test-Path "$PSScriptRoot\bin\GuestDsc")) {
+        New-Item -Path "$PSScriptRoot\bin\GuestDsc" -ItemType Directory
+    }
+
     Write-Host "Importing Guest Dsc"
     . "$PSScriptRoot\GuestDsc.ps1"
 
     Write-Host "Compiling Guest Dsc"
     $parameters = @{
         ConfigurationData = "$PSScriptRoot\GuestDsc.psd1"
-        OutputPath        = "$env:TEMP\GuestDsc"
+        OutputPath        = "$PSScriptRoot\bin\GuestDsc"
         Credential        = $Credential
         SqlCredential     = $SqlCredential
         Thumbprint        = $Thumbprint
@@ -48,10 +53,10 @@ process {
     Write-Host "Invoking Guest Dsc On $node"
     foreach ($node in $Nodes) {
         Write-Host "Setting Guest Dsc Local Configuration Manager On $node"
-        Set-DscLocalConfigurationManager -ComputerName $node -Credential $Credential -Path "$env:TEMP\GuestDsc" -Force -Verbose
+        Set-DscLocalConfigurationManager -ComputerName $node -Credential $Credential -Path "$PSScriptRoot\bin\GuestDsc" -Force -Verbose
 
         Write-Host "Starting Guest Dsc On $node"
-        Start-DscConfiguration -ComputerName $node -Credential $Credential -Path "$env:TEMP\GuestDsc" -Force -Wait:$Wait -Verbose |
+        Start-DscConfiguration -ComputerName $node -Credential $Credential -Path "$PSScriptRoot\bin\GuestDsc" -Force -Wait:$Wait -Verbose |
         Out-Null
     }
 }

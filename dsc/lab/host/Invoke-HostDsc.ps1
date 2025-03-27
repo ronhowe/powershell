@@ -22,14 +22,19 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
+    Write-Host "Creating Mof Folder"
+    if (-not (Test-Path "$PSScriptRoot\bin\HostDsc")) {
+        New-Item -Path "$PSScriptRoot\bin\HostDsc" -ItemType Directory
+    }
+
     Write-Host "Importing Host Dsc"
     . "$PSScriptRoot\HostDsc.ps1"
 
     Write-Host "Compiling Host Dsc"
-    HostDsc -ConfigurationData "$PSScriptRoot\HostDsc.psd1" -Nodes $Nodes -Ensure $Ensure -OutputPath "$env:TEMP\HostDsc"
+    HostDsc -ConfigurationData "$PSScriptRoot\HostDsc.psd1" -Nodes $Nodes -Ensure $Ensure -OutputPath "$PSScriptRoot\bin\HostDsc"
 
     Write-Host "Starting Host Dsc"
-    Start-DscConfiguration -Path "$env:TEMP\HostDsc" -Force -Wait:$Wait -Verbose
+    Start-DscConfiguration -Path "$PSScriptRoot\bin\HostDsc" -Force -Wait:$Wait -Verbose
 }
 end {
     Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
