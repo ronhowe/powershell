@@ -16,7 +16,7 @@ function New-AzureResourceGroup {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Creating Azure Resource Group"
+            Write-Host "Creating Azure Resource Group"
             New-AzResourceGroup -Name $ResourceGroupName -Location $Location -Force
         }
         catch {

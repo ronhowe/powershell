@@ -8,7 +8,7 @@ function Disconnect-AzureAccount {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Disconnecting Azure Account"
+        Write-Host "Disconnecting Azure Account"
         Disconnect-AzAccount
     }
     end {

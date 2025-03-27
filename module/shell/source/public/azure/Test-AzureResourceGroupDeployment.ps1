@@ -20,13 +20,13 @@ function Test-AzureResourceGroupDeployment {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Testing Azure Resource Group Deployment"
+            Write-Host "Testing Azure Resource Group Deployment"
             $parameters = @{
                 ResourceGroupName     = $ResourceGroupName
                 Location              = $Location
                 ## TODO: Replace references with $Env:SHELL_CODE_PATH variable.
-                TemplateFile          = "$HOME\repos\ronhowe\code\azure\template.bicep"
-                TemplateParameterFile = "$HOME\repos\ronhowe\code\azure\parameters.json"
+                TemplateFile          = "$HOME\repos\ronhowe\azure\resource\template.bicep"
+                TemplateParameterFile = "$HOME\repos\ronhowe\azure\resource\parameters.json"
                 Mode                  = "Incremental"
                 Verbose               = $false
             }

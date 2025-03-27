@@ -20,10 +20,10 @@ function Remove-AzureKeyVault {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Removing Azure Key Vault ; Please Wait"
+            Write-Host "Removing Azure Key Vault ; Please Wait"
             Remove-AzKeyVault -VaultName $KeyVaultName -Location $Location -ResourceGroupName $ResourceGroupName -Force
 
-            Write-Verbose "Purging Azure Key Vault ; Please Wait"
+            Write-Host "Purging Azure Key Vault ; Please Wait"
             Remove-AzKeyVault -VaultName $KeyVaultName -Location $Location -InRemovedState -Force
         }
         catch {

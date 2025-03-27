@@ -20,13 +20,13 @@ function New-AzureResourceGroupDeployment {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Adding Azure Resource Group Deployment ; Please Wait"
+            Write-Host "Adding Azure Resource Group Deployment ; Please Wait"
             $parameters = @{
                 ResourceGroupName     = $ResourceGroupName
                 Location              = $Location
                 DeploymentName        = $DeploymentName
-                TemplateFile          = "$HOME\repos\ronhowe\code\azure\template.bicep"
-                TemplateParameterFile = "$HOME\repos\ronhowe\code\azure\parameters.json"
+                TemplateFile          = "$HOME\repos\ronhowe\azure\resource\template.bicep"
+                TemplateParameterFile = "$HOME\repos\ronhowe\azure\resource\parameters.json"
                 Mode                  = "Incremental"
                 Force                 = $true
                 Verbose               = $false
