@@ -14,10 +14,10 @@ function Import-ShellPowerConfiguration {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Creating New Shell Configuration Builder"
+            Write-Host "Creating New Shell Configuration Builder"
             $configBuilder = New-PowerConfig
 
-            Write-Verbose "Adding Shell Configuration Sources"
+            Write-Host "Adding Shell Configuration Sources"
             @(
                 "$PSScriptRoot\Shell.json",
                 "$HOME\Shell.json",
@@ -26,27 +26,27 @@ function Import-ShellPowerConfiguration {
             Where-Object { $_ -and $_ -ne ""} |
             ForEach-Object {
                 Write-Debug "`$_ = $_"
-                Write-Verbose "Asserting Shell Configuration Source Exists"
+                Write-Host "Asserting Shell Configuration Source Exists"
                 if (Test-Path -Path $_) {
-                    Write-Verbose "Adding Shell Configuration Source"
+                    Write-Host "Adding Shell Configuration Source"
                     $configBuilder |
                     Add-PowerConfigJsonSource -Path $_ |
                     Out-Null
                 }
                 else {
-                    Write-Verbose "Shell Configuration Source Not Found"
+                    Write-Host "Shell Configuration Source Not Found"
                 }
             }
 
-            Write-Verbose "Building Shell Configuration"
+            Write-Host "Building Shell Configuration"
             $config = $configBuilder |
             Get-PowerConfig
             Write-Debug "`$config = $config"
 
-            Write-Verbose "Defining Shell Configuration Global Variable"
+            Write-Host "Defining Shell Configuration Global Variable"
             New-Variable -Name "ShellConfig" -Value $config -Force -Scope "Global"
 
-            Write-Verbose "Returning Shell Configuration"
+            Write-Host "Returning Shell Configuration"
             return $config
         }
         catch {
