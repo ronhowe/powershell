@@ -9,7 +9,7 @@ function Get-Cpu {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         if (Test-RunAsPowerShellCore) {
-            Import-Module -Name "Microsoft.PowerShell.Management" -Verbose:$false -UseWindowsPowerShell -WarningAction SilentlyContinue 4>&1 |
+            Import-Module -Name "Microsoft.PowerShell.Management" -UseWindowsPowerShell -WarningAction SilentlyContinue |
             Out-Null
         }
 
