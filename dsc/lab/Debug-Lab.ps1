@@ -12,6 +12,7 @@ $nodes = @("LAB-SQL-00")
 $nodes = @("LAB-WEB-00")
 
 $credential = Get-Credential -Message "Enter Administrator Credential" -UserName "Administrator"
+$sqlCredential = Get-Credential -Message "Enter SQL Server Credential" -UserName "LAB\sqlsvc"
 $pfxPassword = Read-Host -Prompt "Enter PFX Password" -AsSecureString
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\New-DscEncryptionCertificate.ps1" -PfxPassword $pfxPassword
@@ -64,7 +65,7 @@ $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-DSC-RESOURCES" -Verbose
 $nodes | Start-VM -Verbose
 
-& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -Thumbprint $thumbprint
+& "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -SqlCredential $sqlCredential -Thumbprint $thumbprint
 
 ## TODO: Network profile is getting set to Public again somehow despite Initilize-Guest.ps1 doing it.
 

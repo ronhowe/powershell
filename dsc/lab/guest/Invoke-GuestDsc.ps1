@@ -15,6 +15,11 @@ param(
 
     [Parameter(Mandatory = $true)]
     [ValidateNotNullorEmpty()]
+    [pscredential]
+    $SqlCredential,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullorEmpty()]
     [string]
     $Thumbprint,
 
@@ -35,6 +40,7 @@ process {
         ConfigurationData = "$PSScriptRoot\GuestDsc.psd1"
         OutputPath        = "$env:TEMP\GuestDsc"
         Credential        = $Credential
+        SqlCredential     = $SqlCredential
         Thumbprint        = $Thumbprint
     }
     GuestDsc @parameters
@@ -45,7 +51,8 @@ process {
         Set-DscLocalConfigurationManager -ComputerName $node -Credential $Credential -Path "$env:TEMP\GuestDsc" -Force -Verbose
 
         Write-Host "Starting Guest Dsc On $node"
-        Start-DscConfiguration -ComputerName $node -Credential $Credential -Path "$env:TEMP\GuestDsc" -Force -Wait:$Wait -Verbose
+        Start-DscConfiguration -ComputerName $node -Credential $Credential -Path "$env:TEMP\GuestDsc" -Force -Wait:$Wait -Verbose |
+        Out-Null
     }
 }
 end {

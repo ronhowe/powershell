@@ -7,6 +7,11 @@ Configuration GuestDsc {
 
         [Parameter(Mandatory = $true)]
         [ValidateNotNullorEmpty()]
+        [pscredential]
+        $SqlCredential,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullorEmpty()]
         [string]
         $Thumbprint
     )
@@ -16,9 +21,10 @@ Configuration GuestDsc {
     Import-DscResource -ModuleName "ComputerManagementDsc" -moduleVersion "10.0.0"
     Import-DscResource -ModuleName "NetworkingDsc" -ModuleVersion "9.0.0"
     Import-DscResource -ModuleName "PSDesiredStateConfiguration" -ModuleVersion "1.1"
+    Import-DscResource -ModuleName "SecurityPolicyDsc" -ModuleVersion "2.10.0.0"
     Import-DscResource -ModuleName "SqlServerDsc" -ModuleVersion "17.0.0"
 
-    $domainCredential = New-Object System.Management.Automation.PSCredential ($("{0}\{1}" -f $Node.DomainName, $Credential.UserName), $Credential.Password)
+    $domainAdminCredential = New-Object System.Management.Automation.PSCredential ($("{0}\{1}" -f $Node.DomainName, $Credential.UserName), $Credential.Password)
 
     #region AllNodes
     Node $AllNodes.NodeName {
@@ -86,7 +92,7 @@ Configuration GuestDsc {
                 WaitTimeout  = $Node.WaitTimeout
             }
             Computer "JoinDomain" {
-                Credential = $domainCredential
+                Credential = $domainAdminCredential
                 DependsOn  = "[WaitForADDomain]WaitForActiveDirectory"
                 DomainName = $Node.DomainName
                 Name       = $Node.NodeName
@@ -130,6 +136,7 @@ Configuration GuestDsc {
     #endregion AllNodes
     #region LAB-APP-00
     Node "LAB-APP-00" {
+        ## NOTE: No configuration required.
     }
     #endregion LAB-APP-00
     #region LAB-DC-00
@@ -175,6 +182,19 @@ Configuration GuestDsc {
             FeatureName                       = "Recycle Bin Feature"
             ForestFQDN                        = $Node.DomainName
         }
+        ADUser "AddSqlServerServiceAccount" {
+            Credential             = $domainAdminCredential
+            DependsOn              = "[WaitForADDomain]WaitForActiveDirectory"
+            DomainName             = $Node.DomainName
+            Enabled                = $true
+            Ensure                 = "Present"
+            Password               = $SqlCredential
+            PasswordAuthentication = "Negotiate"
+            PasswordNeverExpires   = $true
+            PasswordNeverResets    = $false
+            Path                   = "CN=Users,DC=LAB,DC=LOCAL"
+            UserName               = $SqlCredential.UserName.Split('\')[1]
+        }
     }
     #endregion LAB-DC-00
     #region LAB-SQL-00
@@ -184,11 +204,13 @@ Configuration GuestDsc {
             Features             = $Node.Features
             ForceReboot          = $true
             InstanceName         = $Node.InstanceName
-            PsDscRunAsCredential = $Credential
+            PsDscRunAsCredential = $domainAdminCredential
             SAPwd                = $Credential
             SecurityMode         = "SQL"
             SourcePath           = $Node.SourcePath
+            SQLCollation         = "SQL_Latin1_General_CP1_CI_AS"
             SQLSysAdminAccounts  = $Node.SQLSysAdminAccounts
+            SQLSvcAccount        = $SqlCredential
             TcpEnabled           = $true
             UpdateEnabled        = $true
         }
@@ -198,6 +220,28 @@ Configuration GuestDsc {
             Features     = $Node.Features
             InstanceName = $Node.InstanceName
             SourcePath   = $Node.SourcePath
+        }
+        SqlServiceAccount "SetSqlServerDatabaseEngineRunAsAccount" {
+            DependsOn      = "[SqlSetup]InstallSqlServer"
+            InstanceName   = "MSSQLSERVER"
+            RestartService = $true
+            ServerName     = "localhost"
+            ServiceAccount = $SqlCredential
+            ServiceType    = "DatabaseEngine"
+        }
+        UserRightsAssignment "AssignLogOnAsAServicePermissionToSqlServerService" {
+            DependsOn            = "[Computer]JoinDomain"
+            Force                = $false
+            Identity             = $SqlCredential.UserName
+            Policy               = "Log_on_as_a_service"
+            PsDscRunAsCredential = $domainAdminCredential
+        }
+        UserRightsAssignment "AssignPerformVolumeMaintenanceTasksPermissionToSqlServerService" {
+            DependsOn            = "[Computer]JoinDomain"
+            Force                = $false
+            Identity             = $SqlCredential.UserName
+            Policy               = "Perform_volume_maintenance_tasks"
+            PsDscRunAsCredential = $domainAdminCredential
         }
     }
     #endregion LAB-SQL-00
