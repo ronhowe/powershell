@@ -20,6 +20,7 @@
         @{ Name = 'PSPolly' ; Version = '0.0.2' ; Repository = 'PSGallery' },
         ## NOTE: Visual Studio Code is loading PSReadLinie 2.4.0 beta0.  If it works, it works.
         @{ Name = 'PSReadLine' ; Version = '2.3.6' ; Repository = 'PSGallery' }
+        @{ Name = 'PSScriptAnalyzer' ; Version = '1.24.0' ; Repository = 'PSGallery' },
         @{ Name = 'PSWindowsUpdate' ; Version = '2.2.1.5' ; Repository = 'PSGallery' },
         @{ Name = 'SqlServer' ; Version = '22.3.0' ; Repository = 'PSGallery' },
         ## NOTE: Evaluate as a replacement for CliMenu.

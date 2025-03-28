@@ -1,9 +1,12 @@
+#requires -Module "Pester"
+#requires -PSEdition "Core"
+#requires -RunAsAdministrator
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
     [ValidateSet("AllUsers", "CurrentUser")]
     [string]
-    $Scope = "CurrentUser"
+    $Scope = "AllUsers"
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
