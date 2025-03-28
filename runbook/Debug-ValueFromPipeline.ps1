@@ -6,7 +6,7 @@ function Debug-ValueFromPipeline {
         $Items
     )
     begin {
-        Write-Verbose "Beginning $($MyInvocation.MyCommand.Name)"
+        Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 
         Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
         Select-Object -Property @("Name", "Value") |
@@ -14,14 +14,14 @@ function Debug-ValueFromPipeline {
     }
     ## NOTE: process{} blocks not supported in Azure Automation runbooks for initial pipeline input.
     process {
-        Write-Verbose "Processing $($MyInvocation.MyCommand.Name)"
+        Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         foreach ($item in $Items) {
             Write-Output $item
         }
     }
     end {
-        Write-Verbose "Ending $($MyInvocation.MyCommand.Name)"
+        Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
     }
 }
 
