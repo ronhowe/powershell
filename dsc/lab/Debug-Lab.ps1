@@ -71,7 +71,7 @@ Write-Warning "Wait 10 Minutes For Domain Controller Promotion" -WarningAction C
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Wait-GuestDsc.ps1" -Nodes $nodes -Credential $credential -RetryInterval 5
 
-Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\prototypes\hyper-v\GuestDsc.Tests.ps1" -Output Detailed
+Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\dsc\lab\guest\GuestDsc.Tests.ps1" -Output Detailed
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-DSC" -Verbose
