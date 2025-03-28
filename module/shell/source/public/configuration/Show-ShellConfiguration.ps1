@@ -8,7 +8,7 @@ function Show-ShellConfiguration {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Host "Showing Shell Configuration"
+        Write-Verbose "Showing Shell Configuration"
         $global:ShellConfig |
         Out-String |
         Write-Host

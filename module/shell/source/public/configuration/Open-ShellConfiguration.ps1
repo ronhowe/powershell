@@ -12,7 +12,7 @@ function Open-ShellConfiguration {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Host "Opening Shell Configuration"
+        Write-Verbose "Opening Shell Configuration"
         notepad $Path
     }
     end {
