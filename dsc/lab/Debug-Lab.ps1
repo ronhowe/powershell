@@ -48,6 +48,7 @@ $nodes | Checkpoint-VM -SnapshotName "POST-INITIALIZE" -Verbose
 $nodes | Start-VM -Verbose
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\Remove-DscEncryptionCertificate.ps1"
+Get-ChildItem -Path "Cert:\LocalMachine\My\"
 & "$HOME\repos\ronhowe\powershell\dsc\lab\New-DscEncryptionCertificate.ps1"
 & "$HOME\repos\ronhowe\powershell\dsc\lab\Get-DscEncryptionCertificate.ps1"
 & "$HOME\repos\ronhowe\powershell\dsc\lab\Publish-DscEncryptionCertificate.ps1" -Nodes $nodes -Credential $credential -PfxPath "$HOME\repos\ronhowe\powershell\dsc\lab\DscPrivateKey.pfx"
