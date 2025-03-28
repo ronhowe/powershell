@@ -23,7 +23,7 @@ Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\dsc\lab\host\HostDsc.Tests
 ## NOTE: Launching this many vmconnect processes is taxing.
 $nodes | ForEach-Object { Start-Process -FilePath "vmconnect.exe" -ArgumentList @("localhost", $_) ; Start-Sleep -Seconds 3 }
 
-## NOTE: Complete the OOBE process including login to desktop for each node.
+Write-Warning "Complete OOBE ; Login To Desktop" -WarningAction Continue
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-OOBE" -Verbose
@@ -41,7 +41,7 @@ $nodes | Start-VM -Verbose
 ## NOTE: Initialize-Guest is idempotent.
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Initialize-Guest.ps1" -Nodes $nodes -Credential $credential
 
-## NOTE: Patch Windows for each node.
+Write-Warning "Patch Windows" -WarningAction Continue
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-INITIALIZE" -Verbose

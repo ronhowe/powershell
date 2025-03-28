@@ -101,6 +101,12 @@ process {
             ## TODO: The DNS IP should be passed in.
             Write-Host "Setting DNS Client Server Address On $env:COMPUTERNAME"
             Set-DnsClientServerAddress -InterfaceIndex $interfaceIndex -ServerAddresses ($PrimaryDnsIpAddress)
+
+            Write-Host "Enabling Remote Desktop On $env:COMPUTERNAME"
+            Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+
+            Write-Host "Configuring Firewall To Allow Remote Desktop On $env:COMPUTERNAME"
+            Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         }
         end {
             Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
