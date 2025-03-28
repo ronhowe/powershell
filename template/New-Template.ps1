@@ -30,10 +30,10 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Host "Doing Something ; Please Wait"
+    Write-Verbose "Doing Something ; Please Wait"
 
     foreach ($computer in $ComputerName) {
-        Write-Host "Doing Something On $computer ; Please Wait"
+        Write-Verbose "Doing Something On $computer ; Please Wait"
     }
 }
 end {
