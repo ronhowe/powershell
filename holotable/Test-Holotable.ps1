@@ -10,10 +10,9 @@ begin {
     ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
 }
 process {
-    $ErrorActionPreference = "Stop"
-
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
+    Write-Host "Invoking Pester Tests"
     Invoke-Pester -Path "$PSScriptRoot\Holotable.Tests.ps1" -Output Detailed
 }
 end {
