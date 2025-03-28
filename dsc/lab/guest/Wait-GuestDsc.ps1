@@ -31,7 +31,9 @@ process {
 
     $scriptBlock = {
         $ProgressPreference = "SilentlyContinue"
+        Write-Host "Starting DSC Configuration On $env:COMPUTERNAME"
         Start-DscConfiguration -UseExisting -Wait -ErrorAction SilentlyContinue
+        Write-Host "Getting DSC Configuration Status On $env:COMPUTERNAME"
         return New-Object -TypeName "PSObject" -Property  @{ Status = (Get-DscConfigurationStatus -ErrorAction SilentlyContinue).Status }
     }
 
