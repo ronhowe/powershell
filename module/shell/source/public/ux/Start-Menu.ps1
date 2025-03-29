@@ -6,18 +6,22 @@ function Start-Menu {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         $ErrorActionPreference = "Continue"
 
-        Write-Host "Removing CliMenu Module"
+        Write-Verbose "Removing CliMenu Module"
         Remove-Module -Name "CliMenu" -Force -ErrorAction SilentlyContinue
 
-        Write-Host "Asserting CliMenu Module Exists"
+        Write-Verbose "Asserting CliMenu Module Exists"
         if (Get-Module -Name "CliMenu" -ListAvailable) {
-            Write-Host "Importing CliMenu"
+            Write-Verbose "Importing CliMenu"
             Import-Module -Name "CliMenu"
         }
         else {
@@ -519,26 +523,26 @@ function Start-Menu {
 
         if ($StartTranscript) {
             try {
-                Write-Host "Stopping Transcript"
+                Write-Verbose "Stopping Transcript"
                 Stop-Transcript -ErrorAction SilentlyContinue
             }
             catch {
             }
             finally {
-                Write-Host "Starting Transcript"
+                Write-Verbose "Starting Transcript"
                 Start-Transcript
             }
         }
 
-        Write-Host "Showing Menu"
+        Write-Verbose "Showing Menu"
         Show-Menu -Verbose:$false
 
-        Write-Host "Removing CliMenu Module"
+        Write-Verbose "Removing CliMenu Module"
         Remove-Module -Name "CliMenu" -Force -ErrorAction SilentlyContinue
 
-        Write-Host "Stopping Transcript"
+        Write-Verbose "Stopping Transcript"
         try {
-            Write-Host "Stopping Transcript"
+            Write-Verbose "Stopping Transcript"
             Stop-Transcript -ErrorAction SilentlyContinue
         }
         catch {
