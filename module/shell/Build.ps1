@@ -1,6 +1,5 @@
 #requires -Module "ModuleBuilder"
 #requires -Module "Pester"
-
 [CmdletBinding()]
 param(
     [ValidateNotNullOrEmpty()]
@@ -21,7 +20,7 @@ process {
     Task . Clean, Build
 
     Task Build {
-        Write-Verbose "Building Module"
+        Write-Output "Building Module"
         $parameters = @{
             CopyPaths                  = @(
                 "$PSScriptRoot\source\Shell.json",
@@ -38,23 +37,23 @@ process {
     }
 
     Task Clean {
-        Write-Verbose "Removing Output"
+        Write-Output "Removing Output"
         Remove-Item -Path "$PSScriptRoot\bin" -Recurse -Force -ErrorAction SilentlyContinue
     }
 
     Task Remove {
-        Write-Verbose "Removing Module"
+        Write-Output "Removing Module"
         Get-Module -Name "Shell" |
         Remove-Module -Force
     }
 
     Task Import {
-        Write-Verbose "Importing Module"
+        Write-Output "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
     }
 
     Task Test {
-        Write-Verbose "Testing Module"
+        Write-Output "Testing Module"
         Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
         ForEach-Object {
             Invoke-Pester -Path $($_.FullName) -Output Detailed
