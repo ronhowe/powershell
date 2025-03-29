@@ -17,6 +17,7 @@ $nodes = @("LAB-WEB-00")
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "NEW" -Verbose
 $nodes | Start-VM -Verbose
+$nodes | Get-VM
 
 Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\dsc\lab\host\HostDsc.Tests.ps1" -Output Detailed
 
@@ -28,6 +29,7 @@ Write-Warning "Complete OOBE ; Login To Desktop" -WarningAction Continue
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-OOBE" -Verbose
 $nodes | Start-VM -Verbose
+$nodes | Get-VM
 
 $credential = Get-Credential -Message "Enter Administrator Credential" -UserName "Administrator"
 
@@ -37,6 +39,7 @@ $credential = Get-Credential -Message "Enter Administrator Credential" -UserName
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-RENAME" -Verbose
 $nodes | Start-VM -Verbose
+$nodes | Get-VM
 
 ## NOTE: Initialize-Guest is idempotent.
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Initialize-Guest.ps1" -Nodes $nodes -Credential $credential
@@ -46,6 +49,7 @@ Write-Warning "Patch Windows" -WarningAction Continue
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-INITIALIZE" -Verbose
 $nodes | Start-VM -Verbose
+$nodes | Get-VM
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\Remove-DscEncryptionCertificate.ps1"
 Get-ChildItem -Path "Cert:\LocalMachine\My\"
@@ -58,6 +62,7 @@ Get-ChildItem -Path "Cert:\LocalMachine\My\"
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-DSC-PRE-REQUISITES" -Verbose
 $nodes | Start-VM -Verbose
+$nodes | Get-VM
 
 $sqlCredential = Get-Credential -Message "Enter SQL Server Credential" -UserName "LAB\svcSqlServer"
 $thumbprint = & "$HOME\repos\ronhowe\powershell\dsc\lab\Get-DscEncryptionCertificate.ps1"
@@ -76,6 +81,7 @@ Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\dsc\lab\guest\GuestDsc.Tes
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-DSC" -Verbose
 $nodes | Start-VM -Verbose
+$nodes | Get-VM
 
 ## NOTE: Install-PowerShell is idempotent.
 ## NOTE: It works, but causes this error due to WinRm being reset by the installer.
