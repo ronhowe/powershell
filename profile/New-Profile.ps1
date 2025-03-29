@@ -16,7 +16,7 @@ process {
     Out-Null
 
     Write-Output "Setting Profile"
-    "# auto-generated`n. $(Resolve-Path -Path "$PSScriptRoot\profile.ps1")" |
+    "# auto-generated`n$(Resolve-Path -Path "$PSScriptRoot\profile.ps1") |`nOut-Null" |
     Set-Content -Path $profile -Force
 
     Write-Output "Loading Profile"
