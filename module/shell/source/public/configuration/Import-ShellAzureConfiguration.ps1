@@ -9,6 +9,10 @@ function Import-ShellAzureConfiguration {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
@@ -16,7 +20,7 @@ function Import-ShellAzureConfiguration {
         Write-Verbose "Importing Parameters JSON"
         $parameters = Get-Content -Path $Path |
         ConvertFrom-Json |
-        Select-object -ExpandProperty "parameters"
+        Select-Object -ExpandProperty "parameters"
 
         Write-Verbose "Setting Shell Configuration"
         ## TODO: Add all Azure resource names to ShellConfig.
