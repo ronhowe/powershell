@@ -17,12 +17,12 @@ function Import-ShellAzureConfiguration {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Importing Parameters JSON"
+        Write-Output "Importing Parameters JSON"
         $parameters = Get-Content -Path $Path |
         ConvertFrom-Json |
         Select-Object -ExpandProperty "parameters"
 
-        Write-Verbose "Setting Shell Configuration"
+        Write-Output "Setting Shell Configuration"
         ## TODO: Add all Azure resource names to ShellConfig.
         $global:ShellConfig.Location = $parameters.location.value;
         $global:ShellConfig.AppConfigurationName = $parameters.configStoreName.value;
@@ -31,7 +31,7 @@ function Import-ShellAzureConfiguration {
         $global:ShellConfig.KeyVaultName = $parameters.keyVaultName.value;
         $global:ShellConfig.StorageAccountName = $parameters.storageAccountName.value;
 
-        Write-Verbose "Returning Shell Configuration"
+        Write-Output "Returning Shell Configuration"
         return $global:ShellConfig
     }
     end {

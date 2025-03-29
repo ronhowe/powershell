@@ -266,10 +266,10 @@ function Start-Menu {
         Add-MenuItem -Menu "DevOps"
 
         $parameters = @{
-            Name           = "ShowDevOpsTools"
-            DisplayName    = "Show DevOps Tools"
+            Name           = "GetDevOpsTools"
+            DisplayName    = "Get DevOps Tools"
             Action         = {
-                & "$HOME\repos\ronhowe\powershell\developer\Show-DevOpsTools.ps1"
+                & "$HOME\repos\ronhowe\powershell\developer\Get-DevOpsTools.ps1"
                 Show-Menu -MenuName "DevOps"
             }
             DisableConfirm = $true
@@ -289,17 +289,17 @@ function Start-Menu {
         New-MenuItem @parameters |
         Add-MenuItem -Menu "DevOps"
 
-        $parameters = @{
-            Name           = "OpenLogsFolder"
-            DisplayName    = "Open Logs Folder"
-            Action         = {
-                explorer.exe "$HOME\repos\ronhowe\code\logs"
-                Show-Menu -MenuName "DevOps"
-            }
-            DisableConfirm = $true
-        }
-        New-MenuItem @parameters |
-        Add-MenuItem -Menu "DevOps"
+        # $parameters = @{
+        #     Name           = "OpenLogsFolder"
+        #     DisplayName    = "Open Logs Folder"
+        #     Action         = {
+        #         explorer.exe "$HOME\repos\ronhowe\code\logs"
+        #         Show-Menu -MenuName "DevOps"
+        #     }
+        #     DisableConfirm = $true
+        # }
+        # New-MenuItem @parameters |
+        # Add-MenuItem -Menu "DevOps"
 
         #endregion Main | DevOps | *
         ################################################################################

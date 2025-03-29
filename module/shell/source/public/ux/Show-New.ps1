@@ -13,7 +13,8 @@ function Show-New {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         Clear-Host
-        Start-Shell
+        Start-Shell |
+        Out-Null
     }
     end {
         Write-Debug "Ending $($MyInvocation.MyCommand.Name)"

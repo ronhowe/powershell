@@ -15,11 +15,11 @@ function Start-Shell {
         try {
             ## TODO: Adopt Improt-ShellPowerConfiguration if it supports .NET Standard.
             ## LINK: https://github.com/JustinGrote/PowerConfig/issues/7
-            Write-Verbose "Importing Shell Configuration"
+            Write-Output "Importing Shell Configuration"
             Import-ShellConfiguration -WarningAction "SilentlyContinue" |
             Out-Null
 
-            Write-Verbose "Setting Location To Home"
+            Write-Output "Setting Location To Home"
             Set-Location -Path $HOME
 
             Show-Header

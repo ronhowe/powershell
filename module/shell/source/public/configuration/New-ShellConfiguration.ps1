@@ -16,7 +16,7 @@ function New-ShellConfiguration {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Verbose "Copying Shell Configuration"
+        Write-Output "Copying Shell Configuration"
         Copy-Item -Path "$PSScriptRoot\Shell.json" -Destination $Path -Force
     }
     end {

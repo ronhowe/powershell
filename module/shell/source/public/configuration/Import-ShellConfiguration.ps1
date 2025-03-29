@@ -18,7 +18,7 @@ function Import-ShellConfiguration {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Verbose "Adding Shell Configuration Sources"
+            Write-Output "Adding Shell Configuration Sources"
             @(
                 "$PSScriptRoot\Shell.json",
                 "$HOME\Shell.json",
@@ -27,14 +27,14 @@ function Import-ShellConfiguration {
             Where-Object { $_ -and $_ -ne "" } |
             ForEach-Object {
                 Write-Debug "`$_ = $_"
-                Write-Verbose "Asserting Shell Configuration Source Exists"
+                Write-Output "Asserting Shell Configuration Source Exists"
                 if (Test-Path -Path $_) {
-                    Write-Verbose "Adding Shell Configuration Source"
+                    Write-Output "Adding Shell Configuration Source"
                     $global:ShellConfig = Get-Content -Path $_ |
                     ConvertFrom-Json
                 }
                 else {
-                    Write-Verbose "Shell Configuration Source Not Found"
+                    Write-Output "Shell Configuration Source Not Found"
                 }
             }
         }
@@ -43,21 +43,21 @@ function Import-ShellConfiguration {
         }
 
         try {
-            Write-Verbose "Adding Shell Configuration Sources"
+            Write-Output "Adding Shell Configuration Sources"
             @(
                 "$HOME\repos\ronhowe\azure\parameters.json"
             ) |
             Where-Object { $_ -and $_ -ne "" } |
             ForEach-Object {
                 Write-Debug "`$_ = $_"
-                Write-Verbose "Asserting Azure Shell Configuration Source Exists"
+                Write-Output "Asserting Azure Shell Configuration Source Exists"
                 if (Test-Path -Path $_) {
-                    Write-Verbose "Importing Azure Shell Configuration"
+                    Write-Output "Importing Azure Shell Configuration"
                     Import-ShellAzureConfiguration -Path $_ |
                     Out-Null
                 }
                 else {
-                    Write-Verbose "Azure Shell Configuration Source Not Found"
+                    Write-Output "Azure Shell Configuration Source Not Found"
                 }
             }
         }
@@ -65,7 +65,7 @@ function Import-ShellConfiguration {
             Write-Error "Import Failed Because $($_.Exception.Message)"
         }
 
-        Write-Verbose "Returning Shell Configuration"
+        Write-Output "Returning Shell Configuration"
         return $global:ShellConfig
     }
     end {
