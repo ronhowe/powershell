@@ -15,12 +15,12 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    . "$PSScriptRoot\Write-Header.ps1"
-
     $ErrorActionPreference = "Stop"
 
+    . "$PSScriptRoot\Write-Header.ps1"
+
     Write-Header -Header "Tools"
-    & "$Path\powershell\developer\Show-DevOpsTools.ps1" -Verbose
+    & "$Path\powershell\developer\Get-DevOpsTools.ps1" -Verbose
 
     Write-Header -Header "Packages"
     dotnet list "$Path\dotnet\MySolution.sln" package --outdated

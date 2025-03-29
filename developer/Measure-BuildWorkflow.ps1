@@ -13,7 +13,7 @@ process {
 
     $ErrorActionPreference = "Stop"
 
-    Write-Verbose "Measuring Build Workflow"
+    Write-Output "Measuring Build Workflow"
     Measure-Command {
         & "$PSScriptRoot\Invoke-BuildWorkflow.ps1"
     }
