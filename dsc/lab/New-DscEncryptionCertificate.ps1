@@ -19,28 +19,32 @@ param(
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+    Select-Object -Property @("Name", "Value") |
+    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
 }
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     Write-Warning "Creating Self-Signed Certificate" -WarningAction Continue
 
-    Write-Host "Creating Certificate"
+    Write-Output "Creating Certificate"
     $certificate = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName $Subject -HashAlgorithm SHA256
 
-    Write-Host "Exporting Private Key"
+    Write-Output "Exporting Private Key"
     $certificate |
     Export-PfxCertificate -FilePath "$PSScriptRoot\DscPrivateKey.pfx" -Password $PfxPassword -Force
 
-    Write-Host "Exporting Public Key"
+    Write-Output "Exporting Public Key"
     $certificate |
     Export-Certificate -FilePath "$PSScriptRoot\DscPublicKey.cer" -Force
 
-    Write-Host "Removing Certificate"
+    Write-Output "Removing Certificate"
     $certificate |
     Remove-Item -Force
 
-    Write-Host "Importing Public Key"
+    Write-Output "Importing Public Key"
     Import-Certificate -FilePath "$PSScriptRoot\DscPublicKey.cer" -CertStoreLocation $CertStoreLocation
 }
 end {

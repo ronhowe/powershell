@@ -23,18 +23,22 @@ param(
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+    Select-Object -Property @("Name", "Value") |
+    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
 }
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     foreach ($node in $Nodes) {
-        Write-Host "Getting PSSession To $node"
+        Write-Output "Getting PSSession To $node"
         $session = New-PSSession -ComputerName $node -Credential $Credential
 
-        Write-Host "Copying PFX To $node"
+        Write-Output "Copying PFX To $node"
         Copy-Item -Path $PfxPath -Destination "C:\DscPrivateKey.pfx" -ToSession $session
 
-        Write-Host "Importing PFX On $node"
+        Write-Output "Importing PFX On $node"
         $scriptBlock = {
             Import-PfxCertificate -FilePath "C:\DscPrivateKey.pfx" -CertStoreLocation "Cert:\LocalMachine\My" -Password $using:PfxPassword |
             Out-Null
@@ -43,7 +47,7 @@ process {
         }
         Invoke-Command -Session $session -ScriptBlock $scriptBlock
 
-        Write-Host "Removing PSSession To $node"
+        Write-Output "Removing PSSession To $node"
         $session |
         Remove-PSSession
     }
