@@ -11,14 +11,15 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Host "Creating Profile"
-    New-Item -Path $profile -ItemType File -Force
+    Write-Verbose "Creating Profile"
+    New-Item -Path $profile -ItemType File -Force |
+    Out-Null
 
-    Write-Host "Setting Profile"
+    Write-Verbose "Setting Profile"
     "# auto-generated`n. $(Resolve-Path -Path "$PSScriptRoot\profile.ps1")" |
     Set-Content -Path $profile -Force
 
-    Write-Host "Loading Profile"
+    Write-Verbose "Loading Profile"
     . $profile
 }
 end {

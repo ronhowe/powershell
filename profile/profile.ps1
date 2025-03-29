@@ -26,62 +26,62 @@ process {
     Write-Verbose "Asserting Az.Accounts Module Exists"
     if (Get-Module -Name "Az.Accounts" -ListAvailable) {
         Write-Verbose "Importing Az.Accounts"
-        Import-Module -Name "Az.Accounts" -Verbose:$false
+        Import-Module -Name "Az.Accounts"
     }
     else {
         Write-Warning "Skipping Az.Accounts Module"
     }
 
-    # Write-Verbose "Asserting Az.Resources Module Exists"
-    # if (Get-Module -Name "Az.Resources" -ListAvailable) {
-    #     Write-Verbose "Importing Az.Resources"
-    #     Import-Module -Name "Az.Resources" -Verbose:$false
-    # }
-    # else {
-    #     Write-Warning "Skipping Az.Resources Module"
-    # }
+    Write-Verbose "Asserting Az.Resources Module Exists"
+    if (Get-Module -Name "Az.Resources" -ListAvailable) {
+        Write-Verbose "Importing Az.Resources"
+        Import-Module -Name "Az.Resources"
+    }
+    else {
+        Write-Warning "Skipping Az.Resources Module"
+    }
 
     Write-Verbose "Asserting Az.Tools.Predictor Module Exists"
     if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
         Write-Verbose "Importing Az.Tools.Predictor"
-        Import-Module -Name "Az.Tools.Predictor" -Verbose:$false
+        Import-Module -Name "Az.Tools.Predictor"
     }
     else {
         Write-Warning "Skipping Az.Tools.Predictor Module"
     }
 
-    # Write-Verbose "Asserting Microsoft.PowerShell.SecretManagement Module Exists"
-    # if (Get-Module -Name "Microsoft.PowerShell.SecretManagement" -ListAvailable) {
-    #     Write-Verbose "Importing Microsoft.PowerShell.SecretManagement"
-    #     Import-Module -Name "Microsoft.PowerShell.SecretManagement" -Verbose:$false
-    # }
-    # else {
-    #     Write-Warning "Skipping Microsoft.PowerShell.SecretManagement Module"
-    # }
+    Write-Verbose "Asserting Microsoft.PowerShell.SecretManagement Module Exists"
+    if (Get-Module -Name "Microsoft.PowerShell.SecretManagement" -ListAvailable) {
+        Write-Verbose "Importing Microsoft.PowerShell.SecretManagement"
+        Import-Module -Name "Microsoft.PowerShell.SecretManagement"
+    }
+    else {
+        Write-Warning "Skipping Microsoft.PowerShell.SecretManagement Module"
+    }
 
-    # Write-Verbose "Asserting Microsoft.PowerShell.SecretStore Module Exists"
-    # if (Get-Module -Name "Microsoft.PowerShell.SecretStore" -ListAvailable) {
-    #     Write-Verbose "Importing Microsoft.PowerShell.SecretStore"
-    #     Import-Module -Name "Microsoft.PowerShell.SecretStore" -Verbose:$false
-    # }
-    # else {
-    #     Write-Warning "Skipping Microsoft.PowerShell.SecretStore Module"
-    # }
+    Write-Verbose "Asserting Microsoft.PowerShell.SecretStore Module Exists"
+    if (Get-Module -Name "Microsoft.PowerShell.SecretStore" -ListAvailable) {
+        Write-Verbose "Importing Microsoft.PowerShell.SecretStore"
+        Import-Module -Name "Microsoft.PowerShell.SecretStore"
+    }
+    else {
+        Write-Warning "Skipping Microsoft.PowerShell.SecretStore Module"
+    }
 
-    # Write-Verbose "Asserting PackageManagement Module Exists"
-    # if (Get-Module -Name "PackageManagement" -ListAvailable) {
-    #     Write-Verbose "Importing PackageManagement"
-    #     Import-Module -Name "PackageManagement" -Verbose:$false
-    # }
-    # else {
-    #     Write-Warning "Skipping PackageManagement Module"
-    # }
+    Write-Verbose "Asserting PackageManagement Module Exists"
+    if (Get-Module -Name "PackageManagement" -ListAvailable) {
+        Write-Verbose "Importing PackageManagement"
+        Import-Module -Name "PackageManagement"
+    }
+    else {
+        Write-Warning "Skipping PackageManagement Module"
+    }
 
     ## NOTE: Loaded by usual hosts automatically.  Importing intentionally just for clarity.
     Write-Verbose "Asserting Pester Module Exists"
     if (Get-Module -Name "Pester" -ListAvailable) {
         Write-Verbose "Importing Pester"
-        Import-Module -Name "Pester" -Verbose:$false
+        Import-Module -Name "Pester"
     }
     else {
         Write-Warning "Skipping Pester Module"
@@ -90,7 +90,7 @@ process {
     Write-Verbose "Asserting posh-git Module Exists"
     if (Get-Module -Name "posh-git" -ListAvailable) {
         Write-Verbose "Importing posh-git"
-        Import-Module -Name "posh-git" -Verbose:$false
+        Import-Module -Name "posh-git"
     }
     else {
         Write-Warning "Skipping posh-git Module"
@@ -118,7 +118,7 @@ process {
         Write-Verbose "Asserting ISESteroids Module Exists"
         if (Get-Module -Name "ISESteroids" -ListAvailable) {
             Write-Verbose "Importing ISESteroids"
-            Import-Module -Name "ISESteroids" -Verbose:$false
+            Import-Module -Name "ISESteroids"
         }
         else {
             Write-Warning "Skipping ISESteroids Module"
@@ -128,7 +128,9 @@ process {
     ## NOTE: Work shim.
     Write-Verbose "Defining Shim Global Variables"
     New-Variable -Name "Root" -Value "C:\VSTS" -Scope Global -Force -ErrorAction SilentlyContinue
+    Write-Debug "`$Root = $Root"
     New-Variable -Name "VSTS" -Value "C:\VSTS" -Scope Global -Force -ErrorAction SilentlyContinue
+    Write-Debug "`$VSTS = $VSTS"
 
     Write-Verbose "Setting PSReadLine Options"
     if ($PSVersionTable.PSEdition -eq "Core") {
