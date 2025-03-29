@@ -14,7 +14,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Verbose "Invoking Pester"
+    Write-Output "Invoking Pester"
     Invoke-Pester -Path "$PSScriptRoot\Modules.Tests.ps1" -Output Detailed
 }
 end {
