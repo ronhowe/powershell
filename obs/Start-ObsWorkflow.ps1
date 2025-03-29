@@ -29,7 +29,7 @@ process {
 
     #region Transcode With Handbrake CLI
 
-    Write-Host "Transcoding With Handbrake CLI"
+    Write-Verbose "Transcoding With Handbrake CLI"
 
     Get-ChildItem -Path $HandbrakeInputPath -Filter "*.mkv" |
     ForEach-Object {
@@ -40,7 +40,7 @@ process {
         Write-Debug "`$Mp4Path = $Mp4Path"
 
         if (-not (Test-Path -Path $Mp4Path)) {
-            Write-Host "Starting Handbrake CLI"
+            Write-Verbose "Starting Handbrake CLI"
 
             # https://handbrake.fr/docs/en/latest/cli/command-line-reference.html
             Start-Process -Path $HandbrakeCliPath -ArgumentList "--input", "`"$MkvPath`"", "--output", "`"$Mp4Path`"", "--all-audio" -Wait -NoNewWindow
@@ -49,7 +49,7 @@ process {
         ## TODO: Handle Process Return Code
 
         if (Test-Path -Path $Mp4Path) {
-            Write-Host "Confirmed $Mp4Path"
+            Write-Verbose "Confirmed $Mp4Path"
         }
         else {
             Write-Error "Could not find $Mp4Path"
@@ -58,8 +58,6 @@ process {
     }
 
     #endregion Transcode With Handbrake CLI
-
-    Write-Host "OK" -ForegroundColor Green
 }
 end {
     Write-Debug "End $($MyInvocation.MyCommand.Name)"
