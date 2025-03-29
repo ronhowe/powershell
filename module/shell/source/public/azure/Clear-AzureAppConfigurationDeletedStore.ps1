@@ -11,12 +11,16 @@ function Clear-AzureAppConfigurationDeletedStore {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Host "Clearing Azure App Configuration Deleted Store"
+            Write-Output "Clearing Azure App Configuration Deleted Store"
             Clear-AzAppConfigurationDeletedStore -Location $Location -Name $AppConfigurationName
         }
         catch {

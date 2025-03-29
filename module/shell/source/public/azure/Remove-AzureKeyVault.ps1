@@ -15,15 +15,19 @@ function Remove-AzureKeyVault {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Host "Removing Azure Key Vault ; Please Wait"
+            Write-Output "Removing Azure Key Vault ; Please Wait"
             Remove-AzKeyVault -VaultName $KeyVaultName -Location $Location -ResourceGroupName $ResourceGroupName -Force
 
-            Write-Host "Purging Azure Key Vault ; Please Wait"
+            Write-Output "Purging Azure Key Vault ; Please Wait"
             Remove-AzKeyVault -VaultName $KeyVaultName -Location $Location -InRemovedState -Force
         }
         catch {

@@ -15,12 +15,16 @@ function Test-AzureResourceGroupDeployment {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Host "Testing Azure Resource Group Deployment"
+            Write-Output "Testing Azure Resource Group Deployment"
             $parameters = @{
                 ResourceGroupName     = $ResourceGroupName
                 Location              = $Location
@@ -28,7 +32,6 @@ function Test-AzureResourceGroupDeployment {
                 TemplateFile          = "$HOME\repos\ronhowe\azure\resource\template.bicep"
                 TemplateParameterFile = "$HOME\repos\ronhowe\azure\resource\parameters.json"
                 Mode                  = "Incremental"
-                Verbose               = $false
             }
             Test-AzResourceGroupDeployment @parameters
         }

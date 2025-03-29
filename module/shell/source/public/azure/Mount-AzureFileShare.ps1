@@ -19,21 +19,25 @@ function Mount-AzureFileShare {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         $ErrorActionPreference = "Stop"
 
-        Write-Host "Testing Connection To Azure Storage Account"
+        Write-Output "Testing Connection To Azure Storage Account"
         $connectTestResult = Test-NetConnection -ComputerName "$StorageAccountName.file.core.windows.net" -Port 445
 
-        Write-Host "Asserting Connection To Azure Storage Account"
+        Write-Output "Asserting Connection To Azure Storage Account"
         if ($connectTestResult.TcpTestSucceeded) {
-            Write-Host "Getting Azure Storage Account Key"
+            Write-Output "Getting Azure Storage Account Key"
             $storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $StorageAccountName)[0].Value
 
-            Write-Host "Mounting Azure File Share ; Please Wait"
+            Write-Output "Mounting Azure File Share ; Please Wait"
             $parameters = @{
                 Name       = $DriveLetter
                 PSProvider = "FileSystem"

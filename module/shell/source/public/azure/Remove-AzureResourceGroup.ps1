@@ -7,12 +7,16 @@ function Remove-AzureResourceGroup {
     )
     begin {
         Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+        Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+        Select-Object -Property @("Name", "Value") |
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Host "Removing Azure Resource Group ; Please Wait"
+            Write-Output "Removing Azure Resource Group ; Please Wait"
             Remove-AzResourceGroup -Name $ResourceGroupName -Force
         }
         catch {
