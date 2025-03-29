@@ -9,6 +9,10 @@ param(
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
+
+    Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
+    Select-Object -Property @("Name", "Value") |
+    ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
 }
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
@@ -17,7 +21,7 @@ process {
     Task . Clean, Build
 
     Task Build {
-        Write-Host "Building Module"
+        Write-Verbose "Building Module"
         $parameters = @{
             CopyPaths                  = @(
                 "$PSScriptRoot\source\Shell.json",
@@ -34,23 +38,23 @@ process {
     }
 
     Task Clean {
-        Write-Host "Removing Output"
+        Write-Verbose "Removing Output"
         Remove-Item -Path "$PSScriptRoot\bin" -Recurse -Force -ErrorAction SilentlyContinue
     }
 
     Task Remove {
-        Write-Host "Removing Module"
+        Write-Verbose "Removing Module"
         Get-Module -Name "Shell" |
         Remove-Module -Force
     }
 
     Task Import {
-        Write-Host "Importing Module"
+        Write-Verbose "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
     }
 
     Task Test {
-        Write-Host "Testing Module"
+        Write-Verbose "Testing Module"
         Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
         ForEach-Object {
             Invoke-Pester -Path $($_.FullName) -Output Detailed
