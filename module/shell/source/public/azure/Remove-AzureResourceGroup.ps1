@@ -16,7 +16,7 @@ function Remove-AzureResourceGroup {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Output "Removing Azure Resource Group ; Please Wait"
+            Write-Verbose "Removing Azure Resource Group ; Please Wait"
             Remove-AzResourceGroup -Name $ResourceGroupName -Force
         }
         catch {

@@ -16,7 +16,7 @@ function Open-ShellConfiguration {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Output "Opening Shell Configuration"
+        Write-Verbose "Opening Shell Configuration"
         notepad $Path
     }
     end {

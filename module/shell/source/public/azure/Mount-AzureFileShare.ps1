@@ -29,15 +29,15 @@ function Mount-AzureFileShare {
 
         $ErrorActionPreference = "Stop"
 
-        Write-Output "Testing Connection To Azure Storage Account"
+        Write-Verbose "Testing Connection To Azure Storage Account"
         $connectTestResult = Test-NetConnection -ComputerName "$StorageAccountName.file.core.windows.net" -Port 445
 
-        Write-Output "Asserting Connection To Azure Storage Account"
+        Write-Verbose "Asserting Connection To Azure Storage Account"
         if ($connectTestResult.TcpTestSucceeded) {
-            Write-Output "Getting Azure Storage Account Key"
+            Write-Verbose "Getting Azure Storage Account Key"
             $storageAccountKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $StorageAccountName)[0].Value
 
-            Write-Output "Mounting Azure File Share ; Please Wait"
+            Write-Verbose "Mounting Azure File Share ; Please Wait"
             $parameters = @{
                 Name       = $DriveLetter
                 PSProvider = "FileSystem"

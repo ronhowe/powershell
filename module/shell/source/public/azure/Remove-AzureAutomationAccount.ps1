@@ -20,7 +20,7 @@ function Remove-AzureAutomationAccount {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Output "Removing Azure Automation Account ; Please Wait"
+            Write-Verbose "Removing Azure Automation Account ; Please Wait"
             Remove-AzAutomationAccount -ResourceGroupName $ResourceGroupName -Name $AutomationAccountName -Force
         }
         catch {

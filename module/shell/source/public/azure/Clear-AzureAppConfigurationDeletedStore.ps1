@@ -20,7 +20,7 @@ function Clear-AzureAppConfigurationDeletedStore {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Output "Clearing Azure App Configuration Deleted Store"
+            Write-Verbose "Clearing Azure App Configuration Deleted Store"
             Clear-AzAppConfigurationDeletedStore -Location $Location -Name $AppConfigurationName
         }
         catch {

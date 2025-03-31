@@ -20,7 +20,7 @@ function New-AzureResourceGroup {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Output "Creating Azure Resource Group"
+            Write-Verbose "Creating Azure Resource Group"
             New-AzResourceGroup -Name $ResourceGroupName -Location $Location -Force |
             Out-Null
         }

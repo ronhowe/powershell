@@ -21,7 +21,7 @@ function Connect-AzureAccount {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Output "Connecting Azure Account"
+        Write-Verbose "Connecting Azure Account"
         Connect-AzAccount -Tenant $Tenant -Subscription $Subscription -UseDeviceAuthentication |
         Out-Null
     }

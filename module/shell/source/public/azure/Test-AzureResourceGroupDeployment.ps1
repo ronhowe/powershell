@@ -24,7 +24,7 @@ function Test-AzureResourceGroupDeployment {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Output "Testing Azure Resource Group Deployment"
+            Write-Verbose "Testing Azure Resource Group Deployment"
             $parameters = @{
                 ResourceGroupName     = $ResourceGroupName
                 Location              = $Location

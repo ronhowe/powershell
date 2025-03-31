@@ -18,10 +18,10 @@ function Import-ShellPowerConfiguration {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
         try {
-            Write-Output "Creating New Shell Configuration Builder"
+            Write-Verbose "Creating New Shell Configuration Builder"
             $configBuilder = New-PowerConfig
 
-            Write-Output "Adding Shell Configuration Sources"
+            Write-Verbose "Adding Shell Configuration Sources"
             @(
                 "$PSScriptRoot\Shell.json",
                 "$HOME\Shell.json",
@@ -30,27 +30,27 @@ function Import-ShellPowerConfiguration {
             Where-Object { $_ -and $_ -ne ""} |
             ForEach-Object {
                 Write-Debug "`$_ = $_"
-                Write-Output "Asserting Shell Configuration Source Exists"
+                Write-Verbose "Asserting Shell Configuration Source Exists"
                 if (Test-Path -Path $_) {
-                    Write-Output "Adding Shell Configuration Source"
+                    Write-Verbose "Adding Shell Configuration Source"
                     $configBuilder |
                     Add-PowerConfigJsonSource -Path $_ |
                     Out-Null
                 }
                 else {
-                    Write-Output "Shell Configuration Source Not Found"
+                    Write-Verbose "Shell Configuration Source Not Found"
                 }
             }
 
-            Write-Output "Building Shell Configuration"
+            Write-Verbose "Building Shell Configuration"
             $config = $configBuilder |
             Get-PowerConfig
             Write-Debug "`$config = $config"
 
-            Write-Output "Defining Shell Configuration Global Variable"
+            Write-Verbose "Defining Shell Configuration Global Variable"
             New-Variable -Name "ShellConfig" -Value $config -Force -Scope "Global"
 
-            Write-Output "Returning Shell Configuration"
+            Write-Verbose "Returning Shell Configuration"
             return $config
         }
         catch {
