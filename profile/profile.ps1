@@ -13,64 +13,64 @@ process {
 
     Write-Host "Loading Profile ; Please Wait" -ForegroundColor DarkGray
 
-    Write-Output "Setting Progress Preference"
+    Write-Verbose "Setting Progress Preference"
     $ProgressPreference = "SilentlyContinue" # changed from Continue
     Write-Debug "`$ProgressPreference = $ProgressPreference"
 
-    Write-Output "Asserting PowerShell Core"
+    Write-Verbose "Asserting PowerShell Core"
     if ($PSVersionTable.PSEdition -ne "Core") {
         Write-Warning "PowerShell Core Not Detected"
     }
 
     ## NOTE: Loaded by Az.Tools.Predictor.  Importing intentionally just for clarity.
-    Write-Output "Asserting Az.Accounts Module Exists"
+    Write-Verbose "Asserting Az.Accounts Module Exists"
     if (Get-Module -Name "Az.Accounts" -ListAvailable) {
-        Write-Output "Importing Az.Accounts"
+        Write-Verbose "Importing Az.Accounts"
         Import-Module -Name "Az.Accounts"
     }
     else {
         Write-Warning "Skipping Az.Accounts Module"
     }
 
-    Write-Output "Asserting Az.Resources Module Exists"
+    Write-Verbose "Asserting Az.Resources Module Exists"
     if (Get-Module -Name "Az.Resources" -ListAvailable) {
-        Write-Output "Importing Az.Resources"
+        Write-Verbose "Importing Az.Resources"
         Import-Module -Name "Az.Resources"
     }
     else {
         Write-Warning "Skipping Az.Resources Module"
     }
 
-    Write-Output "Asserting Az.Tools.Predictor Module Exists"
+    Write-Verbose "Asserting Az.Tools.Predictor Module Exists"
     if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
-        Write-Output "Importing Az.Tools.Predictor"
+        Write-Verbose "Importing Az.Tools.Predictor"
         Import-Module -Name "Az.Tools.Predictor"
     }
     else {
         Write-Warning "Skipping Az.Tools.Predictor Module"
     }
 
-    Write-Output "Asserting Microsoft.PowerShell.SecretManagement Module Exists"
+    Write-Verbose "Asserting Microsoft.PowerShell.SecretManagement Module Exists"
     if (Get-Module -Name "Microsoft.PowerShell.SecretManagement" -ListAvailable) {
-        Write-Output "Importing Microsoft.PowerShell.SecretManagement"
+        Write-Verbose "Importing Microsoft.PowerShell.SecretManagement"
         Import-Module -Name "Microsoft.PowerShell.SecretManagement"
     }
     else {
         Write-Warning "Skipping Microsoft.PowerShell.SecretManagement Module"
     }
 
-    Write-Output "Asserting Microsoft.PowerShell.SecretStore Module Exists"
+    Write-Verbose "Asserting Microsoft.PowerShell.SecretStore Module Exists"
     if (Get-Module -Name "Microsoft.PowerShell.SecretStore" -ListAvailable) {
-        Write-Output "Importing Microsoft.PowerShell.SecretStore"
+        Write-Verbose "Importing Microsoft.PowerShell.SecretStore"
         Import-Module -Name "Microsoft.PowerShell.SecretStore"
     }
     else {
         Write-Warning "Skipping Microsoft.PowerShell.SecretStore Module"
     }
 
-    Write-Output "Asserting PackageManagement Module Exists"
+    Write-Verbose "Asserting PackageManagement Module Exists"
     if (Get-Module -Name "PackageManagement" -ListAvailable) {
-        Write-Output "Importing PackageManagement"
+        Write-Verbose "Importing PackageManagement"
         Import-Module -Name "PackageManagement"
     }
     else {
@@ -78,34 +78,34 @@ process {
     }
 
     ## NOTE: Loaded by usual hosts automatically.  Importing intentionally just for clarity.
-    Write-Output "Asserting Pester Module Exists"
+    Write-Verbose "Asserting Pester Module Exists"
     if (Get-Module -Name "Pester" -ListAvailable) {
-        Write-Output "Importing Pester"
+        Write-Verbose "Importing Pester"
         Import-Module -Name "Pester"
     }
     else {
         Write-Warning "Skipping Pester Module"
     }
 
-    Write-Output "Asserting posh-git Module Exists"
+    Write-Verbose "Asserting posh-git Module Exists"
     if (Get-Module -Name "posh-git" -ListAvailable) {
-        Write-Output "Importing posh-git"
+        Write-Verbose "Importing posh-git"
         Import-Module -Name "posh-git"
     }
     else {
         Write-Warning "Skipping posh-git Module"
     }
 
-    Write-Output "Asserting Shell Module Exists"
+    Write-Verbose "Asserting Shell Module Exists"
     if (Test-Path -Path "$PSScriptRoot\..\module\shell\bin\Shell\Shell.psm1") {
-        Write-Output "Removing Shell Module"
+        Write-Verbose "Removing Shell Module"
         Get-Module -Name "Shell" |
         Remove-Module -Force
 
-        Write-Output "Importing Shell Module"
+        Write-Verbose "Importing Shell Module"
         Import-Module -Name "$PSScriptRoot\..\module\shell\bin\Shell" -Global -Force
     
-        Write-Output "Starting Shell"
+        Write-Verbose "Starting Shell"
         Start-Shell
     }
     else {
@@ -113,11 +113,11 @@ process {
     }
 
     ## NOTE: Work shim.
-    Write-Output "Asserting Windows PowerShell ISE Host"
+    Write-Verbose "Asserting Windows PowerShell ISE Host"
     if ($host.Name -eq "Windows PowerShell ISE Host") {
-        Write-Output "Asserting ISESteroids Module Exists"
+        Write-Verbose "Asserting ISESteroids Module Exists"
         if (Get-Module -Name "ISESteroids" -ListAvailable) {
-            Write-Output "Importing ISESteroids"
+            Write-Verbose "Importing ISESteroids"
             Import-Module -Name "ISESteroids"
         }
         else {
@@ -126,13 +126,13 @@ process {
     }
 
     ## NOTE: Work shim.
-    Write-Output "Defining Shim Global Variables"
+    Write-Verbose "Defining Shim Global Variables"
     New-Variable -Name "Root" -Value "C:\VSTS" -Scope Global -Force -ErrorAction SilentlyContinue
     Write-Debug "`$Root = $Root"
     New-Variable -Name "VSTS" -Value "C:\VSTS" -Scope Global -Force -ErrorAction SilentlyContinue
     Write-Debug "`$VSTS = $VSTS"
 
-    Write-Output "Setting PSReadLine Options"
+    Write-Verbose "Setting PSReadLine Options"
     if ($PSVersionTable.PSEdition -eq "Core") {
         Set-PSReadLineOption -PredictionSource HistoryAndPlugin
         Set-PSReadLineOption -PredictionViewStyle ListView -WarningAction SilentlyContinue
@@ -141,7 +141,7 @@ process {
         Set-PSReadLineOption -PredictionViewStyle InlineView -WarningAction SilentlyContinue
     }
 
-    Write-Output "Setting Location"
+    Write-Verbose "Setting Location"
     Set-Location -Path $HOME
 }
 end {
