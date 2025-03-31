@@ -19,25 +19,25 @@ process {
     $ErrorActionPreference = "Stop"
 
     try {
-        Write-Output "Running .NET Clean"
+        Write-Verbose "Running .NET Clean"
         dotnet clean $Path
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Clean Failed"
         }
     
-        Write-Output "Running .NET Restore"
+        Write-Verbose "Running .NET Restore"
         dotnet restore $Path
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Restore Failed"
         }
 
-        Write-Output "Running .NET Build"
+        Write-Verbose "Running .NET Build"
         dotnet build $Path --no-restore
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Build Failed"
         }
 
-        Write-Output "Running .NET Test"
+        Write-Verbose "Running .NET Test"
         dotnet test $Path --no-build --nologo --filter "TestCategory=UnitTest" --verbosity normal
         if ($LASTEXITCODE -ne 0) {
             throw ".NET Test Failed"

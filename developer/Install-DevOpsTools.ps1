@@ -20,89 +20,89 @@ process {
         Write-Warning "Running Inside PowerShell ISE"
     }
 
-    Write-Output "Installing .NET 9 SDK"
+    Write-Verbose "Installing .NET 9 SDK"
     winget install --id Microsoft.DotNet.SDK.9 --source winget
 
-    Write-Output "Installing Azure CLI"
+    Write-Verbose "Installing Azure CLI"
     winget install --id Microsoft.AzureCLI --source winget
 
-    Write-Output "Installing Bicep CLI"
+    Write-Verbose "Installing Bicep CLI"
     winget install --id Microsoft.Bicep --source winget
 
-    Write-Output "Installing Git CLI"
+    Write-Verbose "Installing Git CLI"
     winget install --id Git.Git --source winget
 
-    Write-Output "Installing GitHub CLI"
+    Write-Verbose "Installing GitHub CLI"
     winget install --id GitHub.cli --source winget
 
-    Write-Output "Installing GitHub Desktop"
+    Write-Verbose "Installing GitHub Desktop"
     winget install --id GitHub.GitHubDesktop --source winget
 
-    Write-Output "Installing NuGet"
+    Write-Verbose "Installing NuGet"
     winget install --id Microsoft.NuGet --source winget
 
-    Write-Output "Installing PowerShell"
+    Write-Verbose "Installing PowerShell"
     winget install --id Microsoft.Powershell --source winget
 
-    Write-Output "Installing Python 3.11"
+    Write-Verbose "Installing Python 3.11"
     winget install --id Python.Python.3.11 --source winget
 
-    Write-Output "Installing Visual Studio Code"
+    Write-Verbose "Installing Visual Studio Code"
     winget install --id Microsoft.VisualStudioCode --source winget
 
-    Write-Output "Installing Windows Admin Center"
+    Write-Verbose "Installing Windows Admin Center"
     winget install --id Microsoft.WindowsAdminCenter --source winget
 
-    Write-Output "Installing Windows Terminal"
+    Write-Verbose "Installing Windows Terminal"
     winget install --id Microsoft.WindowsTerminal --source winget
 
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
-    Write-Output "Installing Visual Studio Code Extension For .NET Interactive"
+    Write-Verbose "Installing Visual Studio Code Extension For .NET Interactive"
     code --install-extension ms-dotnettools.dotnet-interactive-vscode 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For .NET Runtime"
+    Write-Verbose "Installing Visual Studio Code Extension For .NET Runtime"
     code --install-extension ms-dotnettools.vscode-dotnet-runtime 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For .NET SDK"
+    Write-Verbose "Installing Visual Studio Code Extension For .NET SDK"
     code --install-extension ms-dotnettools.vscode-dotnet-sdk 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For Bicep"
+    Write-Verbose "Installing Visual Studio Code Extension For Bicep"
     code --install-extension ms-azuretools.vscode-bicep 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For Indent Rainbow"
+    Write-Verbose "Installing Visual Studio Code Extension For Indent Rainbow"
     code --install-extension oderwat.indent-rainbow 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For PowerShell"
+    Write-Verbose "Installing Visual Studio Code Extension For PowerShell"
     code --install-extension ms-vscode.powershell 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For Python"
+    Write-Verbose "Installing Visual Studio Code Extension For Python"
     code --install-extension ms-python.python 2>$null
 
-    Write-Output "Installing Visual Studio Code Extension For Sort Lines"
+    Write-Verbose "Installing Visual Studio Code Extension For Sort Lines"
     code --install-extension tyriar.sort-lines 2>$null
 
-    Write-Output "Installing Python Module For PIP"
+    Write-Verbose "Installing Python Module For PIP"
     python -m pip install --upgrade pip
 
-    Write-Output "Installing Python Module For Jupyter Noteboook"
+    Write-Verbose "Installing Python Module For Jupyter Noteboook"
     python -m pip install jupyter notebook -U
 
-    Write-Output "Installing Python Package For PowerShell Kernel"
+    Write-Verbose "Installing Python Package For PowerShell Kernel"
     pip install powershell_kernel
 
-    Write-Output "Installing Python Module For PowerShell Kernel"
+    Write-Verbose "Installing Python Module For PowerShell Kernel"
     python -m powershell_kernel.install
 
-    Write-Output "Installing Remote Server Administration Tools For Active Directory"
+    Write-Verbose "Installing Remote Server Administration Tools For Active Directory"
     Get-WindowsCapability -Name "Rsat.ActiveDirectory.DS-LDS.Tools*" -Online |
     Add-WindowsCapability -Online -Verbose:$false
 
-    Write-Output "Installing Remote Server Administration Tools For DHCP"
+    Write-Verbose "Installing Remote Server Administration Tools For DHCP"
     Get-WindowsCapability -Name "Rsat.DHCP.Tools*" -Online |
     Add-WindowsCapability -Online -Verbose:$false
 
-    Write-Output "Installing Remote Server Administration Tools For DNS"
+    Write-Verbose "Installing Remote Server Administration Tools For DNS"
     Get-WindowsCapability -Name "Rsat.Dns.Tools*" -Online |
     Add-WindowsCapability -Online -Verbose:$false
 }
