@@ -12,7 +12,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Output "Invoking Pester Tests"
+    Write-Verbose "Invoking Pester"
     Invoke-Pester -Path "$PSScriptRoot\Holotable.Tests.ps1" -Output Detailed
 }
 end {

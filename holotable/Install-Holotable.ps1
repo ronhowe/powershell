@@ -27,16 +27,16 @@ process {
 
     $ErrorActionPreference = "Stop"
 
-    Write-Output "Copying Card Definitions"
+    Write-Verbose "Copying Card Definitions"
     Copy-Item -Path (Join-Path -Path $SourceCdfPath -ChildPath "*.cdf") -Destination $TargetCdfPath -Force -PassThru
 
     ## NOTE: Only needed if file hashes are incorrect.
     if ($IncludeImages) {
-        Write-Output "Copying Card Images"
+        Write-Verbose "Copying Card Images"
         Copy-Item -Path (Join-Path -Path $SourceCdfPaths -ChildPath "Images-HT\starwars") -Destination (Join-Path -Path $TargetCdfPath -ChildPath "cards") -Recurse -Force -PassThru
     }
     else {
-        Write-Output "Skipping Card Images"
+        Write-Verbose "Skipping Card Images"
     }
 }
 end {

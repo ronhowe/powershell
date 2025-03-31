@@ -31,7 +31,7 @@ process {
 
     Import-Module -Name "$PSScriptRoot\Holotable.psm1" -Force
 
-    Write-Output "Exporting Dark Side CDF"
+    Write-Verbose "Exporting Dark Side CDF"
     $parameters = @{
         JsonPath       = "$SourceJsonPath\Dark.json"
         JsonLegacyPath = "$SourceJsonPath\DarkLegacy.json"
@@ -40,7 +40,7 @@ process {
     }
     Export-Cdf @parameters
 
-    Write-Output "Exporting Light Side CDF"
+    Write-Verbose "Exporting Light Side CDF"
     $parameters = @{
         JsonPath       = "$SourceJsonPath\Light.json"
         JsonLegacyPath = "$SourceJsonPath\LightLegacy.json"
@@ -49,9 +49,9 @@ process {
     }
     Export-Cdf @parameters
 
-    Write-Output "Asserting Visual Studio Code Exists"
+    Write-Verbose "Asserting Visual Studio Code Exists"
     if (Get-Command -Name "code" -ErrorAction SilentlyContinue) {
-        Write-Output "Diffing Dark Side CDF"
+        Write-Verbose "Diffing Dark Side CDF"
         $parameters = @{
             Path         = "code"
             ArgumentList = @(
@@ -64,7 +64,7 @@ process {
         }
         Start-Process @parameters
 
-        Write-Output "Diffing Light Side CDF"
+        Write-Verbose "Diffing Light Side CDF"
         $parameters = @{
             Path         = "code"
             ArgumentList = @(
@@ -81,7 +81,7 @@ process {
         Write-Error "Visual Studio Code Not Found"
     }
 
-    Write-Output "Getting Dark Side JSON Statistics"
+    Write-Verbose "Getting Dark Side JSON Statistics"
     Get-Content -Path "$SourceJsonPath\Dark.json" |
     ConvertFrom-Json |
     Select-Object -ExpandProperty "cards" |
@@ -93,7 +93,7 @@ process {
         @{Name = "Maximum Id"; Expression = { $_.Maximum } }
     )
 
-    Write-Output "Getting Light Side JSON Statistics"
+    Write-Verbose "Getting Light Side JSON Statistics"
     Get-Content -Path "$SourceJsonPath\Light.json" |
     ConvertFrom-Json |
     Select-Object -ExpandProperty "cards" |
