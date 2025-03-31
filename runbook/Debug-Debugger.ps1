@@ -32,13 +32,9 @@ function Debug-Debugger {
         Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
     }
 }
-
+Clear-Host
 Wait-Debugger
-
 Debug-Debugger
-
 Debug-Debugger -Verbose
-
 Debug-Debugger -Debug
-
 Debug-Debugger -Verbose -Debug
