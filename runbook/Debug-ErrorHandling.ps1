@@ -1,54 +1,80 @@
-#requires -PSEdition Core
-function Debug-Function {
+function Debug-ErrorHandling {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ Test-Path -Path $_ })]
-        [string]$Path = "$PSScriptRoot\image.png"
     )
     begin {
-        Write-Debug "Begin $($MyInvocation.MyCommand.Name)"
+        Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 
         Get-Variable -Scope "Local" -Include @($MyInvocation.MyCommand.Parameters.Keys) |
         Select-Object -Property @("Name", "Value") |
-        ForEach-Object { Write-Debug "`$$($_.Name)=$($_.Value)" }
-
-        # $ErrorActionPreference = "Stop"
-        # $ProgressPreference = "SilentlyContinue"
-        # $WarningPreference = "SilentlyContinue"
+        ForEach-Object { Write-Debug "`$$($_.Name) = $($_.Value)" }
     }
     process {
-        Write-Debug "Process $($MyInvocation.MyCommand.Name)"
-        try {
+        Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-            Write-Verbose "CallingNativeCommand"
-            # throw "NoSoupForYouException"
-            pwsh.exe --version
-            if ($LASTEXITCODE -ne 0) {
-                Write-Error "NativeCommandCallException"
-            }
-            Not-AFunction
+        #region 1
+        Write-Host "Item 1" -ForegroundColor Green
+        Get-Item -Path "1"
+        #endregion 1
+        #region 2
+        try {
+            Write-Host "Item 2 Try" -ForegroundColor Green
+            Get-Item -Path "2"
         }
         catch {
-            # colors are not a way to indicate failure
-            # Write-Host "DontDoThisVeryBadErrorHandlingException" -ForegroundColor Red
-            Write-Error $_.Exception.Message
-            # Write-Error $_.Exception.Message
-            # Send-MailMessage -SmtpServer OPSSMTP01.IDI.COM -To rhowe@idibilling.com -From rhowe@idibilling.com -Subject "test" -Body "hello world" -Verbose
+            Write-Host "Item 2 Catch"
+            Write-Error "Item 2 Catch"
         }
-        finally  {
-            Write-Host "AWLAYS RUNS" -ForegroundColor Yellow
+        finally {
+            Write-Host "Item 2 Finally"
         }
-        Write-Host "OK" -ForegroundColor Green
+        #endregion 2
+        #region 3
+        try {
+            Write-Host "Item 3 Try" -ForegroundColor Green
+            Get-Item -Path "3" -ErrorAction Stop
+        }
+        catch {
+            Write-Host "Item 3 Catch"
+            Write-Error "Item 3 Catch"
+        }
+        finally {
+            Write-Host "Item 3 Finally"
+        }
+        #endregion 3
+        #region 4
+        try {
+            Write-Host "Item 4 Try" -ForegroundColor Green
+            Get-Item -Path "4" -ErrorAction Stop
+        }
+        catch {
+            Write-Host "Item 4 Catch"
+            throw $_
+        }
+        finally {
+            Write-Host "Item 4 Finally"
+        }
+        #endregion 4
+        #region 5
+        try {
+            Write-Host "Item 5 Try" -ForegroundColor Green
+            Get-Item -Path "5" -ErrorAction Stop
+        }
+        catch {
+            Write-Host "Item 5 Catch"
+            Write-Error $_
+            return
+        }
+        finally {
+            Write-Host "Item 5 Finally"
+        }
+        #endregion 5
+        Write-Host "Done"
     }
     end {
-        Write-Debug "End $($MyInvocation.MyCommand.Name)"
+        Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
     }
 }
 Clear-Host
-Debug-Function
-# Debug-Function -InformationAction Continue -WarningAction Continue -ErrorAction Stop -Debug -Verbose
-# Debug-Function -InformationAction Continue -WarningAction Continue -ErrorAction Continue -Debug -Verbose
-# Debug-Function -InformationAction Continue -WarningAction Continue -ErrorAction SilentlyContinue -Debug -Verbose
-Write-Host "DONE" -ForegroundColor Blue
+Wait-Debugger
+Debug-ErrorHandling
