@@ -12,7 +12,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Output "Invoking Build"
+    Write-Verbose "Invoking Build"
     Invoke-Build -File "$PSScriptRoot\Build.ps1" -Task "Debug"
 }
 end {

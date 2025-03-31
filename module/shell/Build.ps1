@@ -37,23 +37,23 @@ process {
     }
 
     Task Clean {
-        Write-Output "Removing Output"
+        Write-Verbose "Removing Output"
         Remove-Item -Path "$PSScriptRoot\bin" -Recurse -Force -ErrorAction SilentlyContinue
     }
 
     Task Remove {
-        Write-Output "Removing Module"
+        Write-Verbose "Removing Module"
         Get-Module -Name "Shell" |
         Remove-Module -Force
     }
 
     Task Import {
-        Write-Output "Importing Module"
+        Write-Verbose "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
     }
 
     Task Test {
-        Write-Output "Testing Module"
+        Write-Verbose "Testing Module"
         Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
         ForEach-Object {
             Invoke-Pester -Path $($_.FullName) -Output Detailed
