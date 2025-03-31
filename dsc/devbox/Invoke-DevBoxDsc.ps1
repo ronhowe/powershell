@@ -14,18 +14,18 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Output "Creating Mof Folder"
+    Write-Verbose "Creating Mof Folder"
     if (-not (Test-Path "$PSScriptRoot\bin\DevBoxDsc")) {
         New-Item -Path "$PSScriptRoot\bin\DevBoxDsc" -ItemType Directory
     }
 
-    Write-Output "Importing DevBox Dsc"
+    Write-Verbose "Importing DevBox Dsc"
     . "$PSScriptRoot\DevBoxDsc.ps1"
 
-    Write-Output "Compiling DevBox Dsc"
+    Write-Verbose "Compiling DevBox Dsc"
     DevBoxDsc -ConfigurationData "$PSScriptRoot\DevBoxDsc.psd1" -OutputPath "$PSScriptRoot\bin\DevBoxDsc"
 
-    Write-Output "Starting DevBox Dsc"
+    Write-Verbose "Starting DevBox Dsc"
     Start-DscConfiguration -Path "$PSScriptRoot\bin\DevBoxDsc" -Force -Wait -Verbose
 }
 end {

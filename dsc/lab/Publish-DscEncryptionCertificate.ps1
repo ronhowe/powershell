@@ -32,13 +32,13 @@ process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     foreach ($node in $Nodes) {
-        Write-Output "Getting PSSession To $node"
+        Write-Verbose "Getting PSSession To $node"
         $session = New-PSSession -ComputerName $node -Credential $Credential
 
-        Write-Output "Copying PFX To $node"
+        Write-Verbose "Copying PFX To $node"
         Copy-Item -Path $PfxPath -Destination "C:\DscPrivateKey.pfx" -ToSession $session
 
-        Write-Output "Importing PFX On $node"
+        Write-Verbose "Importing PFX On $node"
         $scriptBlock = {
             Import-PfxCertificate -FilePath "C:\DscPrivateKey.pfx" -CertStoreLocation "Cert:\LocalMachine\My" -Password $using:PfxPassword |
             Out-Null
@@ -47,7 +47,7 @@ process {
         }
         Invoke-Command -Session $session -ScriptBlock $scriptBlock
 
-        Write-Output "Removing PSSession To $node"
+        Write-Verbose "Removing PSSession To $node"
         $session |
         Remove-PSSession
     }

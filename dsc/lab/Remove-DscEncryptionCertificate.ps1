@@ -22,7 +22,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Output "Removing Certificates"
+    Write-Verbose "Removing Certificates"
     Get-ChildItem -Path $CertStoreLocation |
     Where-Object { $_.Subject -eq "CN=$Subject" } |
     Remove-Item -Force

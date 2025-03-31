@@ -22,7 +22,7 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Write-Output "Getting Certificate"
+    Write-Verbose "Getting Certificate"
     Get-ChildItem -Path $CertStoreLocation |
     Where-Object { $_.Subject -eq "CN=$Subject" } |
     Select-Object -ExpandProperty "Thumbprint"

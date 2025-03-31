@@ -29,22 +29,22 @@ process {
 
     Write-Warning "Creating Self-Signed Certificate" -WarningAction Continue
 
-    Write-Output "Creating Certificate"
+    Write-Verbose "Creating Certificate"
     $certificate = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName $Subject -HashAlgorithm SHA256
 
-    Write-Output "Exporting Private Key"
+    Write-Verbose "Exporting Private Key"
     $certificate |
     Export-PfxCertificate -FilePath "$PSScriptRoot\DscPrivateKey.pfx" -Password $PfxPassword -Force
 
-    Write-Output "Exporting Public Key"
+    Write-Verbose "Exporting Public Key"
     $certificate |
     Export-Certificate -FilePath "$PSScriptRoot\DscPublicKey.cer" -Force
 
-    Write-Output "Removing Certificate"
+    Write-Verbose "Removing Certificate"
     $certificate |
     Remove-Item -Force
 
-    Write-Output "Importing Public Key"
+    Write-Verbose "Importing Public Key"
     Import-Certificate -FilePath "$PSScriptRoot\DscPublicKey.cer" -CertStoreLocation $CertStoreLocation
 }
 end {
