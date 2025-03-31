@@ -40,7 +40,7 @@ process {
         Write-Debug "`$Mp4Path = $Mp4Path"
 
         if (-not (Test-Path -Path $Mp4Path)) {
-            Write-Output "Starting Handbrake CLI"
+            Write-Verbose "Starting Handbrake CLI"
 
             # https://handbrake.fr/docs/en/latest/cli/command-line-reference.html
             Start-Process -Path $HandbrakeCliPath -ArgumentList "--input", "`"$MkvPath`"", "--output", "`"$Mp4Path`"", "--all-audio" -Wait -NoNewWindow
@@ -49,7 +49,7 @@ process {
         ## TODO: Handle Process Return Code
 
         if (Test-Path -Path $Mp4Path) {
-            Write-Output "Confirmed $Mp4Path"
+            Write-Verbose "Confirmed $Mp4Path"
         }
         else {
             Write-Error "Could not find $Mp4Path"
