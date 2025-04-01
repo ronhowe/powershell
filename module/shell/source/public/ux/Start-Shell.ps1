@@ -15,11 +15,11 @@ function Start-Shell {
         try {
             ## TODO: Adopt Improt-ShellPowerConfiguration if it supports .NET Standard.
             ## LINK: https://github.com/JustinGrote/PowerConfig/issues/7
-            Write-Output "Importing Shell Configuration"
+            Write-Verbose "Importing Shell Configuration"
             Import-ShellConfiguration -WarningAction "SilentlyContinue" |
             Out-Null
 
-            Write-Output "Setting Location To Home"
+            Write-Verbose "Setting Location To Home"
             Set-Location -Path $HOME
 
             Show-Header
@@ -30,7 +30,7 @@ function Start-Shell {
             Write-Host "OK"
         }
         catch {
-            Write-Error "Shell Failed Because $($_.Exception.Message)"
+            Write-Error "Failed Loading Shell ; $($_.Exception.Message)"
         }
     }
     end {
