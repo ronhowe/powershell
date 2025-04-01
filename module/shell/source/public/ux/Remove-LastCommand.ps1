@@ -12,19 +12,19 @@ function Remove-LastCommand {
     process {
         Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-        Write-Output "Getting History Save Path"
+        Write-Verbose "Getting History Save Path"
         $filePath = (Get-PSReadLineOption).HistorySavePath
         Write-Debug "`$filePath = $filePath"
 
-        Write-Output "Getting Last Command"
+        Write-Verbose "Getting Last Command"
         $lastCommand = (Get-History -Count 1).CommandLine
         Write-Debug "`$lastCommand = $lastCommand"
 
-        Write-Output "Getting Content"
+        Write-Verbose "Getting Content"
         $content = Get-Content $filePath |
         Where-Object { $_ -ne $lastCommand }
 
-        Write-Output "Setting Content"
+        Write-Verbose "Setting Content"
         Set-Content $filePath -Value $content
     }
     end {
