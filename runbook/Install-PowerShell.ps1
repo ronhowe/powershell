@@ -3,12 +3,7 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Msi = "PowerShell-7.5.0-win-x64.msi",
-
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]
-    [string]
-    $Source = "https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/PowerShell-7.5.0-win-x64.msi",
+    $Uri = "https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/PowerShell-7.5.0-win-x64.msi",
 
     [switch]
     $Cleanup
@@ -19,22 +14,24 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    $ErrorActionPreference = "Stop"
     $ProgressPreference = "SilentlyContinue"
+
+    $fileName = [System.IO.Path]::GetFileName($Uri)
+    Write-Debug "`$fileName = $fileName"
 
     Write-Host "Importing BitsTransfer Module"
     Import-Module -Name "BitsTransfer" |
     Out-Null
 
     Write-Host "Starting Bits Transfer"
-    $destination = "C:\installers\$Msi"
+    $destination = "$env:TEMP\$fileName"
     Write-Debug "`$destination = $destination"
 
     try {
-        Start-BitsTransfer -Source $Source -Destination $destination -ErrorAction Stop
+        Start-BitsTransfer -Source $Uri -Destination $destination -ErrorAction Stop
     }
     catch {
-        throw "Failed To Transfer Bits Bits Transfer From $Source ; $_"
+        throw "Failed To Transfer Bits Bits Transfer From $Uri ; $_"
     }
 
     if (-not (Test-Path -Path $destination)) {
