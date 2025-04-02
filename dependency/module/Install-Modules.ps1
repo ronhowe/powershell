@@ -1,4 +1,3 @@
-#requires -Module "Pester"
 #requires -PSEdition "Core"
 #requires -RunAsAdministrator
 [CmdletBinding()]
@@ -27,10 +26,10 @@ process {
     (Import-PowerShellDataFile -Path $Path).Modules |
     ForEach-Object {
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
-            Write-Output "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
+            Write-Host "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
         }
         else {
-            Write-Output "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+            Write-Host "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
             $parameters = @{
                 AllowClobber       = $true
                 Force              = $true
