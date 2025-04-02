@@ -26,10 +26,10 @@ process {
     (Import-PowerShellDataFile -Path $Path).Resources |
     ForEach-Object {
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable) {
-            Write-Output "Skipping Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
+            Write-Host "Skipping Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
         }
         else {
-            Write-Output "Installing Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+            Write-Host "Installing Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
             $parameters = @{
                 AllowClobber       = $true
                 Force              = $true
