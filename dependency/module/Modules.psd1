@@ -7,6 +7,7 @@
         # @{ Name = 'CliMenu' ; Version = '1.0.52.0' ; Repository = 'PSGallery' },
         @{ Name = 'Configuration' ; Version = '1.6.0' ; Repository = 'PSGallery' },
         @{ Name = 'dbatools' ; Version = '2.1.30' ; Repository = 'PSGallery' },
+        @{ Name = 'IISAdministration' ; Version = '1.1.0.0' ; Repository = 'PSGallery' },
         ## NOTE: This module might be useful someday.
         # @{ Name = 'ImportExcel' ; Version = '7.8.10' ; Repository = 'PSGallery' },
         @{ Name = 'InvokeBuild' ; Version = '5.12.2' ; Repository = 'PSGallery' },
