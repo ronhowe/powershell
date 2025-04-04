@@ -54,9 +54,13 @@ process {
 
     Task Test {
         Write-Verbose "Testing Module"
-        Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
+        $testResults = Get-ChildItem -Path "$PSScriptRoot\test\*.Tests.ps1" -Recurse |
         ForEach-Object {
-            Invoke-Pester -Path $($_.FullName) -Output Detailed
+            Invoke-Pester -Path $($_.FullName) -Output Detailed -PassThru
+        }
+
+        if ($testResults.FailedCount -gt 0) {
+            throw "Failed One Or More Module Tests ; $($testResults.FailedCount)"
         }
     }
 }
