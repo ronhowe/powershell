@@ -11,13 +11,13 @@ function New-Template {
         [string]
         $Name,
 
-        [Parameter(Mandatory = $true, Position = 1)]
+        [Parameter(Mandatory = $false, Position = 1)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({ Test-Path -Path $_ })]
         [string]
         $Path,
 
-        [Parameter(Mandatory = $true, Position = 2, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, Position = 2, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias("VMName")]
         [ValidateNotNullorEmpty()]
         [string[]]
@@ -106,13 +106,3 @@ Creates a new template named "MyTemplate" at the specified path and performs act
 http://www.fabrikam.com/extension.html
 #>
 }
-Clear-Host
-Wait-Debugger
-$parameters = @{
-    Name         = "Test"
-    Path         = $HOME
-    ComputerName = $env:COMPUTERNAME
-    Credential   = $null
-    Option       = "OptionA"
-}
-New-Template @parameters
