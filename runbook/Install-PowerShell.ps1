@@ -1,3 +1,5 @@
+#requires -PSEdition "Desktop"
+#requires -RunAsAdministrator
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
