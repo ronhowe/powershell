@@ -25,6 +25,8 @@
         @{ Name = 'Microsoft.PowerShell.SecretStore' ; Version = '1.0.6' ; Repository = 'PSGallery' },
         # https://github.com/PoshCode/ModuleBuilder
         @{ Name = 'ModuleBuilder' ; Version = '3.1.7' ; Repository = 'PSGallery' },
+        # https://oneget.org/
+        @{ Name = 'PackageManagement' ; Version = '1.4.8.1' ; Repository = 'PSGallery' },
         # https://github.com/pester/Pester
         @{ Name = 'Pester' ; Version = '5.7.1' ; Repository = 'PSGallery' },
         # https://github.com/dahlbyk/posh-git
