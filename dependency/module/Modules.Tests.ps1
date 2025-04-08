@@ -1,5 +1,5 @@
 BeforeDiscovery {
-    $modules = (Import-PowerShellDataFile -Path "$PSScriptRoot\Modules.psd1").Modules
+    $modules = (Import-PowerShellDataFile -Path "$PSScriptRoot\Modules.psd1").Modules |
     Where-Object {
         $_.CompatiblePSEditions -contains $PSEdition
     }
