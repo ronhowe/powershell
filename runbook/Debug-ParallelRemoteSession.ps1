@@ -6,7 +6,7 @@ $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00", "NON-EXIST
 $credential = Get-Credential
 $thumbprint = "F59627BB6A2B553E68A5565A5DFA639CB91574DE"
 
-#region Serial With Script Block
+#region ForEach Serial With Script Block
 Measure-Command {
     $computers |
     ForEach-Object {
@@ -24,9 +24,9 @@ Measure-Command {
     Format-Table -AutoSize
 } |
 Format-Table -AutoSize
-#endregion Serial With Script Block
+#endregion ForEach Serial With Script Block
 
-#region Serial With File
+#region ForEach Serial With File
 Measure-Command {
     $computers |
     ForEach-Object {
@@ -47,7 +47,22 @@ Measure-Command {
 Format-Table -AutoSize
 #endregion Serial With File
 
-#region Parallel With Script Block
+#region Array Of Computer Names With File
+Measure-Command {
+    $parameters = @{
+        ComputerName = $computers
+        Credential   = $credential
+        FilePath     = "D:\repos\ronhowe\powershell\runbook\Debug-ParallelRemoteSessionScript.ps1"
+        ArgumentList = @($thumbprint)
+    }
+    Invoke-Command @parameters |
+    Select-Object -Property @(@{Name = "ComputerName"; Expression = { $_.PSComputerName } }, "Thumbprint", "NotAfter") |
+    Format-Table -AutoSize
+} |
+Format-Table -AutoSize
+#endregion Array Of Computer Names With File
+
+#region ForEach Parallel With Script Block (PowerShell Core Only)
 Measure-Command {
     $computers |
     ForEach-Object -Parallel {
@@ -65,9 +80,9 @@ Measure-Command {
     Format-Table -AutoSize
 } |
 Format-Table -AutoSize
-#endregion Parallel With Script Block
+#endregion ForEach Parallel With Script Block (PowerShell Core Only)
 
-#region Parallel With File
+#region ForEach Parallel With File (PowerShell Core Only)
 Measure-Command {
     $computers |
     ForEach-Object -Parallel {
@@ -86,4 +101,6 @@ Measure-Command {
     Format-Table -AutoSize
 } |
 Format-Table -AutoSize
-#endregion Parallel With File
+#endregion ForEach Parallel With File (PowerShell Core Only)
+
+
