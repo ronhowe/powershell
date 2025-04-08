@@ -1,6 +1,4 @@
 #requires -Module "Pester"
-#requires -PSEdition "Core"
-#requires -RunAsAdministrator
 [CmdletBinding()]
 param(
 )

@@ -1,5 +1,3 @@
-#requires -Module "Pester"
-#requires -PSEdition "Core"
 #requires -RunAsAdministrator
 [CmdletBinding()]
 param(
@@ -20,6 +18,9 @@ process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     (Import-PowerShellDataFile -Path $Path).Modules |
+    Where-Object {
+        $_.CompatiblePSEditions -contains $PSEdition
+    } |
     ForEach-Object {
         $moduleName = $_.Name
         $moduleVersion = $_.Version

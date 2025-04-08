@@ -1,4 +1,3 @@
-#requires -PSEdition "Core"
 #requires -RunAsAdministrator
 [CmdletBinding()]
 param(
@@ -24,23 +23,26 @@ process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
     (Import-PowerShellDataFile -Path $Path).Modules |
+    Where-Object {
+        $_.CompatiblePSEditions -contains $PSEdition
+    } |
     ForEach-Object {
         if (Get-Module -FullyQualifiedName @{ ModuleName = $_.Name ; RequiredVersion = $_.Version } -ListAvailable -Verbose:$false) {
             Write-Host "Skipping Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
+            return
         }
-        else {
-            Write-Host "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
-            $parameters = @{
-                AllowClobber       = $true
-                Force              = $true
-                Name               = $_.Name
-                Repository         = $_.Repository
-                RequiredVersion    = $_.Version
-                Scope              = $Scope
-                SkipPublisherCheck = $true
-            }
-            Install-Module @parameters
+
+        Write-Host "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+        $parameters = @{
+            AllowClobber       = $true
+            Force              = $true
+            Name               = $_.Name
+            Repository         = $_.Repository
+            RequiredVersion    = $_.Version
+            Scope              = $Scope
+            SkipPublisherCheck = $true
         }
+        Install-Module @parameters
     }
 }
 end {
