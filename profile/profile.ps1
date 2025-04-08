@@ -13,16 +13,11 @@ process {
 
     Write-Host "Loading Profile ; Please Wait" -ForegroundColor DarkGray
 
-    Write-Verbose "Setting Progress Preference"
-    $ProgressPreference = "SilentlyContinue" # changed from Continue
-    Write-Debug "`$ProgressPreference = $ProgressPreference"
-
     Write-Verbose "Asserting PowerShell Core"
     if ($PSVersionTable.PSEdition -ne "Core") {
         Write-Warning "PowerShell Core Not Detected"
     }
 
-    ## NOTE: Loaded by Az.Tools.Predictor.  Importing intentionally just for clarity.
     Write-Verbose "Asserting Az.Accounts Module Exists"
     if (Get-Module -Name "Az.Accounts" -ListAvailable) {
         Write-Verbose "Importing Az.Accounts"
@@ -41,15 +36,14 @@ process {
         Write-Warning "Skipping Az.Resources Module"
     }
 
-    ## NOTE: This module may be useful someday.
-    # Write-Verbose "Asserting Az.Tools.Predictor Module Exists"
-    # if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
-    #     Write-Verbose "Importing Az.Tools.Predictor"
-    #     Import-Module -Name "Az.Tools.Predictor"
-    # }
-    # else {
-    #     Write-Warning "Skipping Az.Tools.Predictor Module"
-    # }
+    Write-Verbose "Asserting Az.Tools.Predictor Module Exists"
+    if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
+        Write-Verbose "Importing Az.Tools.Predictor"
+        Import-Module -Name "Az.Tools.Predictor"
+    }
+    else {
+        Write-Warning "Skipping Az.Tools.Predictor Module"
+    }
 
     Write-Verbose "Asserting Microsoft.PowerShell.SecretManagement Module Exists"
     if (Get-Module -Name "Microsoft.PowerShell.SecretManagement" -ListAvailable) {
