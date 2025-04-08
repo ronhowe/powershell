@@ -19,10 +19,11 @@ function Get-HostByName {
 
         foreach ($computer in $ComputerName) {
             try {
-                [System.Net.Dns]::GetHostByName($computer).HostName.ToUpper()
+                [System.Net.Dns]::GetHostByName($env:COMPUTERNAME) |
+                Select-Object -Property @(@{Name = "ComputerName"; Expression = { $_.HostName.ToUpper() } })
             }
             catch {
-                Write-Error "Failed Getting Host By Name For $computer"
+                Write-Error "Failed Getting Host For $computer"
             }
         }
     }
