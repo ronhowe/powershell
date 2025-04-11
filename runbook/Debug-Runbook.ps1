@@ -2,13 +2,17 @@
 param(
     [ValidateNotNullOrEmpty()]
     [string]
-    $Why = "Debugging"
+    $Why = "Debugging Runbook"
 )
 begin {
     Write-Debug "Beginning $($MyInvocation.MyCommand.Name)"
 }
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
+
+    Clear-Host
+
+    Write-Host "POST"
 
     Write-Host "Writing Who (`$env:USERNAME)"
     Write-Host $env:USERNAME
@@ -23,9 +27,7 @@ process {
     Write-Host $env:COMPUTERNAME
 
     Write-Host "Writing When"
-    ## NOTE: PowerShell Core only
-    # Write-Host (Get-Date -AsUTC).Date
-    # workarounds
+    ## NOTE: PowerShell Core implements Get-Date -AsUTC.
     Write-Host "$([DateTime]::Now.ToString(`"yyyy-MM-dd HH:mm:ss.fff`")) (LOCAL)"
     Write-Host "$([DateTime]::UtcNow.ToString(`"yyyy-MM-dd HH:mm:ss.fff`")) (UTC)"
 
@@ -40,6 +42,8 @@ process {
 
     Write-Host "Writing How (`$PSScriptRoot`)"
     Write-Host $PSScriptRoot
+
+    Write-Host "OK"
 }
 end {
     Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
