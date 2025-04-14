@@ -46,7 +46,7 @@
         @{ Name = 'Microsoft.PowerShell.SecretStore' ; Version = '1.0.6' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core') },
 
         # https://github.com/PoshCode/ModuleBuilder
-        @{ Name = 'ModuleBuilder' ; Version = '3.1.7' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
+        @{ Name = 'ModuleBuilder' ; Version = '3.1.8' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://oneget.org/
         @{ Name = 'PackageManagement' ; Version = '1.4.8.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
