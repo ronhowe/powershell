@@ -16,7 +16,8 @@ begin {
 process {
     Write-Debug "Processing $($MyInvocation.MyCommand.Name)"
 
-    Task Debug Remove, Clean, Build, Import, Test
+    Task Debug Remove, Clean, Build, Import, Start
+    Task Release Remove, Clean, Build, Import, Test, Start
     Task . Clean, Build
 
     Task Build {
@@ -50,6 +51,11 @@ process {
     Task Import {
         Write-Verbose "Importing Module"
         Import-Module -Name "$PSScriptRoot\bin\Shell" -Global -Force
+    }
+
+    Task Start {
+        Write-Verbose "Starting Shell"
+        Start-Shell
     }
 
     Task Test {
