@@ -31,7 +31,7 @@
         @{ Name = 'ImportExcel' ; Version = '7.8.10' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/nightroman/Invoke-Build
-        @{ Name = 'InvokeBuild' ; Version = '5.12.2' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
+        @{ Name = 'InvokeBuild' ; Version = '5.13.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/PoshCode/Metadata
         @{ Name = 'Metadata' ; Version = '1.5.7' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
