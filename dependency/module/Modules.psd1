@@ -36,6 +36,9 @@
         # https://github.com/PoshCode/Metadata
         @{ Name = 'Metadata' ; Version = '1.5.7' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
+        # https://github.com/PowerShell/ConsoleGuiTools
+        @{ Name = 'Microsoft.Powershell.ConsoleGuiTools' ; Version = '0.7.7' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core') },
+
         # https://github.com/PowerShell/Crescendo
         @{ Name = 'Microsoft.PowerShell.Crescendo' ; Version = '1.1.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core') },
 
