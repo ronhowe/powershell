@@ -21,18 +21,24 @@ process {
 
     Write-Header -Header "Tools"
     & "$Path\powershell\developer\Get-DevOpsTools.ps1" -Verbose
+    Read-Host -Prompt "Press Enter To continue"
 
     Write-Header -Header "Packages"
     dotnet list "$Path\dotnet\MySolution.sln" package --outdated
+    Read-Host -Prompt "Press Enter To continue"
 
     Write-Header -Header "Modules"
     & "$Path\powershell\dependency\module\Test-Modules.ps1"
+    Read-Host -Prompt "Press Enter To continue"
 
     # Write-Header -Header "Resources"
     # & "$Path\powershell\dependency\resource\Test-Resources.ps1"
 
     Write-Header -Header "WinGet"
     winget upgrade
+    Read-Host -Prompt "Press Enter To continue"
+
+    Write-Host "OK" -ForegroundColor Green
 }
 end {
     Write-Debug "Ending $($MyInvocation.MyCommand.Name)"
