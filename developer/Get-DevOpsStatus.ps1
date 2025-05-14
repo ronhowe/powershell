@@ -19,24 +19,32 @@ process {
 
     . "$PSScriptRoot\Write-Header.ps1"
 
-    Write-Header -Header "Tools"
-    & "$Path\powershell\developer\Get-DevOpsTools.ps1" -Verbose
-    Read-Host -Prompt "Press Enter To continue"
+    Write-Header -Header "Modules"
+    & "$Path\powershell\dependency\module\Test-Modules.ps1"
+
+    Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
+    Start-Sleep -Seconds 5
 
     Write-Header -Header "Packages"
     dotnet list "$Path\dotnet\MySolution.sln" package --outdated
-    Read-Host -Prompt "Press Enter To continue"
 
-    Write-Header -Header "Modules"
-    & "$Path\powershell\dependency\module\Test-Modules.ps1"
-    Read-Host -Prompt "Press Enter To continue"
+    # Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
+    # Start-Sleep -Seconds 5
 
     # Write-Header -Header "Resources"
     # & "$Path\powershell\dependency\resource\Test-Resources.ps1"
 
+    Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
+    Start-Sleep -Seconds 5
+
+    Write-Header -Header "Tools"
+    & "$Path\powershell\developer\Get-DevOpsTools.ps1" -Verbose
+
+    Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
+    Start-Sleep -Seconds 5
+
     Write-Header -Header "WinGet"
     winget upgrade
-    Read-Host -Prompt "Press Enter To continue"
 
     Write-Host "OK" -ForegroundColor Green
 }
