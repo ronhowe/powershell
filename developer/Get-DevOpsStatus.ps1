@@ -22,26 +22,26 @@ process {
     Write-Header -Header "Modules"
     & "$Path\powershell\dependency\module\Test-Modules.ps1"
 
-    Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
-    Start-Sleep -Seconds 5
+    Write-Host "Pausing 3 Second(s) For Review ; Please Wait"
+    Start-Sleep -Seconds 3
 
     Write-Header -Header "Packages"
     dotnet list "$Path\dotnet\MySolution.sln" package --outdated
 
-    # Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
-    # Start-Sleep -Seconds 5
+    # Write-Host "Pausing 3 Second(s) For Review ; Please Wait"
+    # Start-Sleep -Seconds 3
 
     # Write-Header -Header "Resources"
     # & "$Path\powershell\dependency\resource\Test-Resources.ps1"
 
-    Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
-    Start-Sleep -Seconds 5
+    Write-Host "Pausing 3 Second(s) For Review ; Please Wait"
+    Start-Sleep -Seconds 3
 
     Write-Header -Header "Tools"
     & "$Path\powershell\developer\Get-DevOpsTools.ps1" -Verbose
 
-    Write-Host "Pausing 5 Second(s) For Review ; Please Wait"
-    Start-Sleep -Seconds 5
+    Write-Host "Pausing 3 Second(s) For Review ; Please Wait"
+    Start-Sleep -Seconds 3
 
     Write-Header -Header "WinGet"
     winget upgrade
