@@ -1,18 +1,7 @@
 @{
     Modules = @(
         # https://github.com/Azure/azure-powershell
-        ## NOTE: The entire Az module is big and contains many submodules that we typically do not need.
-        # @{ Name = 'Az' ; Version = '13.4.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.Accounts' ; Version = '4.2.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.AppConfiguration' ; Version = '1.4.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.ApplicationInsights' ; Version = '2.3.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.Automation' ; Version = '1.11.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.KeyVault' ; Version = '6.3.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.OperationalInsights' ; Version = '3.3.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.Resources' ; Version = '7.11.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.Storage' ; Version = '8.4.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
-        @{ Name = 'Az.Tools.Predictor' ; Version = '1.1.3' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core') },
-        @{ Name = 'Az.Websites' ; Version = '3.4.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
+        @{ Name = 'Az' ; Version = '14.0.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/torgro/cliMenu
         ## NOTE: This module is failing to download.
