@@ -1,4 +1,5 @@
 $computers = @("LAB-DC-00")
+$computers = @("LAB-DC-00", "LAB-SQL-00")
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00")
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00", "NON-EXISTENT", "LOCALHOST")
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00") * 5
@@ -102,5 +103,3 @@ Measure-Command {
 } |
 Format-Table -AutoSize
 #endregion ForEach Parallel With File (PowerShell Core Only)
-
-

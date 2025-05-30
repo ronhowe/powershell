@@ -1,10 +1,14 @@
 throw
 
+$ProgressPreference = "SilentlyContinue"
+
 Import-Module -Name "Hyper-V"
 Import-Module -Name "Pester"
 
 # all at once
 $nodes = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00")
+# some
+$nodes = @("LAB-DC-00", "LAB-SQL-00")
 # or one at a time
 $nodes = @("LAB-APP-00")
 $nodes = @("LAB-DC-00")
