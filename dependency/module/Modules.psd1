@@ -70,7 +70,7 @@
         # @{ Name = 'PSWindowsUpdate' ; Version = '2.2.1.5' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/microsoft/SQLServerPSModule
-        @{ Name = 'SqlServer' ; Version = '22.3.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
+        @{ Name = 'SqlServer' ; Version = '22.4.5.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/EliteLoser/WriteAscii
         @{ Name = 'WriteAscii' ; Version = '1.2.2.1' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') }
