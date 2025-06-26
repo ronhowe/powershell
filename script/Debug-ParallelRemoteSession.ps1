@@ -1,10 +1,10 @@
+$credential = Get-Credential
 $computers = @("LAB-DC-00")
-$computers = @("LAB-DC-00", "LAB-SQL-00")
+$computers = @("LAB-APP-00", "LAB-SQL-00", "LAB-WEB-00")
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00")
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00", "NON-EXISTENT", "LOCALHOST")
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00") * 5
 $computers = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00", "NON-EXISTENT", "LOCALHOST") * 5
-$credential = Get-Credential
 $thumbprint = "F59627BB6A2B553E68A5565A5DFA639CB91574DE"
 
 #region ForEach Serial With Script Block
@@ -103,3 +103,9 @@ Measure-Command {
 } |
 Format-Table -AutoSize
 #endregion ForEach Parallel With File (PowerShell Core Only)
+
+$computers |
+ForEach-Object -Parallel {
+    Write-Host "Restarting $_ ; Please Wait"
+    Restart-Computer -ComputerName $_ -Credential $using:credential -Force -Wait -Verbose
+} -ThrottleLimit 20
