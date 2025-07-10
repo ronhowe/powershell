@@ -7,7 +7,7 @@ Configuration DevBoxDsc {
         Log "PowerOnSelfTest" {
             Message = "Power-On Self-Test"
         }
-        
+
         # https://learn.microsoft.com/en-us/powershell/dsc/reference/resources/windows/fileresource?view=dsc-1.1
         File "ReposFolder" {
             DestinationPath = Resolve-Path -Path ($Node.ReposPath)
