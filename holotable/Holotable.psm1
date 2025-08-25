@@ -121,6 +121,9 @@ function ConvertTo-CdfDestiny {
                         "½" {
                             $output = "0.5"
                         }
+                        "4½" {
+                            $output = "4.5"
+                        }
                         "½ or 5½" {
                             $output = "5.5"
                         }
