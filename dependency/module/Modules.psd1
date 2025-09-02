@@ -1,7 +1,7 @@
 @{
     Modules = @(
         # https://github.com/Azure/azure-powershell
-        @{ Name = 'Az' ; Version = '14.3.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
+        @{ Name = 'Az' ; Version = '14.4.0' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/torgro/cliMenu
         ## NOTE: This module is failing to download.
@@ -20,7 +20,7 @@
         @{ Name = 'ImportExcel' ; Version = '7.8.10' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/nightroman/Invoke-Build
-        @{ Name = 'InvokeBuild' ; Version = '5.14.17' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
+        @{ Name = 'InvokeBuild' ; Version = '5.14.18' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
 
         # https://github.com/PoshCode/Metadata
         @{ Name = 'Metadata' ; Version = '1.5.7' ; Repository = 'PSGallery' ; CompatiblePSEditions = @('Core', 'Desktop') },
