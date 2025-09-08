@@ -1,5 +1,6 @@
 @{
     Resources = @(
+        # Sync with GuestDsc.ps1 and Install-GuestDscResources.ps1.
         @{ Name = 'ActiveDirectoryCSDsc' ; Version = '5.0.0' ; Repository = 'PSGallery' },
         @{ Name = 'ActiveDirectoryDsc' ; Version = '6.7.0' ; Repository = 'PSGallery' },
         @{ Name = 'ComputerManagementDsc' ; Version = '10.0.0' ; Repository = 'PSGallery' },

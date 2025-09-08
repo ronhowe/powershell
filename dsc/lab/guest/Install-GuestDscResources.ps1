@@ -31,19 +31,19 @@ process {
             Install-Module -Name "ActiveDirectoryCSDsc" -RequiredVersion "5.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing ActiveDirectoryDsc Resource On $env:COMPUTERNAME"
-            Install-Module -Name "ActiveDirectoryDsc" -RequiredVersion "6.6.2" -Repository "PSGallery" -Scope AllUsers -Force
+            Install-Module -Name "ActiveDirectoryDsc" -RequiredVersion "6.7.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing ComputerManagementDsc Resource On $env:COMPUTERNAME"
             Install-Module -Name "ComputerManagementDsc" -RequiredVersion "10.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing NetworkingDsc Resource On $env:COMPUTERNAME"
-            Install-Module -Name "NetworkingDsc" -RequiredVersion "9.0.0" -Repository "PSGallery" -Scope AllUsers -Force
+            Install-Module -Name "NetworkingDsc" -RequiredVersion "9.1.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing SecurityPolicyDsc Resource On $env:COMPUTERNAME"
             Install-Module -Name "SecurityPolicyDsc" -RequiredVersion "2.10.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing SqlServerDsc Resource On $env:COMPUTERNAME"
-            Install-Module -Name "SqlServerDsc" -RequiredVersion "17.0.0" -Repository "PSGallery" -Scope AllUsers -Force
+            Install-Module -Name "SqlServerDsc" -RequiredVersion "17.1.0" -Repository "PSGallery" -Scope AllUsers -Force
         }
         Invoke-Command -Session $session -ScriptBlock $scriptBlock
 

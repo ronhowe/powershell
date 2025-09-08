@@ -77,6 +77,7 @@ $thumbprint = & "$HOME\repos\ronhowe\powershell\dsc\lab\Get-DscEncryptionCertifi
 
 # without wait
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -SqlCredential $sqlCredential -Thumbprint $thumbprint
+
 # with wait
 & "$HOME\repos\ronhowe\powershell\dsc\lab\guest\Invoke-GuestDsc.ps1" -Nodes $nodes -Credential $credential -SqlCredential $sqlCredential -Thumbprint $thumbprint -Wait
 
