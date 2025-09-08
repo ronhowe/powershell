@@ -17,12 +17,12 @@ Configuration GuestDsc {
     )
 
     Import-DscResource -ModuleName "ActiveDirectoryCSDsc" -ModuleVersion "5.0.0"
-    Import-DscResource -ModuleName "ActiveDirectoryDsc" -ModuleVersion "6.6.2"
+    Import-DscResource -ModuleName "ActiveDirectoryDsc" -ModuleVersion "6.7.0"
     Import-DscResource -ModuleName "ComputerManagementDsc" -moduleVersion "10.0.0"
     Import-DscResource -ModuleName "NetworkingDsc" -ModuleVersion "9.0.0"
     Import-DscResource -ModuleName "PSDesiredStateConfiguration" -ModuleVersion "1.1"
     Import-DscResource -ModuleName "SecurityPolicyDsc" -ModuleVersion "2.10.0.0"
-    Import-DscResource -ModuleName "SqlServerDsc" -ModuleVersion "17.0.0"
+    Import-DscResource -ModuleName "SqlServerDsc" -ModuleVersion "17.1.0"
 
     $domainAdminCredential = New-Object System.Management.Automation.PSCredential ($("{0}\{1}" -f $Node.DomainName, $Credential.UserName), $Credential.Password)
 
