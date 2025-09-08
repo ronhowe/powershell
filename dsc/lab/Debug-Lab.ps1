@@ -16,10 +16,12 @@ $nodes = @("LAB-SQL-00")
 $nodes = @("LAB-WEB-00")
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Absent" -Wait
+
 & "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Present" -Wait
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "NEW" -Verbose
+
 $nodes | Start-VM -Verbose
 $nodes | Get-VM
 
@@ -31,6 +33,7 @@ Write-Warning "Complete OOBE ; Login To Desktop" -WarningAction Continue
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-OOBE" -Verbose
+
 $nodes | Start-VM -Verbose
 $nodes | Get-VM
 
@@ -41,6 +44,7 @@ $credential = Get-Credential -Message "Enter Administrator Credential" -UserName
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-RENAME" -Verbose
+
 $nodes | Start-VM -Verbose
 $nodes | Get-VM
 
@@ -50,6 +54,7 @@ Write-Warning "Patch Windows" -WarningAction Continue
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-INITIALIZE" -Verbose
+
 $nodes | Start-VM -Verbose
 $nodes | Get-VM
 
@@ -63,6 +68,7 @@ Get-ChildItem -Path "Cert:\LocalMachine\My\"
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-DSC-PRE-REQUISITES" -Verbose
+
 $nodes | Start-VM -Verbose
 $nodes | Get-VM
 
@@ -82,6 +88,7 @@ Invoke-Pester -Script "$HOME\repos\ronhowe\powershell\dsc\lab\guest\GuestDsc.Tes
 
 $nodes | Stop-VM -Force -Verbose
 $nodes | Checkpoint-VM -SnapshotName "POST-DSC" -Verbose
+
 $nodes | Start-VM -Verbose
 $nodes | Get-VM
 
