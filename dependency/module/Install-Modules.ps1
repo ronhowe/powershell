@@ -32,7 +32,7 @@ process {
             return
         }
 
-        Write-Host "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+        Write-Host "Installing Module @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) ; Scope = $Scope }"
         $parameters = @{
             AllowClobber       = $true
             Force              = $true
