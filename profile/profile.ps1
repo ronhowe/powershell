@@ -18,32 +18,32 @@ process {
         Write-Warning "PowerShell Core Not Detected"
     }
 
-    Write-Verbose "Asserting Az.Accounts Module Exists"
-    if (Get-Module -Name "Az.Accounts" -ListAvailable) {
-        Write-Verbose "Importing Az.Accounts"
-        Import-Module -Name "Az.Accounts"
-    }
-    else {
-        Write-Warning "Skipping Az.Accounts Module"
-    }
+    # Write-Verbose "Asserting Az.Accounts Module Exists"
+    # if (Get-Module -Name "Az.Accounts" -ListAvailable) {
+    #     Write-Verbose "Importing Az.Accounts"
+    #     Import-Module -Name "Az.Accounts"
+    # }
+    # else {
+    #     Write-Warning "Skipping Az.Accounts Module"
+    # }
 
-    Write-Verbose "Asserting Az.Resources Module Exists"
-    if (Get-Module -Name "Az.Resources" -ListAvailable) {
-        Write-Verbose "Importing Az.Resources"
-        Import-Module -Name "Az.Resources"
-    }
-    else {
-        Write-Warning "Skipping Az.Resources Module"
-    }
+    # Write-Verbose "Asserting Az.Resources Module Exists"
+    # if (Get-Module -Name "Az.Resources" -ListAvailable) {
+    #     Write-Verbose "Importing Az.Resources"
+    #     Import-Module -Name "Az.Resources"
+    # }
+    # else {
+    #     Write-Warning "Skipping Az.Resources Module"
+    # }
 
-    Write-Verbose "Asserting Az.Tools.Predictor Module Exists"
-    if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
-        Write-Verbose "Importing Az.Tools.Predictor"
-        Import-Module -Name "Az.Tools.Predictor"
-    }
-    else {
-        Write-Warning "Skipping Az.Tools.Predictor Module"
-    }
+    # Write-Verbose "Asserting Az.Tools.Predictor Module Exists"
+    # if (Get-Module -Name "Az.Tools.Predictor" -ListAvailable) {
+    #     Write-Verbose "Importing Az.Tools.Predictor"
+    #     Import-Module -Name "Az.Tools.Predictor"
+    # }
+    # else {
+    #     Write-Warning "Skipping Az.Tools.Predictor Module"
+    # }
 
     Write-Verbose "Asserting Microsoft.PowerShell.SecretManagement Module Exists"
     if (Get-Module -Name "Microsoft.PowerShell.SecretManagement" -ListAvailable) {
