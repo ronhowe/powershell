@@ -43,7 +43,7 @@ process {
             Install-Module -Name "SecurityPolicyDsc" -RequiredVersion "2.10.0.0" -Repository "PSGallery" -Scope AllUsers -Force
 
             Write-Host "Installing SqlServerDsc Resource On $env:COMPUTERNAME"
-            Install-Module -Name "SqlServerDsc" -RequiredVersion "17.1.0" -Repository "PSGallery" -Scope AllUsers -Force
+            Install-Module -Name "SqlServerDsc" -RequiredVersion "17.2.0" -Repository "PSGallery" -Scope AllUsers -Force
         }
         Invoke-Command -Session $session -ScriptBlock $scriptBlock
 
