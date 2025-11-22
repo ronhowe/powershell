@@ -7,13 +7,13 @@ Import-Module -Name "Pester"
 
 # all at once
 $nodes = @("LAB-APP-00", "LAB-DC-00", "LAB-SQL-00", "LAB-WEB-00")
-# some
-$nodes = @("LAB-DC-00", "LAB-SQL-00")
 # or one at a time
 $nodes = @("LAB-APP-00")
 $nodes = @("LAB-DC-00")
 $nodes = @("LAB-SQL-00")
 $nodes = @("LAB-WEB-00")
+# or mix-n-match
+$nodes = @("LAB-APP-00", "LAB-SQL-00", "LAB-WEB-00")
 
 & "$HOME\repos\ronhowe\powershell\dsc\lab\host\Invoke-HostDsc.ps1" -Nodes $nodes -Ensure "Absent" -Wait
 
@@ -95,19 +95,27 @@ $nodes | Get-VM
 
 ## NOTE: Install-PowerShell is idempotent.
 ## NOTE: It works, but causes this error due to WinRm being reset by the installer.
-    # OpenError: [LAB-DC-00] Processing data from remote server LAB-DC-00 failed with the following error message:
-    # The I/O operation has been aborted because of either a thread exit or an application request.
-    # For more information, see the about_Remote_Troubleshooting Help topic.
-Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\runbook\Install-PowerShell.ps1"
+# OpenError: [LAB-DC-00] Processing data from remote server LAB-DC-00 failed with the following error message:
+# The I/O operation has been aborted because of either a thread exit or an application request.
+# For more information, see the about_Remote_Troubleshooting Help topic.
+Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\script\Install-PowerShell.ps1"
 
 ## NOTE: Install-WebDeploy is idempotent.
-Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\runbook\Install-WebDeploy.ps1"
+Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\script\Install-WebDeploy.ps1"
 
 ## NOTE: Install-NetCoreHostingBundle is idempotent.
 ## TODO: Not working.
-Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\runbook\Install-NetCoreHostingBundle.ps1"
+Invoke-Command -ComputerName $nodes -Credential $credential -FilePath "$HOME\repos\ronhowe\powershell\script\Install-NetCoreHostingBundle.ps1"
 
 ## TODO: Refactor into GuestDsc.  Enables Web Management Service for publishing web applications.
-$port = 8172
-New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Domain" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Domain
-New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Private" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Private
+Invoke-Command -ComputerName $nodes -Credential $credential -ScriptBlock {
+    $port = 8172
+    New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Domain" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Domain
+    New-NetFirewallRule -DisplayName "Allow TCP Inbound Port $port - Private" -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow -Profile Private
+}
+
+$nodes | Stop-VM -Force -Verbose
+$nodes | Checkpoint-VM -SnapshotName "READY" -Verbose
+
+$nodes | Start-VM -Verbose
+$nodes | Get-VM
