@@ -29,7 +29,7 @@ process {
             Write-Host "Skipping Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) } ; Already Installed"
         }
         else {
-            Write-Host "Installing Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) }"
+            Write-Host "Installing Resource @{ ModuleName = $($_.Name) ; RequiredVersion = $($_.Version) ; Scope = $Scope }"
             $parameters = @{
                 AllowClobber       = $true
                 Force              = $true
